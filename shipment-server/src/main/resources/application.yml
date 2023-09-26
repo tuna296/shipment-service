@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: SHIPMENT_SERVICE
+  profiles:
+    active:
+      - dev
+      - dev-local
+  liquibase:
+    change-log: classpath:db/master.xml
+server:
+  port: 8081
