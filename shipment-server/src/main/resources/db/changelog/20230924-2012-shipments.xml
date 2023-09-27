@@ -24,7 +24,7 @@
             </column>
             <column name="shipment_date" type="date"/>
             <column name="expected_delivery_date" type="date"/>
-            <column name="status" type="NVARCHAR(255)"/>
+            <column name="status" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
