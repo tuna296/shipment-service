@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="20230924-1720-addresses.xml" author="nguyenanhtu002">
+        <createTable tableName="addresses">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="PK_address_id"/>
+            </column>
+            <column name="detail" type="varchar(255)"/>
+            <column name="ward_code" type="varchar(255)">
+                <constraints foreignKeyName="FK_address_ward_code"
+                             references="wards(code)"/>
+            </column>
+            <column name="district_code" type="varchar(255)">
+                <constraints foreignKeyName="FK_address_district_code"
+                             references="districts(code)"/>
+            </column>
+            <column name="province_code" type="varchar(255)">
+                <constraints foreignKeyName="FK_address_province_code"
+                             references="provinces(code)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

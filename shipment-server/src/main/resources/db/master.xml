@@ -3,4 +3,11 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="changelog/20230924-1750-provinces.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20230924-1734-districts.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20230924-1705-wards.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20230924-1720-addresses.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20230924-1803-shipment-method.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20230924-2012-shipments.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
