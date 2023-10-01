@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.ncsgroup.shipment.server",
+        basePackages = "com.ncsgroup.shipment.server.repository",
         repositoryBaseClass = BaseRepository.class
 )
 public class JpaRepositoryConfiguration {

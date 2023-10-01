@@ -27,6 +27,13 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.ncsgroup</groupId>
+            <artifactId>shipment-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
