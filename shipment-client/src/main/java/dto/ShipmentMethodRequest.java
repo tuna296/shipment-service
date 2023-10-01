@@ -1,6 +1,7 @@
 package dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -11,6 +12,6 @@ import lombok.*;
     private String name;
     @NotBlank(message = "description cannot be empty")
     private String description;
-    @NotBlank(message = "pricePerKilometer cannot be empty")
+    @NotNull
     private double pricePerKilometer;
 }

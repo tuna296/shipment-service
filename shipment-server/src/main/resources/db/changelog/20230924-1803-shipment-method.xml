@@ -10,7 +10,12 @@
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="description" type="varchar(255)"/>
-            <column name="pricePerKilometer" type="decimal"/>
+            <column name="price_per_kilometer" type="decimal"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="BIGINT"/>
+            <column name="last_updated_by" type="VARCHAR(255)"/>
+            <column name="last_updated_at" type="BIGINT"/>
+
         </createTable>
     </changeSet>
 </databaseChangeLog>

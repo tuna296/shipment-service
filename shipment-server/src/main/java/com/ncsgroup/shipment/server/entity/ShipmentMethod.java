@@ -18,7 +18,7 @@ public class ShipmentMethod extends BaseEntityWithUpdater {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "pricePerKilometer")
+    @Column(name = "price_per_kilometer")
     private double pricePerKilometer;
 
     public static ShipmentMethod from(
