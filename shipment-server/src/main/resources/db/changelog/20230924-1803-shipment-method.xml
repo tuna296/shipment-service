@@ -15,7 +15,7 @@
             <column name="created_at" type="BIGINT"/>
             <column name="last_updated_by" type="VARCHAR(255)"/>
             <column name="last_updated_at" type="BIGINT"/>
-
+            <column name="is_deleted" type="BOOLEAN"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
