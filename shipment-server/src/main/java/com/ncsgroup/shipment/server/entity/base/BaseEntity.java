@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
+import java.util.UUID;
+
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -21,15 +23,15 @@ public abstract class BaseEntity {
   private String id;
 
   @CreatedBy
-  private String createBy;
+  private String createdBy;
 
   @CreatedDate
-  private Long createAt;
+  private Long createdAt;
 
   @PrePersist
   public void ensureId() {
     this.id = StringUtils.isBlank(this.id) ? UUID.randomUUID().toString() : this.id;
   }
-
 }
+
 

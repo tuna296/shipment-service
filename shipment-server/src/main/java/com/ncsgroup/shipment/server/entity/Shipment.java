@@ -22,7 +22,6 @@ public class Shipment extends BaseEntityWithUpdater {
     private double price;
     private String method;
     private long shipmentDate;
-    private long expectedDeliveryDate;
     @Enumerated(EnumType.STRING)
     private Status status;
 

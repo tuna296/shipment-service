@@ -27,4 +27,8 @@ public class ProfilingConstants {
         public static String TYPE_TOKEN = "Bear ";
         public static String AUTHORIZATION = "Authorization";
     }
+
+    public static class MessageCode {
+        public static final String CREATE_SHIPMENT_METHOD_SUCCESS="com.ncsgroup.shipment.server.controller.ShipmentMethodController.create";
+    }
 }

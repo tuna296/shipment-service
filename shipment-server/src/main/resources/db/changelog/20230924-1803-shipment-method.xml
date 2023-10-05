@@ -5,12 +5,17 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="20230924-1803-shipment-method.xml" author="nguyenanhtu002">
         <createTable tableName="shipment_method">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_shipment_method_id"/>
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="description" type="varchar(255)"/>
-            <column name="pricePerKilometer" type="decimal"/>
+            <column name="price_per_kilometer" type="decimal"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="BIGINT"/>
+            <column name="last_updated_by" type="VARCHAR(255)"/>
+            <column name="last_updated_at" type="BIGINT"/>
+            <column name="is_deleted" type="BOOLEAN"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
