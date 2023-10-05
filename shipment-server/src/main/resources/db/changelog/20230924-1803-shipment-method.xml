@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="20230924-1803-shipment-method.xml" author="nguyenanhtu002">
         <createTable tableName="shipment_method">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_shipment_method_id"/>
             </column>
             <column name="name" type="varchar(255)"/>

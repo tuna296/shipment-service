@@ -39,5 +39,4 @@ public class ShipmentMethodController {
                 shipmentMethodService.create(request)
         );
     }
-
 }

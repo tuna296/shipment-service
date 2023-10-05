@@ -7,4 +7,5 @@ import dto.ShipmentMethodRequest;
 
 public interface ShipmentMethodService extends BaseService<ShipmentMethod> {
     ShipmentMethodResponse create(ShipmentMethodRequest request);
+    ShipmentMethodResponse findById(String id);
 }

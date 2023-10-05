@@ -13,6 +13,6 @@ public abstract class BaseEntityWithUpdater extends BaseEntity {
   @LastModifiedBy
   private String lastUpdatedBy;
   @LastModifiedDate
-  private Long lasUpdatedAt;
+  private Long lastUpdatedAt;
 
 }

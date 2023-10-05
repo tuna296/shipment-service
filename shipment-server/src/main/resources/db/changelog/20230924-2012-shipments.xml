@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="20230924-2012-shipments.xml" author="nguyenanhtu002">
         <createTable tableName="shipments">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_shipment_id"/>
             </column>
             <column name="code" type="varchar(255)">
@@ -21,7 +21,7 @@
                              references="addresses(id)"/>
             </column>
             <column name="price" type="decimal"/>
-            <column name="method_id" type="bigint">
+            <column name="method_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_shipment_method"
                              references="shipment_method(id)"/>
             </column>
