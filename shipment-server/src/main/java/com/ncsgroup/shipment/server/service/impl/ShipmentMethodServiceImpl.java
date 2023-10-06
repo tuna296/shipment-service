@@ -1,7 +1,7 @@
 package com.ncsgroup.shipment.server.service.impl;
 
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
-import com.ncsgroup.shipment.server.entity.ShipmentMethod;;
+import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentAlreadyExistException;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
@@ -30,24 +30,24 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
                 request.getDescription(),
                 request.getPricePerKilometer()
         );
-        repository.save(shipmentMethod);
-        return ShipmentMethodResponse.from(
-                shipmentMethod.getName(),
-                shipmentMethod.getDescription(),
-                shipmentMethod.getPricePerKilometer()
-        );
+        create(shipmentMethod);
+        return convertShipmentMethodToShipmentMethodResponse(shipmentMethod);
     }
 
     @Override
-    public ShipmentMethodResponse findById(String id) {
+    @Transactional
+    public ShipmentMethodResponse update(String id, ShipmentMethodRequest request) {
+        log.info("(update) request: {}", request);
+        ShipmentMethod shipmentMethod = findById(id);
+        checkNameOfShipmentMethodAlreadyExistsWhenUpdate(shipmentMethod, request);
+        setValueForUpdate(shipmentMethod, request);
+        shipmentMethod = update(shipmentMethod);
+        return convertShipmentMethodToShipmentMethodResponse(shipmentMethod);
+    }
+
+    public ShipmentMethod findById(String id) {
         log.info("(findById) id: {}", id);
-        ShipmentMethod shipmentMethod = repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
-        ShipmentMethodResponse response = ShipmentMethodResponse.from(
-                shipmentMethod.getName(),
-                shipmentMethod.getDescription(),
-                shipmentMethod.getPricePerKilometer()
-        );
-        return response;
+        return repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
     }
 
     private void checkShipmentMethodAlreadyExists(String name) {
@@ -57,4 +57,24 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
             throw new ShipmentAlreadyExistException();
         }
     }
+
+    private void checkNameOfShipmentMethodAlreadyExistsWhenUpdate(ShipmentMethod shipmentMethod, ShipmentMethodRequest request) {
+        log.info("check name of shipment method AlreadyExists when update");
+        if (!shipmentMethod.getName().equals(request.getName()))
+            checkShipmentMethodAlreadyExists(request.getName());
+    }
+
+    private void setValueForUpdate(ShipmentMethod shipmentmethod, ShipmentMethodRequest request) {
+        shipmentmethod.setName(request.getName());
+        shipmentmethod.setDescription(request.getDescription());
+        shipmentmethod.setPricePerKilometer(request.getPricePerKilometer());
+    }
+
+    private ShipmentMethodResponse convertShipmentMethodToShipmentMethodResponse(ShipmentMethod shipmentMethod) {
+        return ShipmentMethodResponse.from(
+                shipmentMethod.getName(),
+                shipmentMethod.getDescription(),
+                shipmentMethod.getPricePerKilometer());
+    }
+
 }

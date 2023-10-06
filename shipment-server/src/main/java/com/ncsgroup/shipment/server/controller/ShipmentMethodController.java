@@ -17,6 +17,7 @@ import dto.ShipmentMethodRequest;
 import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.CommonConstants.DEFAULT_LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.CommonConstants.LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.MessageCode.CREATE_SHIPMENT_METHOD_SUCCESS;
+import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.MessageCode.UPDATE_SHIPMENT_METHOD_SUCCESS;
 
 
 @RestController
@@ -37,6 +38,19 @@ public class ShipmentMethodController {
         return ResponseGeneral.ofCreated(
                 messageService.getMessage(CREATE_SHIPMENT_METHOD_SUCCESS, language),
                 shipmentMethodService.create(request)
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseGeneral<ShipmentMethodResponse> update(
+            @Valid @RequestBody ShipmentMethodRequest request,
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("Update with id: " + id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(UPDATE_SHIPMENT_METHOD_SUCCESS,language),
+                shipmentMethodService.update(id,request)
         );
     }
 }

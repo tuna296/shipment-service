@@ -30,5 +30,7 @@ public class ProfilingConstants {
 
     public static class MessageCode {
         public static final String CREATE_SHIPMENT_METHOD_SUCCESS="com.ncsgroup.shipment.server.controller.ShipmentMethodController.create";
+        public static final String UPDATE_SHIPMENT_METHOD_SUCCESS="com.ncsgroup.shipment.server.controller.ShipmentMethodController.update";
+
     }
 }
