@@ -4,6 +4,9 @@ import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 
 public interface ShipmentMethodRepository extends BaseRepository<ShipmentMethod> {
     @Query("SELECT CASE WHEN COUNT(e) > 0" +
@@ -15,5 +18,15 @@ public interface ShipmentMethodRepository extends BaseRepository<ShipmentMethod>
             " THEN true ELSE false END FROM ShipmentMethod e " +
             "WHERE e.id = :id AND e.isDeleted = false")
     boolean existsById(String id);
+
+    @Query("SELECT s FROM ShipmentMethod s WHERE :keyword is null or lower(s.name)" +
+            "LIKE lower(concat('%', :keyword, '%'))" +
+            " AND s.isDeleted <> true")
+            List<ShipmentMethod> search(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("select count(s) from ShipmentMethod s where : keyword is null or" +
+            " lower(s.name) like %:keyword% " +
+            " AND s.isDeleted <> true")
+    int countSearch(String keyword);
 
 }
