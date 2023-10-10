@@ -44,6 +44,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
     @Transactional
     public ShipmentMethodResponse update(String id, ShipmentMethodRequest request) {
         log.info("(update) request: {}", request);
+
         ShipmentMethod shipmentMethod = findById(id);
         checkNameOfShipmentMethodAlreadyExistsWhenUpdate(shipmentMethod, request);
         setValueForUpdate(shipmentMethod, request);
@@ -70,7 +71,10 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
 
     public ShipmentMethod findById(String id) {
         log.info("(findById) id: {}", id);
-        return repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
+        ShipmentMethod shipmentMethod = repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
+        if (shipmentMethod.isDeleted())
+            throw new ShipmentMethodNotFoundException();
+        return shipmentMethod;
     }
 
     private void checkShipmentMethodAlreadyExists(String name) {
