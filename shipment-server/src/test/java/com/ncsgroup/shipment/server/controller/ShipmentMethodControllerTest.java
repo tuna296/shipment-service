@@ -3,7 +3,7 @@ package com.ncsgroup.shipment.server.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
-import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentAlreadyExistException;
+import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodAlreadyExistException;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
@@ -82,7 +82,7 @@ public class ShipmentMethodControllerTest {
     @Test
     void testCreate_WhenCreatedShipmentMethodNameAlreadyExists_ReturnShipmentMethodAlreadyExists() throws Exception {
         ShipmentMethodRequest mockRequest = mockRequest();
-        Mockito.when(shipmentMethodService.create(mockRequest)).thenThrow(new ShipmentAlreadyExistException());
+        Mockito.when(shipmentMethodService.create(mockRequest)).thenThrow(new ShipmentMethodAlreadyExistException());
         Mockito.when(messageService.getMessage(CREATE_SHIPMENT_METHOD_SUCCESS, "en"))
                 .thenReturn("Create shipment method successfully");
         mockMvc.perform(post("/api/v1/shipment-methods")
@@ -169,7 +169,7 @@ public class ShipmentMethodControllerTest {
     @Test
     void testUpdate_WhenNameShipmentMethodAlreadyExists__ReturnBadRequest() throws Exception {
         ShipmentMethodRequest request = mockRequest();
-        Mockito.when(shipmentMethodService.update(mockId, request)).thenThrow(new ShipmentAlreadyExistException());
+        Mockito.when(shipmentMethodService.update(mockId, request)).thenThrow(new ShipmentMethodAlreadyExistException());
         Mockito.when(messageService.getMessage(UPDATE_SHIPMENT_METHOD_SUCCESS, "en"))
                 .thenReturn("Update shipment method successfully");
         MvcResult mvcResult = mockMvc.perform(

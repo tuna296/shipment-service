@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 public class ShipmentMethodPageResponse {
     private List<ShipmentMethodResponse> shipmentMethodResponseList;
-    private int amount;
+    private int count;
 }

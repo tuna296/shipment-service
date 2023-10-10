@@ -3,7 +3,7 @@ package com.ncsgroup.shipment.server.service.impl;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodPageResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
-import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentAlreadyExistException;
+import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodAlreadyExistException;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
@@ -65,8 +65,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
                     shipmentMethod.getPricePerKilometer()
             ));
         }
-        ShipmentMethodPageResponse response = new ShipmentMethodPageResponse(list, isAll ? shipmentMethods.size() : repository.countSearch(keyword));
-        return response;
+        return new ShipmentMethodPageResponse(list, isAll ? shipmentMethods.size() : repository.countSearch(keyword));
     }
 
     public ShipmentMethod findById(String id) {
@@ -78,7 +77,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
         log.info("checkShipmentMethodAlreadyExists :{}", name);
         if (repository.existsByName(name)) {
             log.error("Shipment Method AlreadyExists :{}, name");
-            throw new ShipmentAlreadyExistException();
+            throw new ShipmentMethodAlreadyExistException();
         }
     }
 
