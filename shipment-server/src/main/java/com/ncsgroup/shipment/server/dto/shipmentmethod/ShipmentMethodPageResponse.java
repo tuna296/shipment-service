@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(staticName = "of")
+@NoArgsConstructor
 public class ShipmentMethodPageResponse {
     private List<ShipmentMethodResponse> shipmentMethodResponseList;
     private int count;

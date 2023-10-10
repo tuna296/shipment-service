@@ -1,6 +1,7 @@
 package com.ncsgroup.shipment.server.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodPageResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodAlreadyExistException;
@@ -17,15 +18,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.MessageCode.CREATE_SHIPMENT_METHOD_SUCCESS;
-import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.MessageCode.UPDATE_SHIPMENT_METHOD_SUCCESS;
+import static com.ncsgroup.shipment.server.constanst.ProfilingConstants.MessageCode.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebMvcTest(ShipmentMethodController.class)
 public class ShipmentMethodControllerTest {
@@ -167,7 +170,7 @@ public class ShipmentMethodControllerTest {
     }
 
     @Test
-    void testUpdate_WhenNameShipmentMethodAlreadyExists__ReturnBadRequest() throws Exception {
+    void testUpdate_WhenNameShipmentMethodAlreadyExists_ReturnBadRequest() throws Exception {
         ShipmentMethodRequest request = mockRequest();
         Mockito.when(shipmentMethodService.update(mockId, request)).thenThrow(new ShipmentMethodAlreadyExistException());
         Mockito.when(messageService.getMessage(UPDATE_SHIPMENT_METHOD_SUCCESS, "en"))
@@ -180,6 +183,55 @@ public class ShipmentMethodControllerTest {
                 .andExpect(jsonPath("$.data.code")
                         .value("com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentAlreadyExistException"))
                 .andReturn();
+    }
+
+    @Test
+    void testList_WhenListIsAll_Returns200AndBody() throws Exception {
+        ShipmentMethodPageResponse mock = new ShipmentMethodPageResponse();
+        List<ShipmentMethodResponse> list = new ArrayList<>();
+        list.add(ShipmentMethodResponse.from("1", "van chuyen trong ngay", 20));
+        list.add(ShipmentMethodResponse.from("2", "van chuyen trong tuan", 20));
+        list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
+
+        mock.setShipmentMethodResponseList(list);
+        Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+        Mockito.when(shipmentMethodService.list("", 10, 0, true)).thenReturn(mock);
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")
+                        .param("keyword", "")
+                        .param("size", String.valueOf(10))
+                        .param("page", String.valueOf(0))
+                        .param("all", String.valueOf(true)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString();
+        Assertions.assertEquals(responseBody,
+                objectMapper.writeValueAsString(shipmentMethodController.list("", 10, 0, true, "en")));
+    }
+    @Test
+    void testList_WhenSearchByKeywordAndIsAllFalse_Returns200AndBody() throws Exception {
+        ShipmentMethodPageResponse mock = new ShipmentMethodPageResponse();
+        List<ShipmentMethodResponse> list = new ArrayList<>();
+        list.add(ShipmentMethodResponse.from("1", "van chuyen trong ngay", 20));
+        list.add(ShipmentMethodResponse.from("2", "van chuyen trong tuan", 20));
+        list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
+
+        mock.setShipmentMethodResponseList(list);
+        Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+        Mockito.when(shipmentMethodService.list("", 10, 0, false)).thenReturn(mock);
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")
+                        .param("keyword", "1")
+                        .param("size", String.valueOf(10))
+                        .param("page", String.valueOf(0))
+                        .param("all", String.valueOf(false)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString();
+        Assertions.assertEquals(responseBody,
+                objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, true, "en")));
     }
 }
 
