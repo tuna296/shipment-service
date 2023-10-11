@@ -10,16 +10,12 @@
                 <constraints primaryKey="true" primaryKeyName="PK_wards_code"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints unique="true"/>
             </column>
             <column name="name_en" type="varchar(255)">
-                <constraints unique="true"/>
             </column>
             <column name="full_name" type="varchar(255)">
-                <constraints unique="true"/>
             </column>
             <column name="full_name_en" type="varchar(255)">
-                <constraints unique="true"/>
             </column>
             <column name="code_name" type="varchar(255)">
                 <constraints unique="true"/>
@@ -28,6 +24,10 @@
                 <constraints foreignKeyName="FK_wards_district_code"
                              references="districts(code)"/>
             </column>
+            <column name="created_at" type="bigint"/>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="last_updated_at" type="bigint"/>
+            <column name="last_updated_by" type="varchar(255)"/>
         </createTable>
     </changeSet>
 

@@ -1,8 +1,8 @@
 package com.ncsgroup.shipment.server.controller.advice;
 
 
-import com.ncsgroup.shipment.server.dto.response.Error;
-import com.ncsgroup.shipment.server.dto.response.ResponseGeneral;
+import com.ncsgroup.shipment.server.dto.Error;
+import com.ncsgroup.shipment.server.dto.ResponseGeneral;
 import com.ncsgroup.shipment.server.exception.base.BaseException;
 import com.ncsgroup.shipment.server.constanst.Constants;
 import jakarta.validation.ConstraintViolationException;

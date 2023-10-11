@@ -25,121 +25,121 @@ import java.util.Optional;
 @WebMvcTest(ShipmentMethodService.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
 public class ShipmentMethodServiceTest {
-    @MockBean
-    private ShipmentMethodRepository repository;
-    @Autowired
-    private ShipmentMethodService shipmentMethodService;
-    private static final String mockId = "abc";
+  @MockBean
+  private ShipmentMethodRepository repository;
+  @Autowired
+  private ShipmentMethodService shipmentMethodService;
+  private static final String mockId = "abc";
 
-    private ShipmentMethodRequest mockShipmentMethodRequest() {
-        ShipmentMethodRequest request = new ShipmentMethodRequest();
-        request.setName("Giao hang nhanh");
-        request.setDescription("Van chuyen trong ngay");
-        request.setPricePerKilometer(20000);
-        return request;
-    }
+  private ShipmentMethodRequest mockShipmentMethodRequest() {
+    ShipmentMethodRequest request = new ShipmentMethodRequest();
+    request.setName("Giao hang nhanh");
+    request.setDescription("Van chuyen trong ngay");
+    request.setPricePerKilometer(20000);
+    return request;
+  }
 
-    private ShipmentMethod mockshipmentMethod(ShipmentMethodRequest request) {
-        return ShipmentMethod.from(request.getName(), request.getDescription(), request.getPricePerKilometer());
-    }
+  private ShipmentMethod mockshipmentMethod(ShipmentMethodRequest request) {
+    return ShipmentMethod.from(request.getName(), request.getDescription(), request.getPricePerKilometer());
+  }
 
-    @Test
-    public void testCreate_WhenNameShipmentMethodAlreadyExists_ReturnShipmentMethodAlreadyExistException() {
-        ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
-        Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(true);
-        Assertions.assertThatThrownBy(() -> shipmentMethodService.create(mockRequest)).
-                isInstanceOf(ShipmentMethodAlreadyExistException.class);
-    }
+  @Test
+  public void testCreate_WhenNameShipmentMethodAlreadyExists_ReturnShipmentMethodAlreadyExistException() {
+    ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
+    Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(true);
+    Assertions.assertThatThrownBy(() -> shipmentMethodService.create(mockRequest)).
+          isInstanceOf(ShipmentMethodAlreadyExistException.class);
+  }
 
-    @Test
-    public void testCreate_WhenCreateShipmentMethod_Successfully() {
-        ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
-        ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
-        Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(false);
-        Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
-        ShipmentMethodResponse response = shipmentMethodService.create(mockRequest);
-        Assertions.assertThat(mockEntity.getName()).isEqualTo(response.getName());
-        Assertions.assertThat(mockEntity.getDescription()).isEqualTo(response.getDescription());
-        Assertions.assertThat(mockEntity.getPricePerKilometer()).isEqualTo(response.getPricePerKilometer());
-    }
+  @Test
+  public void testCreate_WhenCreateShipmentMethod_Successfully() {
+    ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
+    ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
+    Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(false);
+    Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
+    ShipmentMethodResponse response = shipmentMethodService.create(mockRequest);
+    Assertions.assertThat(mockEntity.getName()).isEqualTo(response.getName());
+    Assertions.assertThat(mockEntity.getDescription()).isEqualTo(response.getDescription());
+    Assertions.assertThat(mockEntity.getPricePerKilometer()).isEqualTo(response.getPricePerKilometer());
+  }
 
-    @Test
-    public void testUpdate_WhenNameShipmentMethodAlreadyExists_ReturnAlreadyExistsException() throws Exception {
-        ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
-        ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
-        mockEntity.setId(mockId);
-        mockEntity.setName("ok");
-        Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
-        Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(true);
-        Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, mockRequest)).
-                isInstanceOf(ShipmentMethodAlreadyExistException.class);
-    }
+  @Test
+  public void testUpdate_WhenNameShipmentMethodAlreadyExists_ReturnAlreadyExistsException() throws Exception {
+    ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
+    ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
+    mockEntity.setId(mockId);
+    mockEntity.setName("ok");
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
+    Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(true);
+    Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, mockRequest)).
+          isInstanceOf(ShipmentMethodAlreadyExistException.class);
+  }
 
-    @Test
-    public void testUpdate_WhenIdNotFound_ReturnShipmentMethodNotFound() {
-        ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
-        Mockito.when(repository.findById(mockId)).thenThrow(ShipmentMethodNotFoundException.class);
-        Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, mockRequest)).
-                isInstanceOf(ShipmentMethodNotFoundException.class);
-    }
+  @Test
+  public void testUpdate_WhenIdNotFound_ReturnShipmentMethodNotFound() {
+    ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
+    Mockito.when(repository.findById(mockId)).thenThrow(ShipmentMethodNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, mockRequest)).
+          isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
 
-    @Test
-    public void testUpdate_WhenUpdateShipmentSuccess_ReturnResponseBody() {
-        ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
-        ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
-        mockEntity.setId(mockId);
-        Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
-        Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
-        ShipmentMethodResponse response = shipmentMethodService.update(mockId, mockRequest);
-        Assertions.assertThat(mockEntity.getName()).isEqualTo(response.getName());
-        Assertions.assertThat(mockEntity.getDescription()).isEqualTo(response.getDescription());
-        Assertions.assertThat(mockEntity.getPricePerKilometer()).isEqualTo(response.getPricePerKilometer());
-    }
+  @Test
+  public void testUpdate_WhenUpdateShipmentSuccess_ReturnResponseBody() {
+    ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
+    ShipmentMethod mockEntity = mockshipmentMethod(mockRequest);
+    mockEntity.setId(mockId);
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
+    Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
+    ShipmentMethodResponse response = shipmentMethodService.update(mockId, mockRequest);
+    Assertions.assertThat(mockEntity.getName()).isEqualTo(response.getName());
+    Assertions.assertThat(mockEntity.getDescription()).isEqualTo(response.getDescription());
+    Assertions.assertThat(mockEntity.getPricePerKilometer()).isEqualTo(response.getPricePerKilometer());
+  }
 
-    @Test
-    public void test_Update_WhenShipmentMethodIsDelete_ReturnShipmentMethodNotFoundException() throws Exception {
-        ShipmentMethodRequest request = mockShipmentMethodRequest();
-        ShipmentMethod mockEntity = mockshipmentMethod(request);
-        mockEntity.setId(mockId);
-        mockEntity.setDeleted(true);
-        Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
-        Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, request)).
-                isInstanceOf(ShipmentMethodNotFoundException.class);
-    }
+  @Test
+  public void test_Update_WhenShipmentMethodIsDelete_ReturnShipmentMethodNotFoundException() throws Exception {
+    ShipmentMethodRequest request = mockShipmentMethodRequest();
+    ShipmentMethod mockEntity = mockshipmentMethod(request);
+    mockEntity.setId(mockId);
+    mockEntity.setDeleted(true);
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
+    Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, request)).
+          isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
 
-    @Test
-    void testList_WhenAllTrue_ReturnsShipmentMethodPageResponse() {
-        ShipmentMethodRequest request = mockShipmentMethodRequest();
-        ShipmentMethodRequest request1 = mockShipmentMethodRequest();
-        ShipmentMethodRequest request2 = mockShipmentMethodRequest();
-        List<ShipmentMethod> list = new ArrayList<>();
-        list.add(mockshipmentMethod(request));
-        list.add(mockshipmentMethod(request1));
-        list.add(mockshipmentMethod(request2));
-        Mockito.when(repository.findAll()).thenReturn(list);
-        ShipmentMethodPageResponse response = shipmentMethodService.list(null, 5, 0, true);
-        Assertions.assertThat(list.size()).isEqualTo(response.getCount());
-    }
+  @Test
+  void testList_WhenAllTrue_ReturnsShipmentMethodPageResponse() {
+    ShipmentMethodRequest request = mockShipmentMethodRequest();
+    ShipmentMethodRequest request1 = mockShipmentMethodRequest();
+    ShipmentMethodRequest request2 = mockShipmentMethodRequest();
+    List<ShipmentMethod> list = new ArrayList<>();
+    list.add(mockshipmentMethod(request));
+    list.add(mockshipmentMethod(request1));
+    list.add(mockshipmentMethod(request2));
+    Mockito.when(repository.findAll()).thenReturn(list);
+    ShipmentMethodPageResponse response = shipmentMethodService.list(null, 5, 0, true);
+    Assertions.assertThat(list.size()).isEqualTo(response.getCount());
+  }
 
-    @Test
-    void testList_WhenAllFalse_ReturnsShipmentMethodPageResponse() {
-        Pageable pageable = PageRequest.of(0, 10);
-        ShipmentMethodRequest request = mockShipmentMethodRequest();
-        request.setName("AnhTu");
-        ShipmentMethodRequest request1 = mockShipmentMethodRequest();
-        request.setName("AnhTu");
-        ShipmentMethodRequest request2 = mockShipmentMethodRequest();
-        List<ShipmentMethod> list = new ArrayList<>();
-        list.add(mockshipmentMethod(request));
-        list.add(mockshipmentMethod(request1));
-        list.add(mockshipmentMethod(request2));
-        Mockito.when(repository.search("AnhTu", pageable)).thenReturn(list);
-        Mockito.when(repository.countSearch("AnhTu")).thenReturn(list.size());
-        ShipmentMethodPageResponse response = shipmentMethodService.list("AnhTu", 10, 0, false);
-        Assertions.assertThat(list.size()).isEqualTo(response.getCount());
-        Assertions.assertThat(list.size()).isEqualTo(response.getShipmentMethodResponseList().size());
+  @Test
+  void testList_WhenAllFalse_ReturnsShipmentMethodPageResponse() {
+    Pageable pageable = PageRequest.of(0, 10);
+    ShipmentMethodRequest request = mockShipmentMethodRequest();
+    request.setName("AnhTu");
+    ShipmentMethodRequest request1 = mockShipmentMethodRequest();
+    request.setName("AnhTu");
+    ShipmentMethodRequest request2 = mockShipmentMethodRequest();
+    List<ShipmentMethod> list = new ArrayList<>();
+    list.add(mockshipmentMethod(request));
+    list.add(mockshipmentMethod(request1));
+    list.add(mockshipmentMethod(request2));
+    Mockito.when(repository.search("AnhTu", pageable)).thenReturn(list);
+    Mockito.when(repository.countSearch("AnhTu")).thenReturn(list.size());
+    ShipmentMethodPageResponse response = shipmentMethodService.list("AnhTu", 10, 0, false);
+    Assertions.assertThat(list.size()).isEqualTo(response.getCount());
+    Assertions.assertThat(list.size()).isEqualTo(response.getShipmentMethodResponseList().size());
 
-    }
+  }
 }
 
 

@@ -1,4 +1,4 @@
-package com.ncsgroup.shipment.server.dto.response;
+package com.ncsgroup.shipment.server.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

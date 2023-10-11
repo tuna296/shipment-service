@@ -29,8 +29,8 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   @Override
   @Transactional
   public ShipmentMethodResponse create(ShipmentMethodRequest request) {
-    log.debug("(create) request: {}", request);
-    checkShipmentMethodAlreadyExists(request.getName());
+    log.info("(create) request: {}", request);
+    this.checkShipmentMethodAlreadyExists(request.getName());
     ShipmentMethod shipmentMethod = ShipmentMethod.from(
           request.getName(),
           request.getDescription(),
@@ -43,10 +43,10 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   @Override
   @Transactional
   public ShipmentMethodResponse update(String id, ShipmentMethodRequest request) {
-    log.debug("(update) request: {}", request);
+    log.info("(update) request: {}", request);
 
     ShipmentMethod shipmentMethod = findById(id);
-    checkNameOfShipmentMethodAlreadyExistsWhenUpdate(shipmentMethod, request);
+    checkNameShipmentMethodAlreadyExists(shipmentMethod, request);
     setValueUpdate(shipmentMethod, request);
     shipmentMethod = update(shipmentMethod);
     return convertToResponse(shipmentMethod);
@@ -54,7 +54,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
 
   @Override
   public ShipmentMethodPageResponse list(String keyword, int size, int page, boolean isAll) {
-    log.debug("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
     List<ShipmentMethodResponse> list = new ArrayList<>();
     Pageable pageable = PageRequest.of(page, size);
     List<ShipmentMethod> shipmentMethods = isAll ?
@@ -81,10 +81,10 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
     }
   }
 
-  private void checkNameOfShipmentMethodAlreadyExistsWhenUpdate(ShipmentMethod shipmentMethod, ShipmentMethodRequest request) {
+  private void checkNameShipmentMethodAlreadyExists(ShipmentMethod shipmentMethod, ShipmentMethodRequest request) {
     log.debug("check name of shipment method AlreadyExists when update");
     if (!shipmentMethod.getName().equals(request.getName()))
-      checkShipmentMethodAlreadyExists(request.getName());
+      this.checkShipmentMethodAlreadyExists(request.getName());
   }
 
   private void setValueUpdate(ShipmentMethod shipmentmethod, ShipmentMethodRequest request) {
