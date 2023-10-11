@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shipment extends BaseEntityWithUpdater {
-    private String code;
-    private String fromAddressId;
-    private String toAddressId;
-    private double price;
-    private String method;
-    private long shipmentDate;
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  private String code;
+  private String fromAddressId;
+  private String toAddressId;
+  private double price;
+  private String method;
+  private long shipmentDate;
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
 }

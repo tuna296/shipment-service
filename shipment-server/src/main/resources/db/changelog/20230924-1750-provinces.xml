@@ -8,11 +8,21 @@
             <column name="code" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_provinces_code"/>
             </column>
-            <column name="name" type="varchar(255)"/>
-            <column name="name_en" type="varchar(255)"/>
-            <column name="full_name" type="varchar(255)"/>
-            <column name="full_name_en" type="varchar(255)"/>
-            <column name="code_name" type="varchar(255)"/>
+            <column name="name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="name_en" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="full_name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="full_name_en" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="code_name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
             <column name="created_at" type="bigint"/>
             <column name="created_by" type="varchar(255)"/>
             <column name="last_updated_at" type="bigint"/>

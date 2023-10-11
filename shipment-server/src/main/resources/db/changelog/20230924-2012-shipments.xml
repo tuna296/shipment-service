@@ -20,7 +20,7 @@
                 <constraints foreignKeyName="FK_shipment_to_address"
                              references="addresses(id)"/>
             </column>
-            <column name="price" type="decimal"/>
+            <column name="price" type="decimal" defaultValue="0"/>
             <column name="method_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_shipment_method"
                              references="shipment_method(id)"/>
@@ -31,7 +31,7 @@
             <column name="created_at" type="BIGINT"/>
             <column name="last_updated_by" type="VARCHAR(255)"/>
             <column name="last_updated_at" type="BIGINT"/>
-            <column name="is_deleted" type="BOOLEAN"/>
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -9,15 +9,26 @@
             <column name="code" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_wards_code"/>
             </column>
-            <column name="name" type="varchar(255)"/>
-            <column name="name_en" type="varchar(255)"/>
-            <column name="full_name" type="varchar(255)"/>
-            <column name="full_name_en" type="varchar(255)"/>
-            <column name="code_name" type="varchar(255)"/>
+            <column name="name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="name_en" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="full_name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="full_name_en" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="code_name" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
             <column name="district_code" type="varchar(255)">
                 <constraints foreignKeyName="FK_wards_district_code"
                              references="districts(code)"/>
             </column>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

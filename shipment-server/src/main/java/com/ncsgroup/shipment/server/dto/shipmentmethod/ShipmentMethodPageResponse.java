@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShipmentMethodPageResponse {
-    private List<ShipmentMethodResponse> shipmentMethodResponseList;
-    private int count;
+  private List<ShipmentMethodResponse> shipmentMethodResponseList;
+  private int count;
 }

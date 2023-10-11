@@ -11,7 +11,7 @@ public class ConflictException extends BaseException {
     addParam("objectName", objectName);
   }
 
-  public ConflictException(){
+  public ConflictException() {
     setStatus(CONFLICT);
     setCode("com.ncsgroup.profiling.exception.base.ConflictException");
   }

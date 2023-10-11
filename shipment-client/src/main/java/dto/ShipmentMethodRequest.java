@@ -7,11 +7,11 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-    public class ShipmentMethodRequest {
-    @NotBlank(message = "name cannot be empty")
-    private String name;
-    @NotBlank(message = "description cannot be empty")
-    private String description;
-    @NotNull
-    private double pricePerKilometer;
+public class ShipmentMethodRequest {
+  @NotBlank(message = "name cannot be empty")
+  private String name;
+  @NotBlank(message = "description cannot be empty")
+  private String description;
+  @NotNull
+  private double pricePerKilometer;
 }

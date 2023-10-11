@@ -14,22 +14,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 public class ShipmentMethod extends BaseEntityWithUpdater {
-    @Column(name = "name")
-    private String name;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "price_per_kilometer")
-    private double pricePerKilometer;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+  @Column(name = "name")
+  private String name;
+  @Column(name = "description")
+  private String description;
+  @Column(name = "price_per_kilometer")
+  private double pricePerKilometer;
+  @Column(name = "is_deleted")
+  private boolean isDeleted;
 
-    public static ShipmentMethod from(
-            String name,
-            String description,
-            double pricePerKilometer
-    ) {
-        return ShipmentMethod.of(name, description, pricePerKilometer, false);
-    }
+  public static ShipmentMethod from(
+        String name,
+        String description,
+        double pricePerKilometer
+  ) {
+    return ShipmentMethod.of(name, description, pricePerKilometer, false);
+  }
 
 
 }
