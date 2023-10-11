@@ -1,9 +1,7 @@
-package com.ncsgroup.shipment.server.dto.response;
-
+package com.ncsgroup.shipment.server.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import com.ncsgroup.shipment.server.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,19 +12,13 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ResponseGeneral<T> {
+public class PageResponseGeneral<T> {
   private int status;
   private String message;
   private T data;
   private String timestamp;
 
-  public static <T> ResponseGeneral<T> of(int status, String message, T data) {
-    return of(status, message, data, DateUtils.getCurrentDateString());
-  }
-  public static <T> ResponseGeneral<T> ofCreated(String message, T data) {
-    return of(HttpStatus.CREATED.value(), message, data, DateUtils.getCurrentDateString());
-  }
-  public static <T> ResponseGeneral<T> ofSuccess(String message, T data) {
+  public static <T> PageResponseGeneral<T> ofSuccess(String message, T data) {
     return of(HttpStatus.OK.value(), message, data, DateUtils.getCurrentDateString());
   }
 }

@@ -9,5 +9,5 @@ class ShipmentClientApplicationTests {
   @Test
   void contextLoads() {
   }
-
 }
+

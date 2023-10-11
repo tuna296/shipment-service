@@ -1,10 +1,10 @@
-package com.ncsgroup.shipment.server.advice;
+package com.ncsgroup.shipment.server.controller.advice;
 
 
-import com.ncsgroup.shipment.server.dto.response.Error;
-import com.ncsgroup.shipment.server.dto.response.ResponseGeneral;
+import com.ncsgroup.shipment.server.dto.Error;
+import com.ncsgroup.shipment.server.dto.ResponseGeneral;
 import com.ncsgroup.shipment.server.exception.base.BaseException;
-import com.ncsgroup.shipment.server.constanst.ProfilingConstants;
+import com.ncsgroup.shipment.server.constanst.Constants;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +42,8 @@ public class ExceptionHandlerAdvice {
         WebRequest webRequest
   ) {
     log.error("(handleValidationExceptions)exception: {}", exception.getMessage());
-    String language = Objects.nonNull(webRequest.getHeader(ProfilingConstants.CommonConstants.LANGUAGE)) ?
-          webRequest.getHeader(ProfilingConstants.CommonConstants.LANGUAGE) : ProfilingConstants.CommonConstants.DEFAULT_LANGUAGE;
+    String language = Objects.nonNull(webRequest.getHeader(Constants.CommonConstants.LANGUAGE)) ?
+          webRequest.getHeader(Constants.CommonConstants.LANGUAGE) : Constants.CommonConstants.DEFAULT_LANGUAGE;
 
     String errorMessage = exception.getBindingResult().getFieldErrors().stream()
           .map(fieldError -> fieldError.getDefaultMessage())
@@ -62,8 +62,8 @@ public class ExceptionHandlerAdvice {
         WebRequest webRequest
   ) {
     log.error("(handleConstraintViolationExceptions) exception: {}", exception.getMessage());
-    String language = Objects.nonNull(webRequest.getHeader(ProfilingConstants.CommonConstants.LANGUAGE)) ?
-          webRequest.getHeader(ProfilingConstants.CommonConstants.LANGUAGE) : ProfilingConstants.CommonConstants.DEFAULT_LANGUAGE;
+    String language = Objects.nonNull(webRequest.getHeader(Constants.CommonConstants.LANGUAGE)) ?
+          webRequest.getHeader(Constants.CommonConstants.LANGUAGE) : Constants.CommonConstants.DEFAULT_LANGUAGE;
 
     String errorMessage = exception.getConstraintViolations().stream()
           .map(constraintViolation -> constraintViolation.getMessage())

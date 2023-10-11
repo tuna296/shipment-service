@@ -11,13 +11,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ServiceConfiguration {
-    @Bean
-    public ShipmentMethodService shipmentMethodService(ShipmentMethodRepository repository) {
-        return new ShipmentMethodServiceImpl(repository);
-    }
-    @Bean
-    public MessageService messageService(MessageSource messageSource) {
-        return new MessageServiceImpl(messageSource);
-    }
+  @Bean
+  public ShipmentMethodService shipmentMethodService(ShipmentMethodRepository repository) {
+    return new ShipmentMethodServiceImpl(repository);
+  }
+
+  @Bean
+  public MessageService messageService(MessageSource messageSource) {
+    return new MessageServiceImpl(messageSource);
+  }
 
 }

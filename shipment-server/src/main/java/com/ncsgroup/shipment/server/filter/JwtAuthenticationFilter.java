@@ -1,6 +1,6 @@
 package com.ncsgroup.shipment.server.filter;
 
-import com.ncsgroup.shipment.server.constanst.ProfilingConstants;
+import com.ncsgroup.shipment.server.constanst.Constants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,12 +28,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           filterChain
     );
 
-    String accessToken = request.getHeader(ProfilingConstants.AuthConstant.AUTHORIZATION);
+    String accessToken = request.getHeader(Constants.AuthConstant.AUTHORIZATION);
 
     if (Objects.isNull(accessToken)) {
       filterChain.doFilter(request, response);
       return;
-    } else if (!accessToken.startsWith(ProfilingConstants.AuthConstant.TYPE_TOKEN)) {
+    } else if (!accessToken.startsWith(Constants.AuthConstant.TYPE_TOKEN)) {
       filterChain.doFilter(request, response);
       return;
     }

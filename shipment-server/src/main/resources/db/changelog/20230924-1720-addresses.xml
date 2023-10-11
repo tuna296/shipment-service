@@ -21,7 +21,7 @@
                 <constraints foreignKeyName="FK_address_province_code"
                              references="provinces(code)"/>
             </column>
-            <column name="is_deleted" type="BOOLEAN"/>
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -7,7 +7,9 @@ import com.ncsgroup.shipment.server.service.base.BaseService;
 import dto.ShipmentMethodRequest;
 
 public interface ShipmentMethodService extends BaseService<ShipmentMethod> {
-    ShipmentMethodResponse create(ShipmentMethodRequest request);
-    ShipmentMethodResponse update(String id,ShipmentMethodRequest request);
-    ShipmentMethodPageResponse list(String keyword, int size,int page, boolean isAll);
+  ShipmentMethodResponse create(ShipmentMethodRequest request);
+
+  ShipmentMethodResponse update(String id, ShipmentMethodRequest request);
+
+  ShipmentMethodPageResponse list(String keyword, int size, int page, boolean isAll);
 }
