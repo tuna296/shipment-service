@@ -44,9 +44,8 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   @Transactional
   public ShipmentMethodResponse update(String id, ShipmentMethodRequest request) {
     log.info("(update) request: {}", request);
-
     ShipmentMethod shipmentMethod = findById(id);
-    checkNameShipmentMethodAlreadyExists(shipmentMethod, request);
+    this.checkNameShipmentMethodAlreadyExists(shipmentMethod, request);
     setValueUpdate(shipmentMethod, request);
     shipmentMethod = update(shipmentMethod);
     return convertToResponse(shipmentMethod);
@@ -69,7 +68,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   @Transactional
   public void delete(String id) {
     log.info("delete by id " + id);
-    checkAlreadyById(id);
+    this.checkAlreadyById(id);
     repository.deleteById(id);
   }
 
