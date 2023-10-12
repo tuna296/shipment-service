@@ -65,7 +65,15 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
     return new ShipmentMethodPageResponse(list, isAll ? shipmentMethods.size() : repository.countSearch(keyword));
   }
 
-  public ShipmentMethod findById(String id) {
+  @Override
+  @Transactional
+  public void delete(String id) {
+    log.info("delete by id " + id);
+    checkAlreadyById(id);
+    repository.deleteById(id);
+  }
+
+  private ShipmentMethod findById(String id) {
     log.debug("(findById) id: {}", id);
     ShipmentMethod shipmentMethod = repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
     if (shipmentMethod.isDeleted())
@@ -100,4 +108,10 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
           shipmentMethod.getPricePerKilometer());
   }
 
+  private void checkAlreadyById(String id) {
+    log.debug("Checking existing shipment by id " + id);
+    if (!repository.existsById(id)) {
+      throw new ShipmentMethodNotFoundException();
+    }
+  }
 }
