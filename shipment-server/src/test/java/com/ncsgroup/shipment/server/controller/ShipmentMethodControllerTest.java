@@ -17,11 +17,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -233,5 +235,26 @@ public class ShipmentMethodControllerTest {
     Assertions.assertEquals(responseBody,
           objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, true, "en")));
   }
+
+  @Test
+  void testDeleteShipmentMethod_WhenIdNotFound_ReturnsShipmentMethodNotFoundException() throws Exception {
+    Mockito.doThrow(new ShipmentMethodNotFoundException()).when(shipmentMethodService).delete(mockId);
+    ResultActions resultActions = mockMvc.perform(
+                delete("/api/v1/shipment-methods/{id}", mockId)
+                      .contentType("application/json"))
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException"));
+  }
+
+  @Test
+  void testDeleteShipmentMethod_WhenDeleteShipmentMethodSuccess_Returns200() throws Exception {
+    Mockito.doNothing().when(shipmentMethodService).delete(mockId);
+    ResultActions resultActions = mockMvc.perform(
+                delete("/api/v1/shipment-methods/{id}", mockId)
+                      .contentType("application/json"))
+          .andExpect(status().isOk());
+  }
+
 }
 
