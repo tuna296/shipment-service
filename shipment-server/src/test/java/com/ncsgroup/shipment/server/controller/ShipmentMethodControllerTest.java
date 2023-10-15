@@ -195,7 +195,7 @@ public class ShipmentMethodControllerTest {
     list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
 
     mock.setShipmentMethodResponseList(list);
-    Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_SHIPMENT_METHOD_SUCCESS, "en")).thenReturn("success");
     Mockito.when(shipmentMethodService.list("", 10, 0, true)).thenReturn(mock);
 
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")
@@ -220,7 +220,7 @@ public class ShipmentMethodControllerTest {
     list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
 
     mock.setShipmentMethodResponseList(list);
-    Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_SHIPMENT_METHOD_SUCCESS, "en")).thenReturn("success");
     Mockito.when(shipmentMethodService.list("", 10, 0, false)).thenReturn(mock);
 
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")

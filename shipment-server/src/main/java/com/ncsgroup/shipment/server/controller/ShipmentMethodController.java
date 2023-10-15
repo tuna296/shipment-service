@@ -64,7 +64,7 @@ public class ShipmentMethodController {
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
     log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
-    return PageResponseGeneral.ofSuccess(messageService.getMessage(GET_SUCCESS, language),
+    return PageResponseGeneral.ofSuccess(messageService.getMessage(GET_SHIPMENT_METHOD_SUCCESS, language),
           shipmentMethodService.list(keyword, size, page, isAll)
     );
   }
