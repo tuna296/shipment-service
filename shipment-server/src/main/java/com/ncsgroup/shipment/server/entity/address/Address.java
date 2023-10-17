@@ -12,8 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address extends BaseEntityWithUpdater {
-    private String detail;
     private String wardCode;
     private String districtCode;
     private String provinceCode;
+    private String detail;
 }

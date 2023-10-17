@@ -1,7 +1,7 @@
 package com.ncsgroup.shipment.server.controller.address;
 
-import com.ncsgroup.shipment.server.dto.PageResponseGeneral;
 import com.ncsgroup.shipment.server.dto.ResponseGeneral;
+import com.ncsgroup.shipment.server.dto.address.province.ProvinceInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.province.ProvincePageResponse;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.ProvinceService;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.DEFAULT_LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.LANGUAGE;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAIL_PROVINCE;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.GET_PROVINCE_SUCCESS;
 
 
@@ -21,6 +22,7 @@ import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.GET_P
 public class ProvinceController {
   private final ProvinceService provinceService;
   private final MessageService messageService;
+
   @GetMapping
   public ResponseGeneral<ProvincePageResponse> list(
         @RequestParam(name = "keyword", required = false) String keyword,
@@ -32,7 +34,18 @@ public class ProvinceController {
     log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
     return ResponseGeneral.ofSuccess(
           messageService.getMessage(GET_PROVINCE_SUCCESS, language),
-          provinceService.search(keyword, page, size, isAll)
+          provinceService.list(keyword, size, page, isAll)
+    );
+  }
+
+  @GetMapping("details/{code}")
+  public ResponseGeneral<ProvinceInfoResponse> detail(
+        @PathVariable String code,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(DETAIL_PROVINCE, language),
+          provinceService.detail(code)
     );
   }
 }

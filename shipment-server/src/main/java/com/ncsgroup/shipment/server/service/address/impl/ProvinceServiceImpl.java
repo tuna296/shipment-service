@@ -1,5 +1,6 @@
 package com.ncsgroup.shipment.server.service.address.impl;
 
+import com.ncsgroup.shipment.server.dto.address.province.ProvinceInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.province.ProvincePageResponse;
 import com.ncsgroup.shipment.server.dto.address.province.ProvinceResponse;
 import com.ncsgroup.shipment.server.entity.address.Province;
@@ -24,21 +25,20 @@ public class ProvinceServiceImpl extends BaseServiceImpl<Province> implements Pr
   }
 
   @Override
-  public ProvincePageResponse search(String keyword, int page, int size, boolean isAll) {
-    log.info("(search) keyword: {}, page:{}, size:{}, isAll: {}", keyword, page, size, isAll);
+  public ProvincePageResponse list(String keyword, int size, int page, boolean isAll) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
     List<ProvinceResponse> list = new ArrayList<>();
     Pageable pageable = PageRequest.of(page, size);
     List<Province> provinces = isAll ?
-          repository.findAll() : repository.search(keyword,pageable);
+          repository.findAll() : repository.search(keyword, pageable);
     for (Province province : provinces) {
       list.add(convertToResponse(province));
     }
     return new ProvincePageResponse(list, isAll ? provinces.size() : repository.countSearch(keyword));
-
-}
+  }
 
   @Override
-  public ProvinceResponse detail(String code) {
+  public ProvinceInfoResponse detail(String code) {
     log.info("detail by code {}", code);
     this.checkProvinceExist(code);
     return repository.getByCode(code);
@@ -54,12 +54,12 @@ public class ProvinceServiceImpl extends BaseServiceImpl<Province> implements Pr
 
   public ProvinceResponse convertToResponse(Province province) {
     return ProvinceResponse.from(
-          province.getName(),
           province.getCode(),
-          province.getCodeName(),
+          province.getName(),
           province.getNameEn(),
           province.getFullName(),
-          province.getFullNameEn()
+          province.getFullNameEn(),
+          province.getCodeName()
     );
   }
 

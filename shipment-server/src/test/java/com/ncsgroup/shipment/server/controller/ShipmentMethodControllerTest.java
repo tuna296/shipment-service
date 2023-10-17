@@ -59,7 +59,7 @@ public class ShipmentMethodControllerTest {
   }
 
   @Test
-  public void testCreate_WhenCreatedShipmentMethodSuccessfully_Return201() throws Exception {
+  void testCreate_WhenCreatedShipmentMethodSuccessfully_Return201() throws Exception {
     ShipmentMethodRequest mockRequest = mockRequest();
     ShipmentMethod mockShipmentMethod = mockShipmentMethod(mockRequest);
     Mockito.when(shipmentMethodService.create(mockShipmentMethod)).
@@ -233,7 +233,7 @@ public class ShipmentMethodControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, true, "en")));
+          objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, false, "en")));
   }
 
   @Test

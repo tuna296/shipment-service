@@ -1,8 +1,8 @@
 package com.ncsgroup.shipment.server.exception.address;
 
-import com.ncsgroup.shipment.server.exception.base.BaseException;
+import com.ncsgroup.shipment.server.exception.base.NotFoundException;
 
-public class AddressNotFoundException extends BaseException {
+public class AddressNotFoundException extends NotFoundException {
   public AddressNotFoundException() {
     setCode("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException");
   }

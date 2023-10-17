@@ -24,5 +24,4 @@ public class Shipment extends BaseEntityWithUpdater {
   private long shipmentDate;
   @Enumerated(EnumType.STRING)
   private Status status;
-
 }
