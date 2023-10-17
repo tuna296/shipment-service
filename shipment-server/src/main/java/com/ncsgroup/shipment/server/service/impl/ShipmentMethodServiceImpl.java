@@ -67,7 +67,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   @Override
   @Transactional
   public void delete(String id) {
-    log.info("delete by id " + id);
+    log.info("(delete) request: {}", id);
     this.checkAlreadyById(id);
     repository.deleteById(id);
   }
@@ -108,7 +108,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   }
 
   private void checkAlreadyById(String id) {
-    log.debug("Checking existing shipment by id " + id);
+    log.debug("Checking existing shipment by id {}", id);
     if (!repository.existsById(id)) {
       throw new ShipmentMethodNotFoundException();
     }

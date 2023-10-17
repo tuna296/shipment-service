@@ -1,7 +1,10 @@
 package com.ncsgroup.shipment.server.configuration;
 
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
+import com.ncsgroup.shipment.server.repository.address.ProvinceRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
+import com.ncsgroup.shipment.server.service.address.ProvinceService;
+import com.ncsgroup.shipment.server.service.address.impl.ProvinceServiceImpl;
 import com.ncsgroup.shipment.server.service.impl.ShipmentMethodServiceImpl;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -20,44 +23,49 @@ import javax.sql.DataSource;
 
 @TestConfiguration
 @EnableJpaRepositories(basePackages = {"com.ncsgroup.shipment.server.repository"},
-        entityManagerFactoryRef = "testEntityManagerFactory",
-        transactionManagerRef = "testTransactionManager")
+      entityManagerFactoryRef = "testEntityManagerFactory",
+      transactionManagerRef = "testTransactionManager")
 @ComponentScan(basePackages = "com.ncsgroup.shipment.server.service")
 @EnableTransactionManagement
 
 public class ShipmentTestConfiguration {
-    @Bean
-    public ShipmentMethodService shipmentMethodService(ShipmentMethodRepository repository) {
-        return new ShipmentMethodServiceImpl(repository);
-    }
+  @Bean
+  public ShipmentMethodService shipmentMethodService(ShipmentMethodRepository repository) {
+    return new ShipmentMethodServiceImpl(repository);
+  }
 
-    @Bean
-    public DataSource dataSource() {
+  @Bean
+  public ProvinceService provinceService(ProvinceRepository repository) {
+    return new ProvinceServiceImpl(repository);
+  }
 
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.H2).build();
-    }
+  @Bean
+  public DataSource dataSource() {
 
-    @Bean
-    public EntityManagerFactory testEntityManagerFactory() {
+    EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+    return builder.setType(EmbeddedDatabaseType.H2).build();
+  }
 
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
+  @Bean
+  public EntityManagerFactory testEntityManagerFactory() {
 
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.ncsgroup.shipment.server.entity");
-        factory.setDataSource(dataSource());
-        factory.afterPropertiesSet();
-        return factory.getObject();
-    }
+    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    vendorAdapter.setGenerateDdl(true);
 
-    @Bean
-    public PlatformTransactionManager testTransactionManager() {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(testEntityManagerFactory());
-        return txManager;
-    }
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+    factory.setJpaVendorAdapter(vendorAdapter);
+    factory.setPackagesToScan("com.ncsgroup.shipment.server.entity");
+    factory.setDataSource(dataSource());
+    factory.afterPropertiesSet();
+    return factory.getObject();
+  }
+
+  @Bean
+  public PlatformTransactionManager testTransactionManager() {
+    JpaTransactionManager txManager = new JpaTransactionManager();
+    txManager.setEntityManagerFactory(testEntityManagerFactory());
+    return txManager;
+  }
 
 
 }

@@ -44,7 +44,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void testCreate_WhenNameShipmentMethodAlreadyExists_ReturnShipmentMethodAlreadyExistException() {
+  void testCreate_WhenNameShipmentMethodAlreadyExists_ReturnShipmentMethodAlreadyExistException() {
     ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
     Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(true);
     Assertions.assertThatThrownBy(() -> shipmentMethodService.create(mockRequest)).
@@ -52,7 +52,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void testCreate_WhenCreateShipmentMethod_Successfully() {
+  void testCreate_WhenCreateShipmentMethod_Successfully() {
     ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
     ShipmentMethod mockEntity = mockShipmentMethod(mockRequest);
     Mockito.when(repository.existsByName(mockRequest.getName())).thenReturn(false);
@@ -64,7 +64,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void testUpdate_WhenNameShipmentMethodAlreadyExists_ReturnAlreadyExistsException() throws Exception {
+  void testUpdate_WhenNameShipmentMethodAlreadyExists_ReturnAlreadyExistsException() throws Exception {
     ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
     ShipmentMethod mockEntity = mockShipmentMethod(mockRequest);
     mockEntity.setId(mockId);
@@ -76,7 +76,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void testUpdate_WhenIdNotFound_ReturnShipmentMethodNotFound() {
+  void testUpdate_WhenIdNotFound_ReturnShipmentMethodNotFound() {
     ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
     Mockito.when(repository.findById(mockId)).thenThrow(ShipmentMethodNotFoundException.class);
     Assertions.assertThatThrownBy(() -> shipmentMethodService.update(mockId, mockRequest)).
@@ -84,7 +84,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void testUpdate_WhenUpdateShipmentSuccess_ReturnResponseBody() {
+  void testUpdate_WhenUpdateShipmentSuccess_ReturnResponseBody() {
     ShipmentMethodRequest mockRequest = mockShipmentMethodRequest();
     ShipmentMethod mockEntity = mockShipmentMethod(mockRequest);
     mockEntity.setId(mockId);
@@ -97,7 +97,7 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  public void test_Update_WhenShipmentMethodIsDelete_ReturnShipmentMethodNotFoundException() throws Exception {
+  void test_Update_WhenShipmentMethodIsDelete_ReturnShipmentMethodNotFoundException() throws Exception {
     ShipmentMethodRequest request = mockShipmentMethodRequest();
     ShipmentMethod mockEntity = mockShipmentMethod(request);
     mockEntity.setId(mockId);

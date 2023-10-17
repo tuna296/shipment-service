@@ -59,7 +59,7 @@ public class ShipmentMethodControllerTest {
   }
 
   @Test
-  public void testCreate_WhenCreatedShipmentMethodSuccessfully_Return201() throws Exception {
+  void testCreate_WhenCreatedShipmentMethodSuccessfully_Return201() throws Exception {
     ShipmentMethodRequest mockRequest = mockRequest();
     ShipmentMethod mockShipmentMethod = mockShipmentMethod(mockRequest);
     Mockito.when(shipmentMethodService.create(mockShipmentMethod)).
@@ -195,7 +195,7 @@ public class ShipmentMethodControllerTest {
     list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
 
     mock.setShipmentMethodResponseList(list);
-    Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_SHIPMENT_METHOD_SUCCESS, "en")).thenReturn("success");
     Mockito.when(shipmentMethodService.list("", 10, 0, true)).thenReturn(mock);
 
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")
@@ -220,7 +220,7 @@ public class ShipmentMethodControllerTest {
     list.add(ShipmentMethodResponse.from("3", "van chuyen trong thang", 20));
 
     mock.setShipmentMethodResponseList(list);
-    Mockito.when(messageService.getMessage(GET_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_SHIPMENT_METHOD_SUCCESS, "en")).thenReturn("success");
     Mockito.when(shipmentMethodService.list("", 10, 0, false)).thenReturn(mock);
 
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/shipment-methods")
@@ -233,7 +233,7 @@ public class ShipmentMethodControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, true, "en")));
+          objectMapper.writeValueAsString(shipmentMethodController.list("1", 10, 0, false, "en")));
   }
 
   @Test
