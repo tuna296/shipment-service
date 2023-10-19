@@ -34,7 +34,10 @@ public class Constants {
     public static final String UPDATE_SHIPMENT_METHOD_SUCCESS = "com.ncsgroup.shipment.server.controller.ShipmentMethodController.update";
     public static final String GET_SHIPMENT_METHOD_SUCCESS = "com.ncsgroup.shipment.server.controller.ShipmentMethodController.list";
     public static final String DELETE_SUCCESS = "com.ncsgroup.shipment.server.controller.ShipmentMethodController.delete";
-    public static final String GET_PROVINCE_SUCCESS ="com.ncsgroup.shipment.server.controller.address.list";
-    public static final String DETAIL_PROVINCE="com.ncsgroup.shipment.server.controller.address.detail";
+    public static final String GET_PROVINCE_SUCCESS ="com.ncsgroup.shipment.server.controller.address.ProvinceController.list";
+    public static final String GET_DISTRICT_SUCCESS ="com.ncsgroup.shipment.server.controller.address.DistrictController.list";
+
+    public static final String DETAIL_PROVINCE="com.ncsgroup.shipment.server.controller.address.ProvinceController.detail";
+    public static final String DETAIL_DISTRICT="com.ncsgroup.shipment.server.controller.address.DistrictController.detail";
   }
 }

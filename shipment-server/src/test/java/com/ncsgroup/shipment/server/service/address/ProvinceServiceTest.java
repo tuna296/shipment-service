@@ -82,7 +82,7 @@ public class ProvinceServiceTest {
   }
 
   @Test
-  void testDetail_WhenCodeNotFound_ReturnsProvinceMethodNotFoundException() {
+  void testDetail_WhenCodeNotFound_ReturnsProvinceNotFoundException() {
     Mockito.when(repository.existsByCode("011")).thenReturn(false);
     Assertions.assertThatThrownBy(() -> provinceService.detail("011")).isInstanceOf(AddressNotFoundException.class);
   }

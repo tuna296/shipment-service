@@ -158,6 +158,9 @@ public class ProvinceControllerTest {
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.message").value("Get detail success"))
           .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(provinceController.detail("01", "en")));
   }
 
 }
