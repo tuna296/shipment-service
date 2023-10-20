@@ -26,11 +26,8 @@ public class DistrictServiceImpl extends BaseServiceImpl<District> implements Di
   @Override
   public DistrictPageResponse search(SearchDistrictRequest request, int size, int page, boolean isAll) {
     log.info("(search) request: {}, size:{}, page:{}, isAll: {}", request, size, page, isAll);
-
-//    String keyword = (request == null || request.getKeyword() == null) ? null : request.getKeyword().toLowerCase();
-//    String provinceCode = (request == null) ? null : request.getProvinceCode();
-    String keyword = request.getKeyword().toLowerCase();
-    String provinceCode = request.getProvinceCode();
+    String keyword = (request == null || request.getKeyword() == null) ? null : request.getKeyword().toLowerCase();
+    String provinceCode = (request == null) ? null : request.getProvinceCode();
     List<DistrictResponse> districts = isAll ? repository.list(provinceCode) :
           repository.search(keyword, provinceCode, PageRequest.of(page, size));
     int count = isAll ? repository.count(provinceCode) : repository.countSearch(keyword, provinceCode);

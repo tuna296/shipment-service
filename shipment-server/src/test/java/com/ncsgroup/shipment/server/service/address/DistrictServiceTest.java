@@ -4,10 +4,7 @@ import com.ncsgroup.shipment.server.configuration.ShipmentTestConfiguration;
 import com.ncsgroup.shipment.server.dto.address.district.DistrictInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.district.DistrictPageResponse;
 import com.ncsgroup.shipment.server.dto.address.district.DistrictResponse;
-import com.ncsgroup.shipment.server.dto.address.province.ProvinceInfoResponse;
-import com.ncsgroup.shipment.server.dto.address.province.ProvincePageResponse;
 import com.ncsgroup.shipment.server.entity.address.District;
-import com.ncsgroup.shipment.server.entity.address.Province;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.DistrictRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
@@ -52,8 +49,8 @@ public class DistrictServiceTest {
     mockEntity.setNameEn("Kinh Mon");
     mockEntity.setFullName("Thi xa Kinh Mon");
     mockEntity.setFullNameEn("Kinh Mon tow");
-    mockEntity.setCodeName("aaaa");
-    mockEntity.setProvinceCode("30");
+    mockEntity.setCodeName("kinh_mon");
+    mockEntity.setProvinceCode("31");
     return mockEntity;
   }
 
@@ -73,7 +70,29 @@ public class DistrictServiceTest {
   }
 
   private DistrictInfoResponse mockDistrictInfo(District district) {
-    return new DistrictInfoResponse(district.getName(), district.getNameEn(), district.getCodeName(), district.getCode());
+    return new DistrictInfoResponse(
+          district.getName(),
+          district.getNameEn(),
+          district.getCodeName(),
+          district.getCode());
+  }
+
+  @Test
+  void testList_WhenAllFalseAndExistProvinceCode_ReturnDistrictPageResponse() {
+    SearchDistrictRequest mockSearch = mockSearchRequest(null, "30");
+    District mockEntity = mockDistrict();
+    District mockEntity1 = mockDistrict1();
+    DistrictResponse mockResponse = mockDistrictResponse(mockEntity);
+    DistrictResponse mockResponse1 = mockDistrictResponse(mockEntity1);
+    List<DistrictResponse> list = new ArrayList<>();
+    list.add(mockResponse);
+    list.add(mockResponse1);
+
+    Mockito.when(repository.list("30")).thenReturn(list);
+    Mockito.when(repository.count("30")).thenReturn(list.size());
+
+    DistrictPageResponse response = districtService.search(mockSearch, 10, 0, true);
+    Assertions.assertThat(list.size()).isEqualTo(response.getCount());
   }
 
   @Test
@@ -85,7 +104,10 @@ public class DistrictServiceTest {
     List<DistrictResponse> list = new ArrayList<>();
     list.add(mockResponse);
     list.add(mockResponse1);
+
     Mockito.when(repository.list(null)).thenReturn(list);
+    Mockito.when(repository.count((String) null)).thenReturn(list.size());
+
     DistrictPageResponse response = districtService.search(null, 10, 0, true);
     Assertions.assertThat(list.size()).isEqualTo(response.getCount());
   }
@@ -101,8 +123,10 @@ public class DistrictServiceTest {
     List<DistrictResponse> list = new ArrayList<>();
     list.add(mockResponse);
     list.add(mockResponse1);
+
     Mockito.when(repository.countSearch("kim_thanh", "30")).thenReturn(list.size());
     Mockito.when(repository.search("kim_thanh", "30", pageable)).thenReturn(list);
+
     DistrictPageResponse response = districtService.search(mockSearch, 5, 0, false);
     Assertions.assertThat(list.size()).isEqualTo(response.getCount());
     Assertions.assertThat(list.size()).isEqualTo(response.getDistrictsResponse().size());

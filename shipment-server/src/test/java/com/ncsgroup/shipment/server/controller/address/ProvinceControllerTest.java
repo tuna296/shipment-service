@@ -71,32 +71,29 @@ public class ProvinceControllerTest {
     mockResponse.setCode("01");
     return mockResponse;
   }
-
+  private ProvinceResponse mockProvinceResponse(Province province){
+    return ProvinceResponse.from(
+          province.getCode(),
+          province.getName(),
+          province.getNameEn(),
+          province.getFullName(),
+          province.getFullNameEn(),
+          province.getCodeName());
+  }
   @Test
   void testList_WhenSearchByKeyWordAllFalse_Return200Body() throws Exception {
     ProvincePageResponse mock = new ProvincePageResponse();
+    Province mockEntity= mockProvince01();
+    Province mockEntity1= mockProvince02();
     List<ProvinceResponse> list = new ArrayList<>();
-    list.add(ProvinceResponse.from(
-          mockProvince01().getCode(),
-          mockProvince01().getName(),
-          mockProvince01().getNameEn(),
-          mockProvince01().getFullName(),
-          mockProvince01().getFullNameEn(),
-          mockProvince01().getCodeName()
-    ));
-    list.add(ProvinceResponse.from(
-          mockProvince02().getCode(),
-          mockProvince02().getName(),
-          mockProvince02().getNameEn(),
-          mockProvince02().getFullName(),
-          mockProvince02().getFullNameEn(),
-          mockProvince02().getCodeName()
-    ));
+    list.add(mockProvinceResponse(mockEntity));
+    list.add(mockProvinceResponse(mockEntity1));
+
     mock.setProvinceResponses(list);
     Mockito.when(messageService.getMessage(GET_PROVINCE_SUCCESS, "en")).thenReturn("success");
-    Mockito.when(provinceService.list("", 10, 0, true)).thenReturn(mock);
+    Mockito.when(provinceService.list("01", 10, 0, false)).thenReturn(mock);
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/provinces")
-                .param("keyword", "01")
+                .param("keyword", "02")
                 .param("size", String.valueOf(10))
                 .param("page", String.valueOf(0))
                 .param("all", String.valueOf(false)))
@@ -105,7 +102,7 @@ public class ProvinceControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(provinceController.list("01", 10, 0, false, "en")));
+          objectMapper.writeValueAsString(provinceController.list("02", 10, 0, false, "en")));
   }
 
   @Test
