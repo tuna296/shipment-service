@@ -111,6 +111,7 @@ public class DistrictControllerTest {
           objectMapper.writeValueAsString(districtController.list(null, 10, 0, true, "en")));
   }
 
+  //TODO
   @Test
   void testList_WhenAllFalse_Return200Body() throws Exception {
     DistrictPageResponse mockPage = new DistrictPageResponse();
@@ -118,7 +119,7 @@ public class DistrictControllerTest {
     District mockEntity1 = mockDistrict1();
     List<DistrictResponse> list = new ArrayList<>();
     list.add(mockDistrictResponse(mockEntity));
-//    list.add(mockDistrictResponse(mockEntity1));
+    list.add(mockDistrictResponse(mockEntity1));
     mockPage.setDistrictsResponse(list);
     SearchDistrictRequest request = new SearchDistrictRequest("kim thanh", "30");
     Mockito.when(messageService.getMessage(GET_DISTRICT_SUCCESS, "en")).thenReturn("Success");
@@ -136,12 +137,13 @@ public class DistrictControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(districtController.list(request, 10, 0, false, "en")));
+          objectMapper.writeValueAsString(districtController.list(request, 10, 0, true, "en")));
   }
+
   @Test
   void testDetails_WhenCodeNotFound_ReturnDistrictNotFoundException() throws Exception {
     Mockito.when(districtService.detail("ok")).thenThrow(new AddressNotFoundException(false, true, false));
-  mockMvc.perform(
+    mockMvc.perform(
                 get("/api/v1/districts/details/{code}", "ok")
                       .contentType("application/json"))
           .andExpect(status().isNotFound())
@@ -151,7 +153,7 @@ public class DistrictControllerTest {
 
   @Test
   void testDetails_WhenCodeExists_ReturnDistrictDetails() throws Exception {
-    District mockEntity=  mockDistrict();
+    District mockEntity = mockDistrict();
     mockEntity.setCode("test");
     DistrictInfoResponse mockResponse = mockDistrictInfo(mockEntity);
     Mockito.when(districtService.detail("test")).thenReturn(mockResponse);

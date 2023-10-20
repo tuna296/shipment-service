@@ -41,8 +41,9 @@ public class ShipmentTestConfiguration {
   public ProvinceService provinceService(ProvinceRepository repository) {
     return new ProvinceServiceImpl(repository);
   }
+
   @Bean
-  public DistrictService districtService(DistrictRepository repository){
+  public DistrictService districtService(DistrictRepository repository) {
     return new DistrictServiceImpl(repository);
   }
 

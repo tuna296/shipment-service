@@ -90,7 +90,7 @@ public class ProvinceControllerTest {
     list.add(mockProvinceResponse(mockEntity1));
 
     mock.setProvinceResponses(list);
-    Mockito.when(messageService.getMessage(GET_PROVINCE_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_PROVINCE_SUCCESS, "en")).thenReturn("Get detail success");
     Mockito.when(provinceService.list("01", 10, 0, false)).thenReturn(mock);
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/provinces")
                 .param("keyword", "02")
@@ -98,6 +98,7 @@ public class ProvinceControllerTest {
                 .param("page", String.valueOf(0))
                 .param("all", String.valueOf(false)))
           .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get detail success"))
           .andDo(print())
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
@@ -118,7 +119,7 @@ public class ProvinceControllerTest {
           mockProvince01().getCodeName()
     ));
     mock.setProvinceResponses(list);
-    Mockito.when(messageService.getMessage(GET_PROVINCE_SUCCESS, "en")).thenReturn("success");
+    Mockito.when(messageService.getMessage(GET_PROVINCE_SUCCESS, "en")).thenReturn("Get detail success");
     Mockito.when(provinceService.list("", 10, 0, true)).thenReturn(mock);
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/provinces")
                 .param("keyword", "")
@@ -126,6 +127,7 @@ public class ProvinceControllerTest {
                 .param("page", String.valueOf(0))
                 .param("all", String.valueOf(true)))
           .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get detail success"))
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
