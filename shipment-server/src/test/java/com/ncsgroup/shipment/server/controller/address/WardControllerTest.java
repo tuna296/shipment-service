@@ -1,11 +1,9 @@
 package com.ncsgroup.shipment.server.controller.address;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ncsgroup.shipment.server.dto.address.district.DistrictInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.ward.WardInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.ward.WardPageResponse;
 import com.ncsgroup.shipment.server.dto.address.ward.WardResponse;
-import com.ncsgroup.shipment.server.entity.address.District;
 import com.ncsgroup.shipment.server.entity.address.Ward;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.service.MessageService;
