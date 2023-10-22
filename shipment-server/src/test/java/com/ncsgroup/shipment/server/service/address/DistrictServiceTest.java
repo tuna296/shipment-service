@@ -7,7 +7,6 @@ import com.ncsgroup.shipment.server.dto.address.district.DistrictResponse;
 import com.ncsgroup.shipment.server.entity.address.District;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.DistrictRepository;
-import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import dto.address.SearchDistrictRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebMvcTest(ShipmentMethodService.class)
+@WebMvcTest(DistrictService.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
 public class DistrictServiceTest {
   @MockBean

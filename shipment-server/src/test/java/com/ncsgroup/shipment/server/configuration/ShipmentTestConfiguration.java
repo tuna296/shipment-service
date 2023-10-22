@@ -3,11 +3,14 @@ package com.ncsgroup.shipment.server.configuration;
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
 import com.ncsgroup.shipment.server.repository.address.DistrictRepository;
 import com.ncsgroup.shipment.server.repository.address.ProvinceRepository;
+import com.ncsgroup.shipment.server.repository.address.WardRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import com.ncsgroup.shipment.server.service.address.DistrictService;
 import com.ncsgroup.shipment.server.service.address.ProvinceService;
+import com.ncsgroup.shipment.server.service.address.WardService;
 import com.ncsgroup.shipment.server.service.address.impl.DistrictServiceImpl;
 import com.ncsgroup.shipment.server.service.address.impl.ProvinceServiceImpl;
+import com.ncsgroup.shipment.server.service.address.impl.WardServiceImpl;
 import com.ncsgroup.shipment.server.service.impl.ShipmentMethodServiceImpl;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -45,6 +48,11 @@ public class ShipmentTestConfiguration {
   @Bean
   public DistrictService districtService(DistrictRepository repository) {
     return new DistrictServiceImpl(repository);
+  }
+
+  @Bean
+  public WardService wardService(WardRepository repository) {
+    return new WardServiceImpl(repository);
   }
 
   @Bean

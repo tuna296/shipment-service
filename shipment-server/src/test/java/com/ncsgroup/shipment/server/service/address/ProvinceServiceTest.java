@@ -6,7 +6,6 @@ import com.ncsgroup.shipment.server.dto.address.province.ProvincePageResponse;
 import com.ncsgroup.shipment.server.entity.address.Province;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.ProvinceRepository;
-import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebMvcTest(ShipmentMethodService.class)
+@WebMvcTest(ProvinceService.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
 public class ProvinceServiceTest {
   @MockBean

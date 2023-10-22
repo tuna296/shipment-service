@@ -131,13 +131,13 @@ public class DistrictControllerTest {
                       .content(objectMapper.writeValueAsString(request))
                       .param("size", String.valueOf(10))
                       .param("page", String.valueOf(0))
-                      .param("all", String.valueOf(false)))
+                      .param("all", "false"))
           .andExpect(status().isOk())
           .andDo(print())
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(districtController.list(request, 10, 0, true, "en")));
+          objectMapper.writeValueAsString(districtController.list(request, 10, 0, false, "en")));
   }
 
   @Test
