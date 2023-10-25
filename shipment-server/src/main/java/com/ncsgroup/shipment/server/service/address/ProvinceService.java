@@ -8,4 +8,5 @@ import com.ncsgroup.shipment.server.service.base.BaseService;
 public interface ProvinceService extends BaseService<Province> {
   ProvincePageResponse list(String keyword, int size, int page, boolean isAll);
   ProvinceInfoResponse detail(String code);
+  void checkProvinceExist(String code);
 }
