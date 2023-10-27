@@ -12,11 +12,11 @@
                 <constraints unique="true"/>
             </column>
 
-            <column name="from_address_id" type="bigint">
+            <column name="from_address_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_from_address"
                              references="addresses(id)"/>
             </column>
-            <column name="to_address_id" type="bigint">
+            <column name="to_address_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_to_address"
                              references="addresses(id)"/>
             </column>

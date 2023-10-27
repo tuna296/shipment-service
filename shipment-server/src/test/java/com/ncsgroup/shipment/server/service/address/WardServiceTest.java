@@ -124,7 +124,7 @@ public class WardServiceTest {
     Mockito.when(repository.getByCode("10081")).thenReturn(wardInfo);
     WardInfoResponse response = wardService.detail("10081");
     Assertions.assertThat(mockEntity.getName()).isEqualTo(response.getWardName());
-    Assertions.assertThat(mockEntity.getNameEn()).isEqualTo(response.getWardNameEN());
+    Assertions.assertThat(mockEntity.getNameEn()).isEqualTo(response.getWardNameEn());
     Assertions.assertThat(mockEntity.getCodeName()).isEqualTo(response.getWardCodeName());
     Assertions.assertThat(mockEntity.getCode()).isEqualTo(response.getCode());
   }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WardInfoResponse {
   private String wardName;
-  private String wardNameEN;
+  private String wardNameEn;
   private String wardCodeName;
   private String code;
 }

@@ -19,8 +19,8 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressResponse {
   private String  id;
-  private WardInfoResponse wards;
-  private DistrictInfoResponse districts;
-  private ProvinceInfoResponse provinces;
+  private String wards;
+  private String districts;
+  private String provinces;
   private String detail;
 }

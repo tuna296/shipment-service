@@ -42,6 +42,6 @@ public class Constants {
     public static final String DETAIL_PROVINCE = "com.ncsgroup.shipment.server.controller.address.ProvinceController.detail";
     public static final String DETAIL_DISTRICT = "com.ncsgroup.shipment.server.controller.address.DistrictController.detail";
     public static final String DETAIL_WARD = "com.ncsgroup.shipment.server.controller.address.WardController.detail";
-
+    public static final String  CREATE_ADDRESS_SUCCESS= "com.ncsgroup.shipment.server.controller.address.AddressController.create";
   }
 }
