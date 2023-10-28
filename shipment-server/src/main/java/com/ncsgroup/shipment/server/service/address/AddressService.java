@@ -1,6 +1,5 @@
 package com.ncsgroup.shipment.server.service.address;
 
-import com.ncsgroup.shipment.server.dto.address.AddressPageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.service.base.BaseService;

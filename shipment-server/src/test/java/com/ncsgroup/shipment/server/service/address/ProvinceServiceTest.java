@@ -50,7 +50,7 @@ public class ProvinceServiceTest {
   }
 
   private ProvinceInfoResponse mockProvinceInfo(Province province) {
-    return ProvinceInfoResponse.of(province.getName(), province.getNameEn(), province.getCodeName(), province.getCode());
+    return new ProvinceInfoResponse(province.getName(), province.getNameEn(), province.getCodeName(), province.getCode());
   }
 
   @Test

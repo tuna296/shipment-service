@@ -8,6 +8,7 @@ import com.ncsgroup.shipment.server.service.address.AddressService;
 import dto.address.AddressRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.DEFAULT_LANGUAGE;
@@ -15,14 +16,15 @@ import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.L
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_ADDRESS_SUCCESS;
 
 @RestController
-@RequestMapping("api/v1/addresses")
 @RequiredArgsConstructor
+@RequestMapping("api/v1/addresses")
 @Slf4j
 public class AddressController {
   private final AddressService addressService;
   private final AddressFacadeService addressFacadeService;
   private final MessageService messageService;
 
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ResponseGeneral<AddressResponse> create(
         @RequestBody AddressRequest request,

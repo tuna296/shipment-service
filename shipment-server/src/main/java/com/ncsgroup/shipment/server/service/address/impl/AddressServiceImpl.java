@@ -30,14 +30,14 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
     return response;
   }
 
-  void convertToEntity(AddressRequest request, Address address) {
+  private void convertToEntity(AddressRequest request, Address address) {
     address.setProvinceCode(request.getProvinceCode());
     address.setDistrictCode(request.getDistrictCode());
     address.setWardCode(request.getWardCode());
     address.setDetail(request.getDetail());
   }
 
-  void convertToResponse(Address address, AddressResponse response) {
+  private void convertToResponse(Address address, AddressResponse response) {
     response.setProvinces(address.getProvinceCode());
     response.setDistricts(address.getDistrictCode());
     response.setWards(address.getWardCode());

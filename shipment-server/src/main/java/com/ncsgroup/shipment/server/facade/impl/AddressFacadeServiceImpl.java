@@ -35,19 +35,6 @@ public class AddressFacadeServiceImpl implements AddressFacadeService {
     return response;
   }
 
-  private void checkAddressComponentsExist(AddressRequest request) {
-    log.info("(checkAddressComponentsExist)start");
-
-    if (Objects.nonNull(request.getProvinceCode()))
-      provinceService.checkProvinceExist(request.getProvinceCode());
-
-    if (Objects.nonNull(request.getDistrictCode()))
-      districtService.checkDistrictExist(request.getDistrictCode());
-
-    if (Objects.nonNull(request.getWardCode()))
-      wardService.checkWardExist(request.getWardCode());
-  }
-
   private void setProperties(AddressResponse response, AddressRequest request) {
     log.info("(setProperties)response: {}, request: {}", response, request);
 
@@ -59,6 +46,19 @@ public class AddressFacadeServiceImpl implements AddressFacadeService {
 
     if (Objects.nonNull(request.getWardCode()))
       response.setWards(wardService.detail(request.getWardCode()).getWardNameEn());
+  }
+
+  private void checkAddressComponentsExist(AddressRequest request) {
+    log.debug("checkAddressComponentsExist");
+
+    if (Objects.nonNull(request.getProvinceCode()))
+      provinceService.checkProvinceExist(request.getProvinceCode());
+
+    if (Objects.nonNull(request.getDistrictCode()))
+      districtService.checkDistrictExist(request.getDistrictCode());
+
+    if (Objects.nonNull(request.getWardCode()))
+      wardService.checkWardExist(request.getWardCode());
   }
 
 
