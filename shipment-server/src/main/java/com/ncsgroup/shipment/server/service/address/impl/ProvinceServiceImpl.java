@@ -44,6 +44,7 @@ public class ProvinceServiceImpl extends BaseServiceImpl<Province> implements Pr
     return repository.getByCode(code);
   }
 
+  @Override
   public void checkProvinceExist(String code) {
     log.debug("check province by code {}", code);
     if (!repository.existsByCode(code)) {

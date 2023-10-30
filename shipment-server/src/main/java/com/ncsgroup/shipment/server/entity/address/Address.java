@@ -8,7 +8,7 @@ import lombok.*;
 
 @Entity
 @Data
-@Table(name = "address")
+@Table(name = "addresses")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address extends BaseEntityWithUpdater {

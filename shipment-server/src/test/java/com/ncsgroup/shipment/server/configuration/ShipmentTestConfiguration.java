@@ -1,13 +1,18 @@
 package com.ncsgroup.shipment.server.configuration;
 
+import com.ncsgroup.shipment.server.facade.AddressFacadeService;
+import com.ncsgroup.shipment.server.facade.impl.AddressFacadeServiceImpl;
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
+import com.ncsgroup.shipment.server.repository.address.AddressRepository;
 import com.ncsgroup.shipment.server.repository.address.DistrictRepository;
 import com.ncsgroup.shipment.server.repository.address.ProvinceRepository;
 import com.ncsgroup.shipment.server.repository.address.WardRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
+import com.ncsgroup.shipment.server.service.address.AddressService;
 import com.ncsgroup.shipment.server.service.address.DistrictService;
 import com.ncsgroup.shipment.server.service.address.ProvinceService;
 import com.ncsgroup.shipment.server.service.address.WardService;
+import com.ncsgroup.shipment.server.service.address.impl.AddressServiceImpl;
 import com.ncsgroup.shipment.server.service.address.impl.DistrictServiceImpl;
 import com.ncsgroup.shipment.server.service.address.impl.ProvinceServiceImpl;
 import com.ncsgroup.shipment.server.service.address.impl.WardServiceImpl;
@@ -53,6 +58,20 @@ public class ShipmentTestConfiguration {
   @Bean
   public WardService wardService(WardRepository repository) {
     return new WardServiceImpl(repository);
+  }
+
+  @Bean
+  public AddressService addressService(AddressRepository repository) {
+    return new AddressServiceImpl(repository);
+  }
+  @Bean
+  public AddressFacadeService addressFacadeService(
+        AddressService addressService,
+        DistrictService districtService,
+        ProvinceService provinceService,
+        WardService wardService
+  ) {
+    return new AddressFacadeServiceImpl(addressService, provinceService, districtService, wardService);
   }
 
   @Bean

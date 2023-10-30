@@ -42,6 +42,7 @@ public class WardServiceImpl extends BaseServiceImpl<Ward> implements WardServic
     return repository.getByCode(code);
   }
 
+  @Override
   public void checkWardExist(String code) {
     log.debug("(checkWardExist)");
 

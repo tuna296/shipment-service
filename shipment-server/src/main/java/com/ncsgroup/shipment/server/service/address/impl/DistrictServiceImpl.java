@@ -42,6 +42,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District> implements Di
     return repository.getByCode(code);
   }
 
+  @Override
   public void checkDistrictExist(String code) {
     log.debug("(checkDistrictExist)");
 

@@ -10,4 +10,6 @@ public interface DistrictService extends BaseService<District> {
   DistrictPageResponse search(SearchDistrictRequest request, int size, int page, boolean isAll);
 
   DistrictInfoResponse detail(String code);
+
+  void checkDistrictExist(String code);
 }

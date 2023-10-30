@@ -8,4 +8,6 @@ public interface WardService {
   WardPageResponse search(SearchWardRequest request, int size, int page, boolean isAll);
 
   WardInfoResponse detail(String code);
+
+  void checkWardExist(String code);
 }

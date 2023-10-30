@@ -74,7 +74,7 @@ public class ShipmentMethodController {
         @PathVariable String id,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
-    log.info("delete by id: " + id);
+    log.info("delete by id:{} ", id);
     shipmentMethodService.delete(id);
     return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_SUCCESS, language));
   }
