@@ -85,7 +85,7 @@ public class AddressServiceTest {
   }
 
   @Test
-  public void testDetails_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
+  public void testDetail_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     Address address = mockEntity();
 
     Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));

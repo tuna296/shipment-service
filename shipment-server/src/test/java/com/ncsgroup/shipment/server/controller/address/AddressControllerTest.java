@@ -163,14 +163,14 @@ public class AddressControllerTest {
   }
 
   @Test
-  public void testDetails_WhenSuccess_Return200ResponseBody() throws Exception {
+  public void testDetail_WhenSuccess_Return200ResponseBody() throws Exception {
     AddressResponse response = mockAddressResponse();
     Mockito.when(addressService.detail(mockId)).thenReturn(response);
-    Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Details Address Success");
+    Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Detail Address Success");
     MvcResult mvcResult = mockMvc.perform(
                 get("/api/v1/addresses/{id}", mockId))
           .andExpect(jsonPath("$.message")
-                .value("Get Details Address Success"))
+                .value("Get Detail Address Success"))
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertEquals(responseBody,
