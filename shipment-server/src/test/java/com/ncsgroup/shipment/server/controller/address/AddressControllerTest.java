@@ -2,6 +2,7 @@ package com.ncsgroup.shipment.server.controller.address;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
+import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.facade.AddressFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
@@ -49,6 +50,15 @@ public class AddressControllerTest {
     addressRequest.setWardCode("10081");
     addressRequest.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressRequest;
+  }
+
+  private Address mockEntity() {
+    Address address = new Address();
+    address.setProvinceCode("30");
+    address.setDistrictCode("293");
+    address.setWardCode("10081");
+    address.setDetail("Tam Ky Kim Thanh Hai Duong");
+    return address;
   }
 
   private AddressResponse mockAddressResponse() {
@@ -142,7 +152,7 @@ public class AddressControllerTest {
   }
 
   @Test
-  public void testDetails_WhenIdNotFound_Return404AddressNotFound() throws Exception {
+  public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
     Mockito.when(addressService.detail(mockId)).thenThrow(new AddressNotFoundException());
     mockMvc.perform(
                 get("/api/v1/addresses/{id}", mockId))

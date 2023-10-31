@@ -75,6 +75,16 @@ public class AddressServiceTest {
   }
 
   @Test
+  public void testDetail_WhenIdDeleted_Return404AddressNotFound() throws Exception {
+    Address address = mockEntity();
+    address.setDeleted(true);
+
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
+
+    Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
+  }
+
+  @Test
   public void testDetails_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     Address address = mockEntity();
 
