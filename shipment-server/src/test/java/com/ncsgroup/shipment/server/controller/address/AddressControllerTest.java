@@ -111,7 +111,7 @@ public class AddressControllerTest {
   @Test
   public void testCreate_WhenDistrictCodeNotFound_Return404DistrictNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
-    AddressResponse addressResponse = mockFacadeResponse();
+    mockFacadeResponse();
     Mockito.when(addressFacadeService.createAddress(addressRequest)).
           thenThrow(new AddressNotFoundException(false, true, false));
     mockMvc.perform(

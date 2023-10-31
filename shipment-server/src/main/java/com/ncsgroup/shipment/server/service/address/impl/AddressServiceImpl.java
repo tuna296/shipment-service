@@ -57,6 +57,9 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
 
   private Address find(String id) {
     log.info("(find) by id: {}", id);
-    return repository.findById(id).orElseThrow(AddressNotFoundException::new);
+    Address address = repository.findById(id).orElseThrow(AddressNotFoundException::new);
+    if (address.isDeleted())
+      throw new AddressNotFoundException();
+    return address;
   }
 }
