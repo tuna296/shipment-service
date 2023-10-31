@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_ADDRESS_SUCCESS;
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAILS_ADDRESS;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAIL_ADDRESS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -94,7 +94,7 @@ public class AddressControllerTest {
   @Test
   public void testCreate_WhenProvinceCodeNotFound_Return404ProvinceNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
-    AddressResponse addressResponse = mockFacadeResponse();
+    mockFacadeResponse();
     Mockito.when(addressFacadeService.createAddress(addressRequest)).
           thenThrow(new AddressNotFoundException(true, false, false));
     mockMvc.perform(
@@ -143,7 +143,7 @@ public class AddressControllerTest {
 
   @Test
   public void testDetails_WhenIdNotFound_Return404AddressNotFound() throws Exception {
-    Mockito.when(addressService.details(mockId)).thenThrow(new AddressNotFoundException());
+    Mockito.when(addressService.detail(mockId)).thenThrow(new AddressNotFoundException());
     mockMvc.perform(
                 get("/api/v1/addresses/{id}", mockId))
           .andExpect(status().isNotFound())
@@ -155,8 +155,8 @@ public class AddressControllerTest {
   @Test
   public void testDetails_WhenSuccess_Return200ResponseBody() throws Exception {
     AddressResponse response = mockAddressResponse();
-    Mockito.when(addressService.details(mockId)).thenReturn(response);
-    Mockito.when(messageService.getMessage(DETAILS_ADDRESS, "en")).thenReturn("Get Details Address Success");
+    Mockito.when(addressService.detail(mockId)).thenReturn(response);
+    Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Details Address Success");
     MvcResult mvcResult = mockMvc.perform(
                 get("/api/v1/addresses/{id}", mockId))
           .andExpect(jsonPath("$.message")
@@ -164,6 +164,6 @@ public class AddressControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(addressController.details(mockId, "en")));
+          objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
   }
 }

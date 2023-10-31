@@ -32,8 +32,8 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   }
 
   @Override
-  public AddressResponse details(String id) {
-    log.info("(details) address: {}", id);
+  public AddressResponse detail(String id) {
+    log.info("(detail) address: {}", id);
     Address address = this.find(id);
     AddressResponse response = new AddressResponse();
     this.convertToResponse(address, response);

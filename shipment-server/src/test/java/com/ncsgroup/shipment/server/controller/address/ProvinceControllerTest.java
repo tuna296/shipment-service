@@ -71,7 +71,8 @@ public class ProvinceControllerTest {
     mockResponse.setCode("01");
     return mockResponse;
   }
-  private ProvinceResponse mockProvinceResponse(Province province){
+
+  private ProvinceResponse mockProvinceResponse(Province province) {
     return ProvinceResponse.from(
           province.getCode(),
           province.getName(),
@@ -80,11 +81,12 @@ public class ProvinceControllerTest {
           province.getFullNameEn(),
           province.getCodeName());
   }
+
   @Test
   void testList_WhenSearchByKeyWordAllFalse_Return200Body() throws Exception {
     ProvincePageResponse mock = new ProvincePageResponse();
-    Province mockEntity= mockProvince01();
-    Province mockEntity1= mockProvince02();
+    Province mockEntity = mockProvince01();
+    Province mockEntity1 = mockProvince02();
     List<ProvinceResponse> list = new ArrayList<>();
     list.add(mockProvinceResponse(mockEntity));
     list.add(mockProvinceResponse(mockEntity1));
@@ -135,9 +137,9 @@ public class ProvinceControllerTest {
   }
 
   @Test
-  void testDetails_WhenCodeNotFound_ReturnProvinceNotFoundException() throws Exception {
+  void testDetail_WhenCodeNotFound_ReturnProvinceNotFoundException() throws Exception {
     Mockito.when(provinceService.detail("ok")).thenThrow(new AddressNotFoundException(true, false, false));
-    ResultActions resultActions = mockMvc.perform(
+    mockMvc.perform(
                 get("/api/v1/provinces/details/{code}", "ok")
                       .contentType("application/json"))
           .andExpect(status().isNotFound())

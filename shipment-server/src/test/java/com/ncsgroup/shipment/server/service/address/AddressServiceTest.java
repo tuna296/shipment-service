@@ -68,10 +68,10 @@ public class AddressServiceTest {
   }
 
   @Test
-  public void testDetails_WhenIdNotFound_Return404AddressNotFound() throws Exception {
+  public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
     Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
 
-    Assertions.assertThatThrownBy(() -> addressService.details(mockId)).isInstanceOf(AddressNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
   }
 
   @Test
@@ -80,7 +80,7 @@ public class AddressServiceTest {
 
     Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
 
-    AddressResponse response = addressService.details(mockId);
+    AddressResponse response = addressService.detail(mockId);
     Assertions.assertThat(response.getId()).isEqualTo(mockEntity().getId());
     Assertions.assertThat(response.getProvinces()).isEqualTo(address.getProvinceCode());
     Assertions.assertThat(response.getDistricts()).isEqualTo(address.getDistrictCode());

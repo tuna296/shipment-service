@@ -7,5 +7,5 @@ import dto.address.AddressRequest;
 
 public interface AddressService extends BaseService<Address> {
   AddressResponse create(AddressRequest request);
-  AddressResponse details(String id);
+  AddressResponse detail(String id);
 }

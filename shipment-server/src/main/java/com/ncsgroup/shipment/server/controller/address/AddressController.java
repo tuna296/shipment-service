@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.DEFAULT_LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_ADDRESS_SUCCESS;
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAILS_ADDRESS;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAIL_ADDRESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,15 +40,15 @@ public class AddressController {
   }
 
   @GetMapping("{id}")
-  public ResponseGeneral<AddressResponse> details(
+  public ResponseGeneral<AddressResponse> detail(
         @PathVariable String id,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
-    log.info("(details) id: {}", id);
+    log.info("(detail) id: {}", id);
 
     return ResponseGeneral.ofSuccess(
-          messageService.getMessage(DETAILS_ADDRESS, language),
-          addressService.details(id)
+          messageService.getMessage(DETAIL_ADDRESS, language),
+          addressService.detail(id)
     );
   }
 
