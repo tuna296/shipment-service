@@ -3,6 +3,7 @@ package com.ncsgroup.shipment.server.service.address;
 import com.ncsgroup.shipment.server.configuration.ShipmentTestConfiguration;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
+import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.AddressRepository;
 import dto.address.AddressRequest;
 import org.assertj.core.api.Assertions;
@@ -13,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Optional;
+
 @WebMvcTest(AddressServiceTest.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
 public class AddressServiceTest {
@@ -20,6 +23,7 @@ public class AddressServiceTest {
   private AddressService addressService;
   @MockBean
   private AddressRepository repository;
+  private static final String mockId = "test";
 
   private AddressRequest mockRequest() {
     AddressRequest addressRequest = new AddressRequest();
@@ -50,7 +54,7 @@ public class AddressServiceTest {
   }
 
   @Test
-  void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
+  public void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     AddressRequest mockRequest = mockRequest();
     Address mockEntity = mockEntity();
     Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
@@ -63,4 +67,25 @@ public class AddressServiceTest {
     Assertions.assertThat(response.getDetail()).isEqualTo(mockEntity.getDetail());
   }
 
+  @Test
+  public void testDetails_WhenIdNotFound_Return404AddressNotFound() throws Exception {
+    Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
+
+    Assertions.assertThatThrownBy(() -> addressService.details(mockId)).isInstanceOf(AddressNotFoundException.class);
+  }
+
+  @Test
+  public void testDetails_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
+    Address address = mockEntity();
+
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
+
+    AddressResponse response = addressService.details(mockId);
+    Assertions.assertThat(response.getId()).isEqualTo(mockEntity().getId());
+    Assertions.assertThat(response.getProvinces()).isEqualTo(address.getProvinceCode());
+    Assertions.assertThat(response.getDistricts()).isEqualTo(address.getDistrictCode());
+    Assertions.assertThat(response.getWards()).isEqualTo(address.getWardCode());
+    Assertions.assertThat(response.getDetail()).isEqualTo(address.getDetail());
+
+  }
 }

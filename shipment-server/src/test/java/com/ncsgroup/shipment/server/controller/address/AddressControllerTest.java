@@ -16,10 +16,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.StandardCharsets;
-
+import java.nio.charset.StandardCharsets;;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_ADDRESS_SUCCESS;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAILS_ADDRESS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +40,7 @@ public class AddressControllerTest {
   @Autowired
   private AddressController addressController;
 
+  public String mockId = "test";
 
   private AddressRequest mockAddressRequest() {
     AddressRequest addressRequest = new AddressRequest();
@@ -47,6 +49,15 @@ public class AddressControllerTest {
     addressRequest.setWardCode("10081");
     addressRequest.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressRequest;
+  }
+
+  private AddressResponse mockAddressResponse() {
+    AddressResponse response = new AddressResponse();
+    response.setProvinces("30");
+    response.setDistricts("293");
+    response.setWards("10081");
+    response.setDetail("Tam Ky Kim Thanh Hai Duong");
+    return response;
   }
 
   private AddressResponse mockFacadeResponse() {
@@ -64,7 +75,8 @@ public class AddressControllerTest {
     AddressRequest addressRequest = mockAddressRequest();
     AddressResponse addressResponse = mockFacadeResponse();
     Mockito.when(addressFacadeService.createAddress(addressRequest)).thenReturn(addressResponse);
-    Mockito.when(messageService.getMessage(CREATE_ADDRESS_SUCCESS, "en")).thenReturn("Create address success");
+    Mockito.when(messageService.getMessage(CREATE_ADDRESS_SUCCESS, "en")).
+          thenReturn("Create address success");
     MvcResult mvcResult = mockMvc.perform(
                 post("/api/v1/addresses")
                       .contentType("application/json")
@@ -83,8 +95,9 @@ public class AddressControllerTest {
   public void testCreate_WhenProvinceCodeNotFound_Return404ProvinceNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
     AddressResponse addressResponse = mockFacadeResponse();
-    Mockito.when(addressFacadeService.createAddress(addressRequest)).thenThrow(new AddressNotFoundException(true, false, false));
-    MvcResult mvcResult = mockMvc.perform(
+    Mockito.when(addressFacadeService.createAddress(addressRequest)).
+          thenThrow(new AddressNotFoundException(true, false, false));
+    mockMvc.perform(
                 post("/api/v1/addresses")
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
@@ -99,8 +112,9 @@ public class AddressControllerTest {
   public void testCreate_WhenDistrictCodeNotFound_Return404DistrictNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
     AddressResponse addressResponse = mockFacadeResponse();
-    Mockito.when(addressFacadeService.createAddress(addressRequest)).thenThrow(new AddressNotFoundException(false, true, false));
-    MvcResult mvcResult = mockMvc.perform(
+    Mockito.when(addressFacadeService.createAddress(addressRequest)).
+          thenThrow(new AddressNotFoundException(false, true, false));
+    mockMvc.perform(
                 post("/api/v1/addresses")
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
@@ -112,11 +126,11 @@ public class AddressControllerTest {
   }
 
   @Test
-  public void testCreate_WhenWardCodeNotFound_Return404WardtNotFound() throws Exception {
+  public void testCreate_WhenWardCodeNotFound_Return404WardNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
-    AddressResponse addressResponse = mockFacadeResponse();
-    Mockito.when(addressFacadeService.createAddress(addressRequest)).thenThrow(new AddressNotFoundException(false, false, true));
-    MvcResult mvcResult = mockMvc.perform(
+    Mockito.when(addressFacadeService.createAddress(addressRequest)).
+          thenThrow(new AddressNotFoundException(false, false, true));
+    mockMvc.perform(
                 post("/api/v1/addresses")
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
@@ -127,4 +141,29 @@ public class AddressControllerTest {
           .andReturn();
   }
 
+  @Test
+  public void testDetails_WhenIdNotFound_Return404AddressNotFound() throws Exception {
+    Mockito.when(addressService.details(mockId)).thenThrow(new AddressNotFoundException());
+    mockMvc.perform(
+                get("/api/v1/addresses/{id}", mockId))
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException"))
+          .andReturn();
+  }
+
+  @Test
+  public void testDetails_WhenSuccess_Return200ResponseBody() throws Exception {
+    AddressResponse response = mockAddressResponse();
+    Mockito.when(addressService.details(mockId)).thenReturn(response);
+    Mockito.when(messageService.getMessage(DETAILS_ADDRESS, "en")).thenReturn("Get Details Address Success");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/addresses/{id}", mockId))
+          .andExpect(jsonPath("$.message")
+                .value("Get Details Address Success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(addressController.details(mockId, "en")));
+  }
 }
