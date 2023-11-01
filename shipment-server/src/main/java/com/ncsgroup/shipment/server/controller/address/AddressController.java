@@ -1,8 +1,8 @@
 package com.ncsgroup.shipment.server.controller.address;
 
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.PageResponseGeneral;
 import com.ncsgroup.shipment.server.dto.ResponseGeneral;
-import com.ncsgroup.shipment.server.dto.address.AddressPageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.facade.AddressFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
@@ -54,7 +54,7 @@ public class AddressController {
   }
 
   @GetMapping
-  public PageResponseGeneral<AddressPageResponse> list(
+  public PageResponseGeneral<PageResponse<AddressResponse>> list(
         @RequestParam(name = "keyword", required = false) String keyword,
         @RequestParam(name = "size", defaultValue = "10") int size,
         @RequestParam(name = "page", defaultValue = "0") int page,

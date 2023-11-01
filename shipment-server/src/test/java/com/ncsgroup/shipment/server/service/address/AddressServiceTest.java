@@ -1,7 +1,7 @@
 package com.ncsgroup.shipment.server.service.address;
 
 import com.ncsgroup.shipment.server.configuration.ShipmentTestConfiguration;
-import com.ncsgroup.shipment.server.dto.address.AddressPageResponse;
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
@@ -106,28 +108,30 @@ public class AddressServiceTest {
   @Test
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
+    Pageable pageable= PageRequest.of(0,10);
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
-    Mockito.when(repository.findAllAddress()).thenReturn(list);
-    Mockito.when(repository.countFindAllAddress()).thenReturn(list.size());
+    Page<AddressResponse> mockPage = new PageImpl<>(list);
 
-    AddressPageResponse response = addressService.list(null, 10, 0, true);
-    Assertions.assertThat(list.size()).isEqualTo(response.getCount());
+    Mockito.when(repository.findAllAddress(pageable)).thenReturn(mockPage);
+
+    PageResponse<AddressResponse> response = addressService.list(null, 10, 0, true);
+    Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
   }
-
   @Test
   public void testList_WhenSearchByKeyWord_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
-    PageRequest pageRequest = PageRequest.of(0, 10);
+    Pageable pageable= PageRequest.of(0,10);
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
-    Mockito.when(repository.search(pageRequest, "Tam Ky")).thenReturn(list);
-    Mockito.when(repository.countSearch("Tam Ky")).thenReturn(list.size());
+    Page<AddressResponse> mockPage = new PageImpl<>(list);
 
-    AddressPageResponse response = addressService.list("Tam Ky", 10, 0, false);
-    Assertions.assertThat(list.size()).isEqualTo(response.getCount());
+    Mockito.when(repository.search(pageable,"Tam Ky")).thenReturn(mockPage);
+
+    PageResponse<AddressResponse> response = addressService.list("Tam Ky", 10, 0, false);
+    Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
   }
 
 }

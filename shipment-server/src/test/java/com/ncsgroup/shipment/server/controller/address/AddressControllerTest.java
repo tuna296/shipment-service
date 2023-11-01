@@ -1,7 +1,7 @@
 package com.ncsgroup.shipment.server.controller.address;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ncsgroup.shipment.server.dto.address.AddressPageResponse;
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
@@ -182,10 +182,12 @@ public class AddressControllerTest {
   @Test
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockAddressResponse();
-    AddressPageResponse mock = new AddressPageResponse();
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
-    mock.setAddresses(list);
+
+    PageResponse<AddressResponse> mock= new PageResponse<>();
+    mock.setContent(list);
+    mock.setAmount(list.size());
 
     Mockito.when(messageService.getMessage(LIST_ADDRESS, "en")).thenReturn("Get Address Success");
     Mockito.when(addressService.list("null", 10, 0, true)).thenReturn(mock);
@@ -205,13 +207,15 @@ public class AddressControllerTest {
   @Test
   public void testList_WhenSearchByKeyWord_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockAddressResponse();
-    AddressPageResponse mock = new AddressPageResponse();
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
-    mock.setAddresses(list);
+
+    PageResponse<AddressResponse> mock= new PageResponse<>();
+    mock.setContent(list);
+    mock.setAmount(list.size());
 
     Mockito.when(messageService.getMessage(LIST_ADDRESS, "en")).thenReturn("Get Address Success");
-    Mockito.when(addressService.list("Tam ky", 10, 0, false)).thenReturn(mock);
+    Mockito.when(addressService.list("Tam Ky", 10, 0, false)).thenReturn(mock);
 
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/addresses")
                 .param("keyword", "Tam Ky")
