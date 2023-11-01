@@ -75,40 +75,9 @@ public class AddressServiceTest {
   }
 
   @Test
-  public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
-    Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
-
-    Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
-  }
-
-  @Test
-  public void testDetail_WhenIdDeleted_Return404AddressNotFound() throws Exception {
-    Address address = mockEntity();
-    address.setDeleted(true);
-
-    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
-
-    Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
-  }
-
-  @Test
-  public void testDetail_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
-    Address address = mockEntity();
-
-    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
-
-    AddressResponse response = addressService.detail(mockId);
-    Assertions.assertThat(response.getId()).isEqualTo(mockEntity().getId());
-    Assertions.assertThat(response.getProvinces()).isEqualTo(address.getProvinceCode());
-    Assertions.assertThat(response.getDistricts()).isEqualTo(address.getDistrictCode());
-    Assertions.assertThat(response.getWards()).isEqualTo(address.getWardCode());
-    Assertions.assertThat(response.getDetail()).isEqualTo(address.getDetail());
-  }
-
-  @Test
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
-    Pageable pageable= PageRequest.of(0,10);
+    Pageable pageable = PageRequest.of(0, 10);
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
@@ -119,16 +88,17 @@ public class AddressServiceTest {
     PageResponse<AddressResponse> response = addressService.list(null, 10, 0, true);
     Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
   }
+
   @Test
   public void testList_WhenSearchByKeyWord_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
-    Pageable pageable= PageRequest.of(0,10);
+    Pageable pageable = PageRequest.of(0, 10);
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
     Page<AddressResponse> mockPage = new PageImpl<>(list);
 
-    Mockito.when(repository.search(pageable,"Tam Ky")).thenReturn(mockPage);
+    Mockito.when(repository.search(pageable, "Tam Ky")).thenReturn(mockPage);
 
     PageResponse<AddressResponse> response = addressService.list("Tam Ky", 10, 0, false);
     Assertions.assertThat(list.size()).isEqualTo(response.getAmount());

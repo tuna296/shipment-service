@@ -154,38 +154,12 @@ public class AddressControllerTest {
   }
 
   @Test
-  public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
-    Mockito.when(addressService.detail(mockId)).thenThrow(new AddressNotFoundException());
-    mockMvc.perform(
-                get("/api/v1/addresses/{id}", mockId))
-          .andExpect(status().isNotFound())
-          .andExpect(jsonPath("$.data.code")
-                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException"))
-          .andReturn();
-  }
-
-  @Test
-  public void testDetail_WhenSuccess_Return200ResponseBody() throws Exception {
-    AddressResponse response = mockAddressResponse();
-    Mockito.when(addressService.detail(mockId)).thenReturn(response);
-    Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Detail Address Success");
-    MvcResult mvcResult = mockMvc.perform(
-                get("/api/v1/addresses/{id}", mockId))
-          .andExpect(jsonPath("$.message")
-                .value("Get Detail Address Success"))
-          .andReturn();
-    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-    Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
-  }
-
-  @Test
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockAddressResponse();
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
-    PageResponse<AddressResponse> mock= new PageResponse<>();
+    PageResponse<AddressResponse> mock = new PageResponse<>();
     mock.setContent(list);
     mock.setAmount(list.size());
 
@@ -210,7 +184,7 @@ public class AddressControllerTest {
     List<AddressResponse> list = new ArrayList<>();
     list.add(addressResponse);
 
-    PageResponse<AddressResponse> mock= new PageResponse<>();
+    PageResponse<AddressResponse> mock = new PageResponse<>();
     mock.setContent(list);
     mock.setAmount(list.size());
 

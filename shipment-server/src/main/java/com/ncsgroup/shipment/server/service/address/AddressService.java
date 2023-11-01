@@ -9,7 +9,5 @@ import dto.address.AddressRequest;
 public interface AddressService extends BaseService<Address> {
   AddressResponse create(AddressRequest request);
 
-  AddressResponse detail(String id);
-
   PageResponse<AddressResponse> list(String keyword, int size, int page, boolean isAll);
 }
