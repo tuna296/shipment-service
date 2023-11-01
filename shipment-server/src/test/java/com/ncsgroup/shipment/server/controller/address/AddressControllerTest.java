@@ -1,6 +1,7 @@
 package com.ncsgroup.shipment.server.controller.address;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ncsgroup.shipment.server.dto.address.AddressPageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
@@ -17,9 +18,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.StandardCharsets;;
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_ADDRESS_SUCCESS;
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.DETAIL_ADDRESS;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -175,5 +177,51 @@ public class AddressControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertEquals(responseBody,
           objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
+  }
+
+  @Test
+  public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
+    AddressResponse addressResponse = mockAddressResponse();
+    AddressPageResponse mock = new AddressPageResponse();
+    List<AddressResponse> list = new ArrayList<>();
+    list.add(addressResponse);
+    mock.setAddresses(list);
+
+    Mockito.when(messageService.getMessage(LIST_ADDRESS, "en")).thenReturn("Get Address Success");
+    Mockito.when(addressService.list("null", 10, 0, true)).thenReturn(mock);
+
+    MvcResult mvcResult = mockMvc.perform(get("/api/v1/addresses")
+                .param("keyword", "")
+                .param("size", String.valueOf(10))
+                .param("page", String.valueOf(0))
+                .param("all", String.valueOf(true)))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get Address Success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody, objectMapper.writeValueAsString(addressController.list("", 10, 0, true, "en")));
+  }
+
+  @Test
+  public void testList_WhenSearchByKeyWord_ReturnResponseBody() throws Exception {
+    AddressResponse addressResponse = mockAddressResponse();
+    AddressPageResponse mock = new AddressPageResponse();
+    List<AddressResponse> list = new ArrayList<>();
+    list.add(addressResponse);
+    mock.setAddresses(list);
+
+    Mockito.when(messageService.getMessage(LIST_ADDRESS, "en")).thenReturn("Get Address Success");
+    Mockito.when(addressService.list("Tam ky", 10, 0, false)).thenReturn(mock);
+
+    MvcResult mvcResult = mockMvc.perform(get("/api/v1/addresses")
+                .param("keyword", "Tam Ky")
+                .param("size", String.valueOf(10))
+                .param("page", String.valueOf(0))
+                .param("all", String.valueOf(false)))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get Address Success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody, objectMapper.writeValueAsString(addressController.list("Tam Ky", 10, 0, false, "en")));
   }
 }
