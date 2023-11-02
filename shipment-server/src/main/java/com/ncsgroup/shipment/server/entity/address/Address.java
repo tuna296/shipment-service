@@ -1,6 +1,7 @@
 package com.ncsgroup.shipment.server.entity.address;
 
 import com.ncsgroup.shipment.server.entity.base.BaseEntityWithUpdater;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -12,8 +13,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address extends BaseEntityWithUpdater {
-    private String wardCode;
-    private String districtCode;
-    private String provinceCode;
-    private String detail;
+  @Column(name = "ward_code")
+  private String wardCode;
+  @Column(name = "district_code")
+  private String districtCode;
+  @Column(name = "province_code")
+  private String provinceCode;
+  @Column(name = "detail")
+  private String detail;
+  @Column(name = "is_deleted")
+  private boolean isDeleted;
 }

@@ -1,8 +1,10 @@
 package com.ncsgroup.shipment.server.service.address;
 
 import com.ncsgroup.shipment.server.configuration.ShipmentTestConfiguration;
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
+import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.AddressRepository;
 import dto.address.AddressRequest;
 import org.assertj.core.api.Assertions;
@@ -11,7 +13,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(AddressServiceTest.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
@@ -20,6 +30,7 @@ public class AddressServiceTest {
   private AddressService addressService;
   @MockBean
   private AddressRepository repository;
+  private static final String mockId = "test";
 
   private AddressRequest mockRequest() {
     AddressRequest addressRequest = new AddressRequest();
@@ -50,7 +61,7 @@ public class AddressServiceTest {
   }
 
   @Test
-  void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
+  public void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     AddressRequest mockRequest = mockRequest();
     Address mockEntity = mockEntity();
     Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
@@ -61,6 +72,36 @@ public class AddressServiceTest {
     Assertions.assertThat(response.getDistricts()).isEqualTo(mockEntity.getDistrictCode());
     Assertions.assertThat(response.getWards()).isEqualTo(mockEntity.getWardCode());
     Assertions.assertThat(response.getDetail()).isEqualTo(mockEntity.getDetail());
+  }
+
+  @Test
+  public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
+    AddressResponse addressResponse = mockResponse();
+    Pageable pageable = PageRequest.of(0, 10);
+    List<AddressResponse> list = new ArrayList<>();
+    list.add(addressResponse);
+
+    Page<AddressResponse> mockPage = new PageImpl<>(list);
+
+    Mockito.when(repository.findAllAddress(pageable)).thenReturn(mockPage);
+
+    PageResponse<AddressResponse> response = addressService.list(null, 10, 0, true);
+    Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
+  }
+
+  @Test
+  public void testList_WhenSearchByKeyWord_ReturnResponseBody() throws Exception {
+    AddressResponse addressResponse = mockResponse();
+    Pageable pageable = PageRequest.of(0, 10);
+    List<AddressResponse> list = new ArrayList<>();
+    list.add(addressResponse);
+
+    Page<AddressResponse> mockPage = new PageImpl<>(list);
+
+    Mockito.when(repository.search(pageable, "Tam Ky")).thenReturn(mockPage);
+
+    PageResponse<AddressResponse> response = addressService.list("Tam Ky", 10, 0, false);
+    Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
   }
 
 }

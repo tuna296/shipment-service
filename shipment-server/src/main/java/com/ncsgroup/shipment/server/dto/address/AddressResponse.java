@@ -18,9 +18,16 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressResponse {
-  private String  id;
+  private String id;
   private String wards;
   private String districts;
   private String provinces;
   private String detail;
+
+  public AddressResponse(String wards, String districts, String provinces, String detail) {
+    this.wards = wards;
+    this.districts = districts;
+    this.provinces = provinces;
+    this.detail = detail;
+  }
 }
