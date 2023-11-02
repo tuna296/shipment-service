@@ -45,6 +45,14 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
 
   }
 
+  @Override
+  public AddressResponse detail(String id) {
+    log.info("(detail) address: {}", id);
+    this.checkAddressExist(id);
+
+    return repository.findAddressById(id);
+  }
+
   private void convertToEntity(AddressRequest request, Address address) {
     address.setProvinceCode(request.getProvinceCode());
     address.setDistrictCode(request.getDistrictCode());
@@ -60,5 +68,12 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
     response.setId(address.getId());
   }
 
+  private void checkAddressExist(String id) {
+    log.debug("(checkAddressExist) by id: {}", id);
+    if (!repository.existsById(id)) {
+      log.error("(checkAddressExist) ======> AddressNotFoundException");
+      throw new AddressNotFoundException();
+    }
+  }
 
 }

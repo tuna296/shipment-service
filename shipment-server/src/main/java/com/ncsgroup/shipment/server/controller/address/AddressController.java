@@ -54,4 +54,18 @@ public class AddressController {
     );
   }
 
+  @GetMapping("{id}")
+  public ResponseGeneral<AddressResponse> detail(
+        @PathVariable String id,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(detail) id: {}", id);
+
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(DETAIL_ADDRESS, language),
+          addressService.detail(id)
+    );
+
+
+  }
 }
