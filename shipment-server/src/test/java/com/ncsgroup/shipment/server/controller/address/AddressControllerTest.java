@@ -81,6 +81,15 @@ public class AddressControllerTest {
     addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressResponse;
   }
+  private AddressResponse addressResponse() {
+    AddressResponse addressResponse = new AddressResponse();
+    addressResponse.setId("idMock");
+    addressResponse.setProvinces("Hai Duong");
+    addressResponse.setDistricts("Kim Thanh");
+    addressResponse.setWards("Tam Ky");
+    addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
+    return addressResponse;
+  }
 
   @Test
   public void testCreate_WhenCreateSuccess_Return201Body() throws Exception {
@@ -201,5 +210,30 @@ public class AddressControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody, objectMapper.writeValueAsString(addressController.list("Tam Ky", 10, 0, false, "en")));
+  }
+  @Test
+  public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
+    Mockito.when(addressService.detail(mockId)).thenThrow(new AddressNotFoundException());
+    mockMvc.perform(
+                get("/api/v1/addresses/{id}", mockId))
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException"))
+          .andReturn();
+  }
+
+  @Test
+  public void testDetail_WhenSuccess_Return200ResponseBody() throws Exception {
+    AddressResponse response = addressResponse();
+    Mockito.when(addressService.detail(mockId)).thenReturn(response);
+    Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Detail Address Success");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/addresses/{id}", mockId))
+          .andExpect(jsonPath("$.message")
+                .value("Get Detail Address Success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
   }
 }
