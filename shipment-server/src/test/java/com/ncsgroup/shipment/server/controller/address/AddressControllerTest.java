@@ -71,7 +71,6 @@ public class AddressControllerTest {
     response.setDetail("Tam Ky Kim Thanh Hai Duong");
     return response;
   }
-
   private AddressResponse mockFacadeResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("idMock");

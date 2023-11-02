@@ -29,7 +29,6 @@ public interface AddressRepository extends BaseRepository<Address> {
   @Query("SELECT EXISTS(SELECT true FROM Address a WHERE a.id = :id AND a.isDeleted = false)")
   boolean existsById(String id);
 
-
   @Query("""
             SELECT new com.ncsgroup.shipment.server.dto.address.AddressResponse
             (a.id, p.nameEn,d.nameEn,w.nameEn, a.detail)
@@ -41,5 +40,4 @@ public interface AddressRepository extends BaseRepository<Address> {
         """)
   AddressResponse findAddressById(@Param("id") String id);
 
-  
 }

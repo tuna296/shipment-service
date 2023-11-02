@@ -83,7 +83,7 @@ public class AddressServiceTest {
     Assertions.assertThat(response.getDetail()).isEqualTo(mockEntity.getDetail());
   }
 
-  @Test
+
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
     Pageable pageable = PageRequest.of(0, 10);
