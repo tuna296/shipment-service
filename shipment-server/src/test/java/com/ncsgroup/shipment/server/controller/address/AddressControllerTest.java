@@ -71,7 +71,15 @@ public class AddressControllerTest {
     response.setDetail("Tam Ky Kim Thanh Hai Duong");
     return response;
   }
-
+  private AddressResponse addressResponse() {
+    AddressResponse addressResponse = new AddressResponse();
+    addressResponse.setId("idMock");
+    addressResponse.setProvinces("Hai Duong");
+    addressResponse.setDistricts("Kim Thanh");
+    addressResponse.setWards("Tam Ky");
+    addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
+    return addressResponse;
+  }
   private AddressResponse mockFacadeResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("idMock");
@@ -166,7 +174,7 @@ public class AddressControllerTest {
 
   @Test
   public void testDetail_WhenSuccess_Return200ResponseBody() throws Exception {
-    AddressResponse response = mockAddressResponse();
+    AddressResponse response = addressResponse();
     Mockito.when(addressService.detail(mockId)).thenReturn(response);
     Mockito.when(messageService.getMessage(DETAIL_ADDRESS, "en")).thenReturn("Get Detail Address Success");
     MvcResult mvcResult = mockMvc.perform(

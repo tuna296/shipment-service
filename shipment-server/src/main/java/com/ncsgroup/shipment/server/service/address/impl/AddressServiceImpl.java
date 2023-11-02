@@ -37,10 +37,9 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   @Override
   public AddressResponse detail(String id) {
     log.info("(detail) address: {}", id);
-    Address address = this.find(id);
-    AddressResponse response = new AddressResponse();
-    this.convertToResponse(address, response);
-    return response;
+    this.checkAddressExist(id);
+
+    return repository.findAddressById(id);
   }
 
   @Override
@@ -69,11 +68,11 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
     response.setId(address.getId());
   }
 
-  private Address find(String id) {
-    log.info("(find) by id: {}", id);
-    Address address = repository.findById(id).orElseThrow(AddressNotFoundException::new);
-    if (address.isDeleted())
+  private void checkAddressExist(String id) {
+    log.debug("(checkAddressExist) by id: {}", id);
+    if (!repository.existsById(id)) {
+      log.error("(checkAddressExist) ======> AddressNotFoundException");
       throw new AddressNotFoundException();
-    return address;
+    }
   }
 }

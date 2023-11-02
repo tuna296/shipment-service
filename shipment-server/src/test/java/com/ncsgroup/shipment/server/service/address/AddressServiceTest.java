@@ -59,6 +59,15 @@ public class AddressServiceTest {
     addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressResponse;
   }
+  private AddressResponse mockAddressResponse() {
+    AddressResponse addressResponse = new AddressResponse();
+    addressResponse.setId("idMock");
+    addressResponse.setProvinces("Hai Duong");
+    addressResponse.setDistricts("Kim Thanh");
+    addressResponse.setWards("Tam Ky");
+    addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
+    return addressResponse;
+  }
 
   @Test
   public void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
@@ -76,33 +85,24 @@ public class AddressServiceTest {
 
   @Test
   public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
-    Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
-
-    Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
-  }
-
-  @Test
-  public void testDetail_WhenIdDeleted_Return404AddressNotFound() throws Exception {
-    Address address = mockEntity();
-    address.setDeleted(true);
-
-    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
+    Mockito.when(repository.existsById(mockId)).thenReturn(false);
 
     Assertions.assertThatThrownBy(() -> addressService.detail(mockId)).isInstanceOf(AddressNotFoundException.class);
   }
 
   @Test
   public void testDetail_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
-    Address address = mockEntity();
+    AddressResponse addressResponse= mockAddressResponse();
 
-    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(address));
+    Mockito.when(repository.findAddressById(mockId)).thenReturn(addressResponse);
+    Mockito.when(repository.existsById(mockId)).thenReturn(true);
 
     AddressResponse response = addressService.detail(mockId);
-    Assertions.assertThat(response.getId()).isEqualTo(mockEntity().getId());
-    Assertions.assertThat(response.getProvinces()).isEqualTo(address.getProvinceCode());
-    Assertions.assertThat(response.getDistricts()).isEqualTo(address.getDistrictCode());
-    Assertions.assertThat(response.getWards()).isEqualTo(address.getWardCode());
-    Assertions.assertThat(response.getDetail()).isEqualTo(address.getDetail());
+    Assertions.assertThat(response.getId()).isEqualTo(addressResponse.getId());
+    Assertions.assertThat(response.getProvinces()).isEqualTo(addressResponse.getProvinces());
+    Assertions.assertThat(response.getDistricts()).isEqualTo(addressResponse.getDistricts());
+    Assertions.assertThat(response.getWards()).isEqualTo(addressResponse.getWards());
+    Assertions.assertThat(response.getDetail()).isEqualTo(addressResponse.getDetail());
   }
 
   @Test
