@@ -10,4 +10,6 @@ public interface AddressService extends BaseService<Address> {
   AddressResponse create(AddressRequest request);
 
   PageResponse<AddressResponse> list(String keyword, int size, int page, boolean isAll);
+
+  AddressResponse detail(String id);
 }

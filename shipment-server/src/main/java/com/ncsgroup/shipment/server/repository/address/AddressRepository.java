@@ -25,4 +25,5 @@ public interface AddressRepository extends BaseRepository<Address> {
   @Query("select a from Address a where a.isDeleted=false ")
   Page<AddressResponse> findAllAddress(Pageable pageable);
 
+  
 }
