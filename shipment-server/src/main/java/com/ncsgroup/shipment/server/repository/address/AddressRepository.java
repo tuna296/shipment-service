@@ -27,7 +27,7 @@ public interface AddressRepository extends BaseRepository<Address> {
   Page<AddressResponse> findAllAddress(Pageable pageable);
 
   @Query("SELECT EXISTS(SELECT true FROM Address a WHERE a.id = :id AND a.isDeleted = false)")
-  boolean existsById(String id);
+  boolean existsById(@Param("id") String id);
 
   @Query("""
             SELECT new com.ncsgroup.shipment.server.dto.address.AddressResponse
