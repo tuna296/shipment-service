@@ -72,18 +72,22 @@ public class AddressServiceTest {
   @Test
   public void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     AddressRequest mockRequest = mockRequest();
+    AddressResponse addressResponse= mockAddressResponse();
     Address mockEntity = mockEntity();
+
     Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
+    Mockito.when(repository.findAddressById(mockEntity.getId())).thenReturn(addressResponse);
+
     AddressResponse response = addressService.create(mockRequest);
 
-    Assertions.assertThat(response.getId()).isEqualTo(mockEntity.getId());
-    Assertions.assertThat(response.getProvinces()).isEqualTo(mockEntity.getProvinceCode());
-    Assertions.assertThat(response.getDistricts()).isEqualTo(mockEntity.getDistrictCode());
-    Assertions.assertThat(response.getWards()).isEqualTo(mockEntity.getWardCode());
-    Assertions.assertThat(response.getDetail()).isEqualTo(mockEntity.getDetail());
+    Assertions.assertThat(response.getId()).isEqualTo(addressResponse.getId());
+    Assertions.assertThat(response.getProvinces()).isEqualTo(addressResponse.getProvinces());
+    Assertions.assertThat(response.getDistricts()).isEqualTo(addressResponse.getDistricts());
+    Assertions.assertThat(response.getWards()).isEqualTo(addressResponse.getWards());
+    Assertions.assertThat(response.getDetail()).isEqualTo(addressResponse.getDetail());
   }
 
-
+  @Test
   public void testList_WhenIsAll_ReturnResponseBody() throws Exception {
     AddressResponse addressResponse = mockResponse();
     Pageable pageable = PageRequest.of(0, 10);

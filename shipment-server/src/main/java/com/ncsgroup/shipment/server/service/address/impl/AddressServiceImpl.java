@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Slf4j
 
 public class AddressServiceImpl extends BaseServiceImpl<Address> implements AddressService {
@@ -27,11 +29,14 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   @Transactional
   public AddressResponse create(AddressRequest request) {
     log.info("(create) request: {}", request);
-    Address address = new Address();
-    convertToEntity(request, address);
-    AddressResponse response = new AddressResponse();
-    this.convertToResponse(create(address), response);
-    return response;
+    Address address = new Address(
+          request.getWardCode(),
+          request.getDistrictCode(),
+          request.getProvinceCode(),
+          request.getDetail()
+    );
+    create(address);
+    return repository.findAddressById(address.getId());
   }
 
   @Override
@@ -51,21 +56,6 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
     this.checkAddressExist(id);
 
     return repository.findAddressById(id);
-  }
-
-  private void convertToEntity(AddressRequest request, Address address) {
-    address.setProvinceCode(request.getProvinceCode());
-    address.setDistrictCode(request.getDistrictCode());
-    address.setWardCode(request.getWardCode());
-    address.setDetail(request.getDetail());
-  }
-
-  private void convertToResponse(Address address, AddressResponse response) {
-    response.setProvinces(address.getProvinceCode());
-    response.setDistricts(address.getDistrictCode());
-    response.setWards(address.getWardCode());
-    response.setDetail(address.getDetail());
-    response.setId(address.getId());
   }
 
   private void checkAddressExist(String id) {

@@ -31,7 +31,7 @@ public interface AddressRepository extends BaseRepository<Address> {
 
   @Query("""
             SELECT new com.ncsgroup.shipment.server.dto.address.AddressResponse
-            (a.id, p.nameEn,d.nameEn,w.nameEn, a.detail)
+            (a.id, w.nameEn,d.nameEn,p.nameEn, a.detail)
             FROM Address a
             LEFT JOIN Province p ON a.provinceCode = p.code
             LEFT JOIN District d ON a.districtCode = d.code
