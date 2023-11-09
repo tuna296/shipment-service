@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AddressServiceImpl extends BaseServiceImpl<Address> implements AddressService {
   private final AddressRepository repository;
 
-  public AddressServiceImpl(AddressRepository repository){
+  public AddressServiceImpl(AddressRepository repository) {
     super(repository);
     this.repository = repository;
   }
@@ -52,17 +52,17 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   @Override
   public AddressResponse detail(String id) {
     log.info("(detail) address: {}", id);
-    this.checkAddressExist(id);
 
-    return repository.findAddressById(id);
+    return checkAddressExist(id);
   }
 
-  private void checkAddressExist(String id) {
+  private AddressResponse checkAddressExist(String id) {
     log.debug("(checkAddressExist) by id: {}", id);
-    if (!repository.existsById(id)) {
+    if (repository.findAddressById(id) == null) {
       log.error("(checkAddressExist) ======> AddressNotFoundException");
       throw new AddressNotFoundException();
-    }
+    } else
+      return repository.findAddressById(id);
   }
 
 }
