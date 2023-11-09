@@ -24,8 +24,8 @@ public interface ShipmentMethodRepository extends BaseRepository<ShipmentMethod>
 
   @Query("SELECT s FROM ShipmentMethod s WHERE :keyword is null or lower(s.name)" +
         "LIKE lower(concat('%', :keyword, '%'))" +
-        " AND s.isDeleted =false")
-  List<ShipmentMethod> search(@Param("keyword") String keyword, Pageable pageable);
+        " AND s.isDeleted = false ")
+  List<ShipmentMethod> search(String keyword, Pageable pageable);
 
   @Query("select count(s) from ShipmentMethod s where : keyword is null or" +
         " lower(s.name) like %:keyword% " +

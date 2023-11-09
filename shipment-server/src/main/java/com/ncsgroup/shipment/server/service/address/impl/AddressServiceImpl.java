@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AddressServiceImpl extends BaseServiceImpl<Address> implements AddressService {
   private final AddressRepository repository;
 
-  public AddressServiceImpl(AddressRepository repository) {
+  public AddressServiceImpl(AddressRepository repository){
     super(repository);
     this.repository = repository;
   }
@@ -33,7 +33,8 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
           request.getProvinceCode(),
           request.getDetail()
     );
-    create(address);
+    repository.saveAndFlush(address);
+
     return repository.findAddressById(address.getId());
   }
 

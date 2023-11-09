@@ -1,4 +1,8 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
   application:
     name: SHIPMENT_SERVICE
   profiles:
@@ -9,3 +13,6 @@ spring:
     change-log: classpath:db/master.xml
 server:
   port: 8081
+logging:
+  level:
+    sql: debug

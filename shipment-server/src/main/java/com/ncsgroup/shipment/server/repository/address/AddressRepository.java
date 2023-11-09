@@ -39,5 +39,4 @@ public interface AddressRepository extends BaseRepository<Address> {
             WHERE a.id = :id
         """)
   AddressResponse findAddressById(@Param("id") String id);
-
 }
