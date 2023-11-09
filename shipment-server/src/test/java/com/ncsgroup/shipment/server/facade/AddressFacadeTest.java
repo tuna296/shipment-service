@@ -123,20 +123,11 @@ public class AddressFacadeTest {
   @Test
   void test_CreateAddress_WhenSuccess_Return_Response() {
     AddressRequest mockRequest = mockAddressRequest();
-    AddressResponse mockServiceResponse = mockServiceResponse();
     AddressResponse mockFacadeResponse = mockFacadeResponse();
 
-    ProvinceInfoResponse mockProvinceInfo = mockProvinceInfo();
-    DistrictInfoResponse mockDistrictInfo = mockDistrictInfo();
-    WardInfoResponse mockWardInfo = mockWardInfo();
-
-    Mockito.when(provinceService.detail(mockRequest.getProvinceCode())).thenReturn(mockProvinceInfo);
-    Mockito.when(districtService.detail(mockRequest.getDistrictCode())).thenReturn(mockDistrictInfo);
-    Mockito.when(wardService.detail(mockRequest.getWardCode())).thenReturn(mockWardInfo);
-    Mockito.when(addressService.create(mockRequest)).thenReturn(mockServiceResponse);
+    Mockito.when(addressService.create(mockRequest)).thenReturn(mockFacadeResponse);
 
     AddressResponse response = addressFacadeService.createAddress(mockRequest);
-
     Assertions.assertThat(response.getProvinces()).isEqualTo(mockFacadeResponse.getProvinces());
     Assertions.assertThat(response.getDistricts()).isEqualTo(mockFacadeResponse.getDistricts());
     Assertions.assertThat(response.getWards()).isEqualTo(mockFacadeResponse.getWards());

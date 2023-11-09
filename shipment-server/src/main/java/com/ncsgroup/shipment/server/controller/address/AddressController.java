@@ -8,6 +8,7 @@ import com.ncsgroup.shipment.server.facade.AddressFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.AddressService;
 import dto.address.AddressRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class AddressController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ResponseGeneral<AddressResponse> create(
-        @RequestBody AddressRequest request,
+        @Valid @RequestBody AddressRequest request,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
     log.info("(create)request: {}", request);

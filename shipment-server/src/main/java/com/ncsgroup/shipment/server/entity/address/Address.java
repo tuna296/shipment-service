@@ -23,4 +23,11 @@ public class Address extends BaseEntityWithUpdater {
   private String detail;
   @Column(name = "is_deleted")
   private boolean isDeleted;
+  public Address(String wardCode, String districtCode, String provinceCode, String detail) {
+    this.wardCode = wardCode;
+    this.districtCode = districtCode;
+    this.provinceCode = provinceCode;
+    this.detail = detail;
+    this.isDeleted = false;
+  }
 }

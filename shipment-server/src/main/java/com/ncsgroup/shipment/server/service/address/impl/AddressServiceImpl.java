@@ -27,11 +27,15 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   @Transactional
   public AddressResponse create(AddressRequest request) {
     log.info("(create) request: {}", request);
-    Address address = new Address();
-    convertToEntity(request, address);
-    AddressResponse response = new AddressResponse();
-    this.convertToResponse(create(address), response);
-    return response;
+    Address address = new Address(
+          request.getWardCode(),
+          request.getDistrictCode(),
+          request.getProvinceCode(),
+          request.getDetail()
+    );
+    repository.saveAndFlush(address);
+
+    return repository.findAddressById(address.getId());
   }
 
   @Override
@@ -48,32 +52,17 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
   @Override
   public AddressResponse detail(String id) {
     log.info("(detail) address: {}", id);
-    this.checkAddressExist(id);
 
-    return repository.findAddressById(id);
+    return checkAddressExist(id);
   }
 
-  private void convertToEntity(AddressRequest request, Address address) {
-    address.setProvinceCode(request.getProvinceCode());
-    address.setDistrictCode(request.getDistrictCode());
-    address.setWardCode(request.getWardCode());
-    address.setDetail(request.getDetail());
-  }
-
-  private void convertToResponse(Address address, AddressResponse response) {
-    response.setProvinces(address.getProvinceCode());
-    response.setDistricts(address.getDistrictCode());
-    response.setWards(address.getWardCode());
-    response.setDetail(address.getDetail());
-    response.setId(address.getId());
-  }
-
-  private void checkAddressExist(String id) {
+  private AddressResponse checkAddressExist(String id) {
     log.debug("(checkAddressExist) by id: {}", id);
-    if (!repository.existsById(id)) {
+    if (repository.findAddressById(id) == null) {
       log.error("(checkAddressExist) ======> AddressNotFoundException");
       throw new AddressNotFoundException();
-    }
+    } else
+      return repository.findAddressById(id);
   }
 
 }

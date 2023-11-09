@@ -28,24 +28,7 @@ public class AddressFacadeServiceImpl implements AddressFacadeService {
 
     this.checkAddressComponentsExist(request);
 
-    AddressResponse response = addressService.create(request);
-
-    this.setProperties(response, request);
-
-    return response;
-  }
-
-  private void setProperties(AddressResponse response, AddressRequest request) {
-    log.info("(setProperties)response: {}, request: {}", response, request);
-
-    if (Objects.nonNull(request.getProvinceCode()))
-      response.setProvinces(provinceService.detail(request.getProvinceCode()).getProvinceNameEn());
-
-    if (Objects.nonNull(request.getDistrictCode()))
-      response.setDistricts(districtService.detail(request.getDistrictCode()).getDistrictNameEn());
-
-    if (Objects.nonNull(request.getWardCode()))
-      response.setWards(wardService.detail(request.getWardCode()).getWardNameEn());
+    return addressService.create(request);
   }
 
   private void checkAddressComponentsExist(AddressRequest request) {
