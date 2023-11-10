@@ -1,6 +1,6 @@
 package com.ncsgroup.shipment.server.service;
 
-import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodPageResponse;
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import com.ncsgroup.shipment.server.service.base.BaseService;
@@ -11,7 +11,7 @@ public interface ShipmentMethodService extends BaseService<ShipmentMethod> {
 
   ShipmentMethodResponse update(String id, ShipmentMethodRequest request);
 
-  ShipmentMethodPageResponse list(String keyword, int size, int page, boolean isAll);
+  PageResponse<ShipmentMethodResponse> list(String keyword, int size, int page, boolean isAll);
 
   void delete(String id);
 }

@@ -1,6 +1,6 @@
 package com.ncsgroup.shipment.server.service.impl;
 
-import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodPageResponse;
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodAlreadyExistException;
@@ -11,11 +11,10 @@ import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
 import dto.ShipmentMethodRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> implements ShipmentMethodService {
@@ -52,16 +51,14 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   }
 
   @Override
-  public ShipmentMethodPageResponse list(String keyword, int size, int page, boolean isAll) {
+  public PageResponse<ShipmentMethodResponse> list(String keyword, int size, int page, boolean isAll) {
     log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
-    List<ShipmentMethodResponse> list = new ArrayList<>();
+
     Pageable pageable = PageRequest.of(page, size);
-    List<ShipmentMethod> shipmentMethods = isAll ?
-          repository.findAll() : repository.search(keyword, pageable);
-    for (ShipmentMethod shipmentMethod : shipmentMethods) {
-      list.add(convertToResponse(shipmentMethod));
-    }
-    return new ShipmentMethodPageResponse(list, isAll ? shipmentMethods.size() : repository.countSearch(keyword));
+    Page<ShipmentMethodResponse> pageResponse = isAll ?
+          repository.findAllShipmentMethod(pageable) : repository.search(keyword, pageable);
+
+    return PageResponse.of(pageResponse.getContent(), (int) pageResponse.getTotalElements());
   }
 
   @Override
