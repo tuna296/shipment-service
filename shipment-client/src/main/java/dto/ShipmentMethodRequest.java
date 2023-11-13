@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import static constants.Constants.Validate.DESCRIPTION_BLANK;
-import static constants.Constants.Validate.NAME_BLANK;
+import static constants.Constants.Validate.*;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +14,6 @@ public class ShipmentMethodRequest {
   private String name;
   @NotBlank(message = DESCRIPTION_BLANK)
   private String description;
-  @NotNull
-  private double pricePerKilometer;
+  @NotNull(message = PRICE_BLANK)
+  private Double pricePerKilometer;
 }

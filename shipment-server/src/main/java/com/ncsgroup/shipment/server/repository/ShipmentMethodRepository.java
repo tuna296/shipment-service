@@ -1,7 +1,10 @@
 package com.ncsgroup.shipment.server.repository;
 
+import com.ncsgroup.shipment.server.dto.address.AddressResponse;
+import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,15 +25,31 @@ public interface ShipmentMethodRepository extends BaseRepository<ShipmentMethod>
         "WHERE e.id = :id AND e.isDeleted = false")
   boolean existsById(String id);
 
-  @Query("SELECT s FROM ShipmentMethod s WHERE :keyword is null or lower(s.name)" +
-        "LIKE lower(concat('%', :keyword, '%'))" +
-        " AND s.isDeleted = false ")
-  List<ShipmentMethod> search(String keyword, Pageable pageable);
+//  @Query("""
+//        SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
+//        (s.name,s.description,s.pricePerKilometer)
+//        FROM ShipmentMethod s
+//        WHERE :keyword is null or lower(s.name)
+//        LIKE lower(concat('%', :keyword, '%'))
+//        AND s.isDeleted = false
+//        """)
+//  Page<ShipmentMethodResponse> search(String keyword, Pageable pageable);
+@Query("""
+    SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
+    (s.name, s.description, s.pricePerKilometer)
+    FROM ShipmentMethod s
+    WHERE (:keyword is null or lower(s.name) LIKE lower(concat('%', :keyword, '%')))
+    AND s.isDeleted = false
+""")
+Page<ShipmentMethodResponse> search(String keyword, Pageable pageable);
 
-  @Query("select count(s) from ShipmentMethod s where : keyword is null or" +
-        " lower(s.name) like %:keyword% " +
-        " AND s.isDeleted =false")
-  int countSearch(String keyword);
+  @Query("""
+        SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
+        (s.name,s.description,s.pricePerKilometer)
+        FROM ShipmentMethod s
+        WHERE s.isDeleted = false
+        """)
+  Page<ShipmentMethodResponse> findAllShipmentMethod(Pageable pageable);
 
   @Modifying
   @Transactional
