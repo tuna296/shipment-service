@@ -5,8 +5,10 @@ import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.repository.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface AddressRepository extends BaseRepository<Address> {
   @Query("""
@@ -26,7 +28,7 @@ public interface AddressRepository extends BaseRepository<Address> {
         """)
   Page<AddressResponse> search(Pageable pageable, String keyword);
 
-@Query("""
+  @Query("""
             SELECT new com.ncsgroup.shipment.server.dto.address.AddressResponse
             (a.id, w.nameEn,d.nameEn,p.nameEn, a.detail)
             FROM Address a
@@ -35,7 +37,7 @@ public interface AddressRepository extends BaseRepository<Address> {
             LEFT JOIN Ward w ON a.wardCode = w.code
             WHERE a.isDeleted=false
         """)
-Page<AddressResponse> findAllAddress(Pageable pageable);
+  Page<AddressResponse> findAllAddress(Pageable pageable);
 
   @Query("SELECT EXISTS(SELECT true FROM Address a WHERE a.id = :id AND a.isDeleted = false)")
   boolean existsById(@Param("id") String id);
@@ -50,4 +52,5 @@ Page<AddressResponse> findAllAddress(Pageable pageable);
             WHERE a.id = :id AND a.isDeleted=false
         """)
   AddressResponse findAddressById(@Param("id") String id);
+
 }
