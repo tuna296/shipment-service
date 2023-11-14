@@ -31,6 +31,14 @@ public class AddressFacadeServiceImpl implements AddressFacadeService {
     return addressService.create(request);
   }
 
+  @Override
+  @Transactional
+  public AddressResponse updateAddress(AddressRequest request, String id) {
+    log.info("(createAddress) request: {}", request);
+    this.checkAddressComponentsExist(request);
+    return addressService.update(request, id);
+  }
+
   private void checkAddressComponentsExist(AddressRequest request) {
     log.debug("checkAddressComponentsExist");
 

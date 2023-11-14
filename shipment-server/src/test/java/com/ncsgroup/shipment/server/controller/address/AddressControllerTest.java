@@ -22,8 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -234,5 +233,73 @@ public class AddressControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertEquals(responseBody,
           objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
+  }
+  @Test
+  public void testUpdate_WhenUpdateSuccess_Return201Body() throws Exception {
+    AddressRequest addressRequest = mockAddressRequest();
+    AddressResponse addressResponse = mockFacadeResponse();
+    Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).thenReturn(addressResponse);
+    Mockito.when(messageService.getMessage(UPDATE_ADDRESS, "en")).
+          thenReturn("Update address success");
+    MvcResult mvcResult = mockMvc.perform(
+                put("/api/v1/addresses/{id}",mockId)
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(addressRequest)))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message")
+                .value("Update address success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(addressController.update(mockId,addressRequest, "en")));
+  }
+  @Test
+  public void testUpdate_WhenProvinceCodeNotFound_Return404ProvinceNotFound() throws Exception {
+    AddressRequest addressRequest = mockAddressRequest();
+    mockFacadeResponse();
+    Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
+          thenThrow(new AddressNotFoundException(true, false, false));
+    mockMvc.perform(
+                put("/api/v1/addresses/{id}",mockId)
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(addressRequest)))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.Province"))
+          .andReturn();
+  }
+  @Test
+  public void testUpdate_WhenDistrictCodeNotFound_Return404ProvinceNotFound() throws Exception {
+    AddressRequest addressRequest = mockAddressRequest();
+    mockFacadeResponse();
+    Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
+          thenThrow(new AddressNotFoundException(false, true, false));
+    mockMvc.perform(
+                put("/api/v1/addresses/{id}",mockId)
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(addressRequest)))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.District"))
+          .andReturn();
+  }
+  @Test
+  public void testUpdate_WhenWardCodeNotFound_Return404ProvinceNotFound() throws Exception {
+    AddressRequest addressRequest = mockAddressRequest();
+    mockFacadeResponse();
+    Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
+          thenThrow(new AddressNotFoundException(false, false, true));
+    mockMvc.perform(
+                put("/api/v1/addresses/{id}",mockId)
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(addressRequest)))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.Ward"))
+          .andReturn();
   }
 }

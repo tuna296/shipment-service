@@ -66,7 +66,17 @@ public class AddressController {
           messageService.getMessage(DETAIL_ADDRESS, language),
           addressService.detail(id)
     );
+  }
 
-
+  @PutMapping("{id}")
+  public ResponseGeneral<AddressResponse> update(
+        @Valid @PathVariable String id, @RequestBody AddressRequest request,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(update) id: {}", id);
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(UPDATE_ADDRESS, language),
+          addressFacadeService.updateAddress(request, id)
+    );
   }
 }

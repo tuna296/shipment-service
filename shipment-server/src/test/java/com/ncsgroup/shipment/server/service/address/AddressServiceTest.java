@@ -59,6 +59,7 @@ public class AddressServiceTest {
     addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressResponse;
   }
+
   private AddressResponse mockAddressResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("idMock");
@@ -72,7 +73,7 @@ public class AddressServiceTest {
   @Test
   public void testCreate_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
     AddressRequest mockRequest = mockRequest();
-    AddressResponse addressResponse= mockAddressResponse();
+    AddressResponse addressResponse = mockAddressResponse();
     Address mockEntity = mockEntity();
 
     Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
@@ -116,6 +117,7 @@ public class AddressServiceTest {
     PageResponse<AddressResponse> response = addressService.list("Tam Ky", 10, 0, false);
     Assertions.assertThat(list.size()).isEqualTo(response.getAmount());
   }
+
   @Test
   public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
     Mockito.when(repository.existsById(mockId)).thenReturn(false);
@@ -125,7 +127,7 @@ public class AddressServiceTest {
 
   @Test
   public void testDetail_WhenCreateSuccess_ReturnAddressResponse() throws Exception {
-    AddressResponse addressResponse= mockAddressResponse();
+    AddressResponse addressResponse = mockAddressResponse();
 
     Mockito.when(repository.findAddressById(mockId)).thenReturn(addressResponse);
     Mockito.when(repository.existsById(mockId)).thenReturn(true);
@@ -136,6 +138,35 @@ public class AddressServiceTest {
     Assertions.assertThat(response.getDistricts()).isEqualTo(addressResponse.getDistricts());
     Assertions.assertThat(response.getWards()).isEqualTo(addressResponse.getWards());
     Assertions.assertThat(response.getDetail()).isEqualTo(addressResponse.getDetail());
+  }
+
+  @Test
+  public void testUpdate_WhenIdAddressNotFound_ReturnAddressNotFound() throws Exception {
+    AddressRequest request = mockRequest();
+    Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
+
+    Assertions.assertThatThrownBy(() -> addressService.update(request, mockId)).isInstanceOf(AddressNotFoundException.class);
+  }
+
+  @Test
+  public void testUpdate_WhenUpdateSuccess_ReturnAddressResponse() throws Exception {
+    AddressRequest mockRequest = mockRequest();
+    AddressResponse mockResponse = mockResponse();
+    mockResponse.setId(mockId);
+    Address mockEntity = mockEntity();
+    mockEntity.setId(mockId);
+
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
+    Mockito.when(repository.saveAndFlush(mockEntity)).thenReturn(mockEntity);
+    Mockito.when(repository.findAddressById(mockId)).thenReturn(mockResponse);
+
+    AddressResponse response = addressService.update(mockRequest, mockId);
+
+    Assertions.assertThat(response.getId()).isEqualTo(mockEntity.getId());
+    Assertions.assertThat(response.getProvinces()).isEqualTo(mockResponse.getProvinces());
+    Assertions.assertThat(response.getDistricts()).isEqualTo(mockResponse.getDistricts());
+    Assertions.assertThat(response.getWards()).isEqualTo(mockResponse.getWards());
+    Assertions.assertThat(response.getDetail()).isEqualTo(mockResponse.getDetail());
   }
 
 }
