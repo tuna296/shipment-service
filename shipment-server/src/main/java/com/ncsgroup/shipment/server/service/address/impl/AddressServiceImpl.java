@@ -67,6 +67,15 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
     return repository.findAddressById(address.getId());
   }
 
+  @Override
+  @Transactional
+  public void delete(String id) {
+    log.info("(delete) address: {}", id);
+
+    this.findAddress(id);
+    repository.deleteById(id);
+  }
+
   private void setPropertyForUpdate(Address address, AddressRequest request) {
     address.setProvinceCode(request.getProvinceCode());
     address.setDistrictCode(request.getDistrictCode());

@@ -3,12 +3,12 @@ package com.ncsgroup.shipment.server.repository.address;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.entity.address.Address;
 import com.ncsgroup.shipment.server.repository.BaseRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface AddressRepository extends BaseRepository<Address> {
   @Query("""
@@ -52,5 +52,8 @@ public interface AddressRepository extends BaseRepository<Address> {
             WHERE a.id = :id AND a.isDeleted=false
         """)
   AddressResponse findAddressById(@Param("id") String id);
-
+  @Modifying
+  @Transactional
+  @Query("UPDATE Address a SET a.isDeleted = true WHERE a.id = :id")
+  void deleteById(String id);
 }

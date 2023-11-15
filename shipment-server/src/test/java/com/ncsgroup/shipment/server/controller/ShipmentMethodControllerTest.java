@@ -269,7 +269,7 @@ public class ShipmentMethodControllerTest {
   @Test
   void testDeleteShipmentMethod_WhenDeleteShipmentMethodSuccess_Returns200() throws Exception {
     Mockito.doNothing().when(shipmentMethodService).delete(mockId);
-    Mockito.when(messageService.getMessage(DELETE_SUCCESS, "en")).thenReturn("Delete shipment method successfully");
+    Mockito.when(messageService.getMessage(DELETE_ADDRESS, "en")).thenReturn("Delete shipment method successfully");
     MvcResult mvcResult = mockMvc.perform(
                 delete("/api/v1/shipment-methods/{id}", mockId)
                       .contentType("application/json"))
