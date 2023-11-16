@@ -13,5 +13,7 @@ public interface AddressService extends BaseService<Address> {
 
   AddressResponse detail(String id);
 
-  AddressResponse update(AddressRequest request,String id);
+  AddressResponse update(AddressRequest request, String id);
+
+  void delete(String id);
 }

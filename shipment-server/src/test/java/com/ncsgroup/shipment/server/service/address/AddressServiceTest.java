@@ -9,6 +9,7 @@ import com.ncsgroup.shipment.server.repository.address.AddressRepository;
 import dto.address.AddressRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -168,5 +169,10 @@ public class AddressServiceTest {
     Assertions.assertThat(response.getWards()).isEqualTo(mockResponse.getWards());
     Assertions.assertThat(response.getDetail()).isEqualTo(mockResponse.getDetail());
   }
+  @Test
+  public void testDelete_WhenIdNotFound_ReturnAddressNotFound() throws Exception{
+    Mockito.when(repository.findById(mockId)).thenThrow(AddressNotFoundException.class);
 
+    Assertions.assertThatThrownBy(()->addressService.delete(mockId)).isInstanceOf(AddressNotFoundException.class);
+  }
 }

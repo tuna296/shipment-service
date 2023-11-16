@@ -70,6 +70,7 @@ public class AddressControllerTest {
     response.setDetail("Tam Ky Kim Thanh Hai Duong");
     return response;
   }
+
   private AddressResponse mockFacadeResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("idMock");
@@ -79,6 +80,7 @@ public class AddressControllerTest {
     addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressResponse;
   }
+
   private AddressResponse addressResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("idMock");
@@ -209,6 +211,7 @@ public class AddressControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody, objectMapper.writeValueAsString(addressController.list("Tam Ky", 10, 0, false, "en")));
   }
+
   @Test
   public void testDetail_WhenIdNotFound_Return404AddressNotFound() throws Exception {
     Mockito.when(addressService.detail(mockId)).thenThrow(new AddressNotFoundException());
@@ -234,6 +237,7 @@ public class AddressControllerTest {
     Assertions.assertEquals(responseBody,
           objectMapper.writeValueAsString(addressController.detail(mockId, "en")));
   }
+
   @Test
   public void testUpdate_WhenUpdateSuccess_Return201Body() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
@@ -242,7 +246,7 @@ public class AddressControllerTest {
     Mockito.when(messageService.getMessage(UPDATE_ADDRESS, "en")).
           thenReturn("Update address success");
     MvcResult mvcResult = mockMvc.perform(
-                put("/api/v1/addresses/{id}",mockId)
+                put("/api/v1/addresses/{id}", mockId)
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
           .andDo(print())
@@ -252,8 +256,9 @@ public class AddressControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(addressController.update(mockId,addressRequest, "en")));
+          objectMapper.writeValueAsString(addressController.update(mockId, addressRequest, "en")));
   }
+
   @Test
   public void testUpdate_WhenProvinceCodeNotFound_Return404ProvinceNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
@@ -261,7 +266,7 @@ public class AddressControllerTest {
     Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
           thenThrow(new AddressNotFoundException(true, false, false));
     mockMvc.perform(
-                put("/api/v1/addresses/{id}",mockId)
+                put("/api/v1/addresses/{id}", mockId)
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
           .andDo(print())
@@ -270,6 +275,7 @@ public class AddressControllerTest {
                 .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.Province"))
           .andReturn();
   }
+
   @Test
   public void testUpdate_WhenDistrictCodeNotFound_Return404ProvinceNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
@@ -277,7 +283,7 @@ public class AddressControllerTest {
     Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
           thenThrow(new AddressNotFoundException(false, true, false));
     mockMvc.perform(
-                put("/api/v1/addresses/{id}",mockId)
+                put("/api/v1/addresses/{id}", mockId)
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
           .andDo(print())
@@ -286,6 +292,7 @@ public class AddressControllerTest {
                 .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.District"))
           .andReturn();
   }
+
   @Test
   public void testUpdate_WhenWardCodeNotFound_Return404ProvinceNotFound() throws Exception {
     AddressRequest addressRequest = mockAddressRequest();
@@ -293,7 +300,7 @@ public class AddressControllerTest {
     Mockito.when(addressFacadeService.updateAddress(addressRequest, mockId)).
           thenThrow(new AddressNotFoundException(false, false, true));
     mockMvc.perform(
-                put("/api/v1/addresses/{id}",mockId)
+                put("/api/v1/addresses/{id}", mockId)
                       .contentType("application/json")
                       .content(objectMapper.writeValueAsBytes(addressRequest)))
           .andDo(print())
@@ -301,5 +308,30 @@ public class AddressControllerTest {
           .andExpect(jsonPath("$.data.code")
                 .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException.Ward"))
           .andReturn();
+  }
+
+  @Test
+  public void testDelete_WhenAddressNotFound_ReturnAddressNotFound() throws Exception {
+    Mockito.doThrow(new AddressNotFoundException()).when(addressService).delete(mockId);
+    mockMvc.perform(
+                delete("/api/v1/addresses/{id}", mockId))
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException"))
+          .andReturn();
+
+  }
+
+  @Test
+  public void testDelete_WhenSuccess_ReturnMessageSuccess() throws Exception {
+    Mockito.doNothing().when(addressService).delete(mockId);
+    Mockito.when(messageService.getMessage(DELETE_ADDRESS, "en")).thenReturn("Delete successfully");
+    mockMvc.perform(
+                delete("/api/v1/addresses/{id}", mockId))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message")
+                .value("Delete successfully"))
+          .andReturn();
+
   }
 }
