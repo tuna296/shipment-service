@@ -5,6 +5,9 @@ import com.ncsgroup.shipment.server.entity.enums.ShipmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 @Getter
 @Setter
 @Entity
@@ -39,5 +42,9 @@ public class Shipment extends BaseEntityWithUpdater {
     this.price = price;
     this.shipmentMethodId = shipmentMethodId;
     shipmentStatus = ShipmentStatus.DELIVERED;
+    LocalDateTime currentDate = LocalDateTime.now();
+    LocalDateTime expectedDate = currentDate.plusDays(15);
+    this.shipmentExpectedDate = expectedDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
   }
 }

@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(ShipmentMethodController.class)
 public class ShipmentMethodControllerTest {
@@ -57,6 +58,16 @@ public class ShipmentMethodControllerTest {
   private ShipmentMethod mockShipmentMethod(ShipmentMethodRequest request) {
     return ShipmentMethod.from(request.getName(), request.getDescription(), request.getPricePerKilometer());
   }
+
+  private ShipmentMethodResponse mockResponse() {
+    ShipmentMethodResponse response = new ShipmentMethodResponse();
+    response.setId(mockId);
+    response.setName("Giao hang nhanh");
+    response.setDescription("Van chuyen trong ngay");
+    response.setPricePerKilometer(20000.0);
+    return response;
+  }
+
 
   @Test
   void testCreate_WhenCreatedShipmentMethodSuccessfully_Return201() throws Exception {
@@ -129,6 +140,7 @@ public class ShipmentMethodControllerTest {
                 .value("com.ncsgroup.shipment.client.dto.description.NotNull"));
     System.out.println(request);
   }
+
   @Test
   void tesValid_WhenInputPricePerKilometerShipmentMethodInvalid_Returns400BadRequest() throws Exception {
     ShipmentMethodRequest request = mockRequest();
@@ -269,7 +281,7 @@ public class ShipmentMethodControllerTest {
   @Test
   void testDeleteShipmentMethod_WhenDeleteShipmentMethodSuccess_Returns200() throws Exception {
     Mockito.doNothing().when(shipmentMethodService).delete(mockId);
-    Mockito.when(messageService.getMessage(DELETE_ADDRESS, "en")).thenReturn("Delete shipment method successfully");
+    Mockito.when(messageService.getMessage(DELETE_SUCCESS, "en")).thenReturn("Delete shipment method successfully");
     MvcResult mvcResult = mockMvc.perform(
                 delete("/api/v1/shipment-methods/{id}", mockId)
                       .contentType("application/json"))
@@ -278,6 +290,35 @@ public class ShipmentMethodControllerTest {
                 .value("Delete shipment method successfully"))
           .andReturn();
   }
+
+  @Test
+  void testDetailShipmentMethod_WhenGetDetailShipmentMethodSuccess_Returns200() throws Exception {
+    ShipmentMethodResponse mockResponse = mockResponse();
+    Mockito.when(shipmentMethodService.detail(mockId)).thenReturn(mockResponse);
+    Mockito.when(messageService.getMessage(DETAIL_SHIPMENT_METHOD, "en")).thenReturn("Get detail shipment method successfully");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/shipment-methods/{id}", mockId)
+                      .contentType("application/json"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message")
+                .value("Get detail shipment method successfully"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(shipmentMethodController.detail(mockId, "en")));
+  }
+
+@Test
+void testDetailShipmentMethod_WhenShipmentMethodNotFound_ReturnsShipmentMethodNotFoundException() throws Exception {
+  Mockito.when(shipmentMethodService.detail(mockId)).thenThrow(new ShipmentMethodNotFoundException());
+  Mockito.when(messageService.getMessage(DETAIL_SHIPMENT_METHOD, "en")).thenReturn("Get detail shipment method success");
+
+  mockMvc.perform(
+              get("/api/v1/shipment-methods/{id}", mockId))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.data.code")
+              .value("com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException"));
+}
 
 }
 
