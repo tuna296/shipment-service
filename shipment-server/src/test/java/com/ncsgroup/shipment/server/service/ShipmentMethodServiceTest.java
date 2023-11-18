@@ -40,6 +40,7 @@ public class ShipmentMethodServiceTest {
     request.setPricePerKilometer(20000.0);
     return request;
   }
+
   private ShipmentMethodResponse mockShipmentMethodResponse() {
     ShipmentMethodResponse response = new ShipmentMethodResponse();
     response.setName("Giao hang nhanh");
@@ -47,6 +48,16 @@ public class ShipmentMethodServiceTest {
     response.setPricePerKilometer(20000.0);
     return response;
   }
+
+  private ShipmentMethod mockEntity() {
+    ShipmentMethod shipmentMethod = new ShipmentMethod();
+    shipmentMethod.setId(mockId);
+    shipmentMethod.setName("Giao hang nhanh");
+    shipmentMethod.setDescription("Van chuyen trong ngay");
+    shipmentMethod.setPricePerKilometer(20000.0);
+    return shipmentMethod;
+  }
+
   private ShipmentMethod mockShipmentMethod(ShipmentMethodRequest request) {
     return ShipmentMethod.from(request.getName(), request.getDescription(), request.getPricePerKilometer());
   }
@@ -137,7 +148,7 @@ public class ShipmentMethodServiceTest {
     Pageable pageable = PageRequest.of(0, 10);
     Page<ShipmentMethodResponse> mockPage = new PageImpl<>(list);
 
-    Mockito.when(repository.search("Giao Hang",pageable)).thenReturn(mockPage);
+    Mockito.when(repository.search("Giao Hang", pageable)).thenReturn(mockPage);
 
     PageResponse<ShipmentMethodResponse> response = shipmentMethodService.list("Giao Hang", 10, 0, false);
     Assertions.assertThat(response.getAmount()).isEqualTo(list.size());
@@ -151,12 +162,28 @@ public class ShipmentMethodServiceTest {
   }
 
   @Test
-  void test_DeleteShipmentMethod_WhenIdIsDeleteReturnsShipmentMethodNotFoundException() throws Exception {
+  void test_DeleteShipmentMethod_WhenIdIsDelete_ReturnsShipmentMethodNotFoundException() throws Exception {
     ShipmentMethodRequest request = mockShipmentMethodRequest();
     ShipmentMethod mockEntity = mockShipmentMethod(request);
     mockEntity.setId(mockId);
     Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(mockEntity));
     Assertions.assertThatThrownBy(() -> shipmentMethodService.delete(mockId)).isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+
+  @Test
+  void testDetailShipmentMethod_WhenIdNotFound_ReturnShipmentMethodNotFound() throws Exception {
+    Mockito.when(repository.findById(mockId)).thenThrow(ShipmentMethodNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentMethodService.detail(mockId)).isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+
+  @Test
+  void testDetailShipmentMethod_WhenDeleteSuccess_ReturnSuccess() throws Exception {
+    ShipmentMethod shipmentMethod = mockEntity();
+    Mockito.when(repository.findById(mockId)).thenReturn(Optional.of(shipmentMethod));
+    ShipmentMethodResponse response = shipmentMethodService.detail(mockId);
+    Assertions.assertThat(shipmentMethod.getName()).isEqualTo(response.getName());
+    Assertions.assertThat(shipmentMethod.getDescription()).isEqualTo(response.getDescription());
+    Assertions.assertThat(shipmentMethod.getPricePerKilometer()).isEqualTo(response.getPricePerKilometer());
   }
 }
 
