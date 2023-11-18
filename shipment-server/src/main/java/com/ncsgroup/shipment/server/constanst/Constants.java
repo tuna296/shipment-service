@@ -45,6 +45,6 @@ public class Constants {
     public static final String LIST_ADDRESS= "com.ncsgroup.shipment.server.controller.address.AddressController.list";
     public static final String UPDATE_ADDRESS = "com.ncsgroup.shipment.server.controller.address.AddressController.update";
     public static final String DELETE_ADDRESS = "com.ncsgroup.shipment.server.controller.address.AddressController.delete";
-
+    public static final String CREATE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.create";
   }
 }

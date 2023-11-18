@@ -8,6 +8,9 @@
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_shipment_id"/>
             </column>
+            <column name="number" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="code" type="varchar(255)">
                 <constraints unique="true"/>
             </column>
@@ -21,17 +24,32 @@
                              references="addresses(id)"/>
             </column>
             <column name="price" type="decimal" defaultValue="0"/>
-            <column name="method_id" type="varchar(255)">
+            <column name="shipment_method_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_shipment_method"
                              references="shipment_method(id)"/>
             </column>
-            <column name="shipment_date" type="date"/>
-            <column name="status" type="varchar(255)"/>
+            <column name="shipment_expected_date" type="VARCHAR(255)"/>
+            <column name="shipment_status" type="INTEGER" defaultValue="0"/>
             <column name="created_by" type="VARCHAR(255)"/>
             <column name="created_at" type="BIGINT"/>
             <column name="last_updated_by" type="VARCHAR(255)"/>
             <column name="last_updated_at" type="BIGINT"/>
             <column name="is_deleted" type="BOOLEAN" defaultValue="false"/>
         </createTable>
+        <sql splitStatements="true">
+            <![CDATA[
+            CREATE TRIGGER increment_number_shipment
+                BEFORE INSERT
+                ON shipments
+                FOR EACH ROW
+            BEGIN
+                DECLARE paddedNumber VARCHAR(7);
+                SET NEW.number = (SELECT COALESCE(MAX(number), 0) + 1 FROM shipments);
+                SET paddedNumber = LPAD(NEW.number, 7, '0');
+                SET NEW.code = CONCAT('SHIP_', paddedNumber);
+            END;
+            ]]>
+        </sql>
+
     </changeSet>
 </databaseChangeLog>
