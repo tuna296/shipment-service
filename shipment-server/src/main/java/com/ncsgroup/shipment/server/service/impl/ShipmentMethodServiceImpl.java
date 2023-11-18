@@ -73,7 +73,12 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   public ShipmentMethodResponse detail(String id) {
     log.info("(detail) request: {}", id);
     ShipmentMethod shipmentMethod = findById(id);
-    return convertToResponse(shipmentMethod);
+    return new ShipmentMethodResponse(
+          shipmentMethod.getId(),
+          shipmentMethod.getName(),
+          shipmentMethod.getDescription(),
+          shipmentMethod.getPricePerKilometer()
+    );
   }
 
   private ShipmentMethod findById(String id) {
