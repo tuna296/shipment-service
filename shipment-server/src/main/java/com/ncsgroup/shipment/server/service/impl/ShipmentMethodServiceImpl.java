@@ -69,6 +69,18 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
     repository.deleteById(id);
   }
 
+  @Override
+  public ShipmentMethodResponse detail(String id) {
+    log.info("(detail) request: {}", id);
+    ShipmentMethod shipmentMethod = findById(id);
+    return new ShipmentMethodResponse(
+          shipmentMethod.getId(),
+          shipmentMethod.getName(),
+          shipmentMethod.getDescription(),
+          shipmentMethod.getPricePerKilometer()
+    );
+  }
+
   private ShipmentMethod findById(String id) {
     log.debug("(findById) id: {}", id);
     ShipmentMethod shipmentMethod = repository.findById(id).orElseThrow(ShipmentMethodNotFoundException::new);
@@ -80,7 +92,7 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   private void checkShipmentMethodAlreadyExists(String name) {
     log.debug("checkShipmentMethodAlreadyExists :{}", name);
     if (repository.existsByName(name)) {
-      log.error("Shipment Method AlreadyExists:{}, name");
+      log.error("Shipment Method AlreadyExists:{}", name);
       throw new ShipmentMethodAlreadyExistException();
     }
   }
@@ -98,7 +110,8 @@ public class ShipmentMethodServiceImpl extends BaseServiceImpl<ShipmentMethod> i
   }
 
   private ShipmentMethodResponse convertToResponse(ShipmentMethod shipmentMethod) {
-    return ShipmentMethodResponse.from(
+    return new ShipmentMethodResponse(
+          shipmentMethod.getId(),
           shipmentMethod.getName(),
           shipmentMethod.getDescription(),
           shipmentMethod.getPricePerKilometer());

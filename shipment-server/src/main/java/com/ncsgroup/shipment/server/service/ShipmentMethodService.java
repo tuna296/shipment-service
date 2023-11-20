@@ -14,4 +14,6 @@ public interface ShipmentMethodService extends BaseService<ShipmentMethod> {
   PageResponse<ShipmentMethodResponse> list(String keyword, int size, int page, boolean isAll);
 
   void delete(String id);
+
+  ShipmentMethodResponse detail(String id);
 }

@@ -25,27 +25,18 @@ public interface ShipmentMethodRepository extends BaseRepository<ShipmentMethod>
         "WHERE e.id = :id AND e.isDeleted = false")
   boolean existsById(String id);
 
-//  @Query("""
-//        SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
-//        (s.name,s.description,s.pricePerKilometer)
-//        FROM ShipmentMethod s
-//        WHERE :keyword is null or lower(s.name)
-//        LIKE lower(concat('%', :keyword, '%'))
-//        AND s.isDeleted = false
-//        """)
-//  Page<ShipmentMethodResponse> search(String keyword, Pageable pageable);
-@Query("""
-    SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
-    (s.name, s.description, s.pricePerKilometer)
-    FROM ShipmentMethod s
-    WHERE (:keyword is null or lower(s.name) LIKE lower(concat('%', :keyword, '%')))
-    AND s.isDeleted = false
-""")
-Page<ShipmentMethodResponse> search(String keyword, Pageable pageable);
+  @Query("""
+            SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
+            (s.id,s.name, s.description, s.pricePerKilometer)
+            FROM ShipmentMethod s
+            WHERE (:keyword is null or lower(s.name) LIKE lower(concat('%', :keyword, '%')))
+            AND s.isDeleted = false
+        """)
+  Page<ShipmentMethodResponse> search(String keyword, Pageable pageable);
 
   @Query("""
         SELECT new com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse
-        (s.name,s.description,s.pricePerKilometer)
+        (s.id,s.name,s.description,s.pricePerKilometer)
         FROM ShipmentMethod s
         WHERE s.isDeleted = false
         """)

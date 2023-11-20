@@ -78,4 +78,15 @@ public class ShipmentMethodController {
     shipmentMethodService.delete(id);
     return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_SUCCESS, language));
   }
+  @GetMapping("/{id}")
+  public ResponseGeneral<ShipmentMethodResponse> detail(
+        @PathVariable String id,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("detail with id:{}", id);
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(DETAIL_SHIPMENT_METHOD, language),
+          shipmentMethodService.detail(id)
+    );
+  }
 }
