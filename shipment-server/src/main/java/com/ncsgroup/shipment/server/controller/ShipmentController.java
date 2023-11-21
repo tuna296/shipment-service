@@ -8,6 +8,7 @@ import com.ncsgroup.shipment.server.service.ShipmentService;
 import dto.ShipmentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,10 @@ import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREAT
 
 public class ShipmentController {
   private final ShipmentFacadeService shipmentFacadeService;
-  private final ShipmentService shipmentService;
   private final MessageService messageService;
+
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
   public ResponseGeneral<ShipmentResponse> create(
         @RequestBody @Validated ShipmentRequest request,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
@@ -35,7 +37,6 @@ public class ShipmentController {
     return ResponseGeneral.ofCreated(
           messageService.getMessage(CREATE_SHIPMENT_SUCCESS, language),
           shipmentFacadeService.create(request));
-
   }
 
 }

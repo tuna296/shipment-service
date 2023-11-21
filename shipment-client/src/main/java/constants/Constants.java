@@ -10,7 +10,9 @@ public class Constants {
     public static final String WARD_BLANK = "com.ncsgroup.shipment.client.dto.address.AddressRequest.wardCode.NotNull";
     public static final String DETAIL_BLANK = "com.ncsgroup.shipment.client.dto.address.AddressRequest.detail.NotNull";
     public static final String ADDRESS_NOT_BLANK="com.ncsgroup.shipment.client.dto.ShipmentRequest.Address.NotBank";
-    public static final String PRICE_SHIPMENT_BLANK="com.ncsgroup.shipment.client.dto.ShipmentRequest.PriceShipment.NotBlank";
     public static final String SHIPMENT_METHOD_BLANK="com.ncsgroup.shipment.client.dto.ShipmentRequest.ShipmentMethod.NotBlank";
+    public static final String CHECK_PRICE_SHIPMENT="com.ncsgroup.shipment.client.dto.ShipmentRequest.CheckPrice";
+    public static final String PRICE_SHIPMENT_NOT_NULL="com.ncsgroup.shipment.client.dto.ShipmentRequest.PriceShipmentNull";
+
   }
 }

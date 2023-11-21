@@ -5,9 +5,7 @@ import com.ncsgroup.shipment.server.entity.Shipment;
 import com.ncsgroup.shipment.server.repository.ShipmentRepository;
 import com.ncsgroup.shipment.server.service.ShipmentService;
 import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
-import com.ncsgroup.shipment.server.utils.MapperUtils;
 import dto.ShipmentRequest;
-import dto.address.AddressRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +28,7 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
           request.getPrice(),
           request.getShipmentMethodId()
     );
-    return MapperUtils.toDTO(create(shipment), ShipmentResponse.class);
+    repository.saveAndFlush(shipment);
+    return repository.find(shipment.getId());
   }
 }

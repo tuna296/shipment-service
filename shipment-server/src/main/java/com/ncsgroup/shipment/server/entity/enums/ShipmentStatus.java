@@ -4,10 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum ShipmentStatus {
-  DELIVERED(0),
-  IN_TRANSIT(1),
-  COMPLETED(2),
-  CANCELLED(3);
+  CONFIRMING(0),
+  CONFIRMED(1),
+  IN_TRANSIT(2),
+  DELIVERED(3),
+  COMPLETED(4),
+  CANCELLED(5);
   private final int value;
 
   ShipmentStatus(int value) {

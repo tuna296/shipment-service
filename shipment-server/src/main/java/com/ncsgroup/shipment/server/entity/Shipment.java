@@ -5,9 +5,6 @@ import com.ncsgroup.shipment.server.entity.enums.ShipmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
 @Getter
 @Setter
 @Entity
@@ -25,11 +22,11 @@ public class Shipment extends BaseEntityWithUpdater {
   private Double price;
   @Column(name = "shipment_method_id")
   private String shipmentMethodId;
-  @Column(name = "shipment_expected_date")
-  private long shipmentExpectedDate;
   @Enumerated(EnumType.ORDINAL)
   @Column(name = "shipment_status")
   private ShipmentStatus shipmentStatus;
+  @Column(name = "is_deleted")
+  private boolean isDeleted;
 
   public Shipment(
         String fromAddressId,
@@ -41,10 +38,7 @@ public class Shipment extends BaseEntityWithUpdater {
     this.toAddressId = toAddressId;
     this.price = price;
     this.shipmentMethodId = shipmentMethodId;
-    shipmentStatus = ShipmentStatus.DELIVERED;
-    LocalDateTime currentDate = LocalDateTime.now();
-    LocalDateTime expectedDate = currentDate.plusDays(15);
-    this.shipmentExpectedDate = expectedDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-
+    shipmentStatus = ShipmentStatus.CONFIRMING;
   }
+
 }

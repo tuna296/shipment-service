@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
-import com.ncsgroup.shipment.server.entity.ShipmentMethod;
 import com.ncsgroup.shipment.server.entity.enums.ShipmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,11 +19,17 @@ import lombok.Setter;
 public class ShipmentResponse {
   private String id;
   private String code;
+  private Double price;
+  private ShipmentStatus shipmentStatus;
+  private ShipmentMethodResponse shipmentMethod;
   private AddressResponse fromAddress;
   private AddressResponse toAddress;
-  private Double price;
-  private ShipmentMethodResponse shipmentMethod;
-  private long shipmentExpectedDate;
-  private ShipmentStatus shipmentStatus;
+
+  public ShipmentResponse(String id, String code, Double price, ShipmentStatus shipmentStatus) {
+    this.id = id;
+    this.code = code;
+    this.price = price;
+    this.shipmentStatus = shipmentStatus;
+  }
 
 }

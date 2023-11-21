@@ -3,7 +3,7 @@ package com.ncsgroup.shipment.server.configuration;
 import com.ncsgroup.shipment.server.facade.AddressFacadeService;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.facade.impl.AddressFacadeServiceImpl;
-import com.ncsgroup.shipment.server.facade.impl.ShipmentFacadeImpl;
+import com.ncsgroup.shipment.server.facade.impl.ShipmentFacadeServiceImpl;
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
 import com.ncsgroup.shipment.server.repository.ShipmentRepository;
 import com.ncsgroup.shipment.server.repository.address.AddressRepository;
@@ -76,7 +76,7 @@ public class ServiceConfiguration {
         AddressService addressService,
         ShipmentMethodService shipmentMethodService
   ) {
-    return new ShipmentFacadeImpl(shipmentService, addressService, shipmentMethodService);
+    return new ShipmentFacadeServiceImpl(shipmentService, addressService, shipmentMethodService);
   }
 
   @Bean
