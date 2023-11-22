@@ -23,6 +23,7 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
   public ShipmentResponse create(ShipmentRequest request) {
     log.info("(request) create: {}", request);
     Shipment shipment = new Shipment(
+          request.getOrderId(),
           request.getFromAddressId(),
           request.getToAddressId(),
           request.getPrice(),

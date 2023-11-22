@@ -35,6 +35,7 @@ public class ShipmentFacadeTest {
 
   private ShipmentRequest mockShipmentRequest() {
     ShipmentRequest request = new ShipmentRequest(
+          "orderId",
           "fromAddressId",
           "toAddressId",
           250000.0,
@@ -91,6 +92,7 @@ public class ShipmentFacadeTest {
   private Shipment mockShipment() {
     Shipment shipment = new Shipment(
           "SHIP01",
+          "orderId",
           "fromAddressId",
           "toAddressId",
           20000.0,
@@ -117,6 +119,7 @@ public class ShipmentFacadeTest {
     Mockito.when(addressService.detail(request.getToAddressId())).thenThrow(AddressNotFoundException.class);
     Assertions.assertThatThrownBy(() -> shipmentFacadeService.create(request)).isInstanceOf(AddressNotFoundException.class);
   }
+
   @Test
   void testCreateShipment_WhenShipmentMethodNotFound_ReturnShipmentMethodNotFound() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
@@ -130,7 +133,7 @@ public class ShipmentFacadeTest {
     AddressResponse fromAddress = mockFromAddressResponse();
     AddressResponse toAddress = mockToAddressResponse();
     ShipmentMethodResponse shipmentMethod = mockShipmentMethodResponse();
-    ShipmentResponse mockResponseService= shipmentResponse();
+    ShipmentResponse mockResponseService = shipmentResponse();
 
     Mockito.when(addressService.detail(request.getToAddressId())).thenReturn(toAddress);
     Mockito.when(addressService.detail(request.getFromAddressId())).thenReturn(fromAddress);

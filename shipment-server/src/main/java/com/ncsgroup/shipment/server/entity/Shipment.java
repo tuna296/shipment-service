@@ -14,6 +14,8 @@ import lombok.*;
 public class Shipment extends BaseEntityWithUpdater {
   @Column(name = "code")
   private String code;
+  @Column(name = "order_id")
+  private String orderId;
   @Column(name = "from_address_id")
   private String fromAddressId;
   @Column(name = "to_address_id")
@@ -29,11 +31,13 @@ public class Shipment extends BaseEntityWithUpdater {
   private boolean isDeleted;
 
   public Shipment(
+        String orderId,
         String fromAddressId,
         String toAddressId,
         Double price,
         String shipmentMethodId
   ) {
+    this.orderId = orderId;
     this.fromAddressId = fromAddressId;
     this.toAddressId = toAddressId;
     this.price = price;

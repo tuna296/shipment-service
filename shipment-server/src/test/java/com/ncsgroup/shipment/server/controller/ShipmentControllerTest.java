@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -47,6 +48,7 @@ public class ShipmentControllerTest {
 
   private ShipmentRequest mockShipmentRequest() {
     ShipmentRequest request = new ShipmentRequest(
+          "orderId",
           "fromAddressId",
           "toAddressId",
           250000.0,
@@ -103,6 +105,7 @@ public class ShipmentControllerTest {
   private Shipment mockShipment() {
     Shipment shipment = new Shipment(
           "SHIP01",
+          "orderId",
           "fromAddressId",
           "toAddressId",
           20000.0,
@@ -113,10 +116,10 @@ public class ShipmentControllerTest {
     return shipment;
   }
 
-    @Test
+  @Test
   void testCreateShipment_WhenAddressNotFound_ReturnAddressNotFoundException() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
-    Mockito.when(shipmentFacadeService.create(request)).thenThrow(new AddressNotFoundException());
+    Mockito.when(shipmentFacadeService.create(Mockito.any(ShipmentRequest.class))).thenThrow(new AddressNotFoundException());
     Mockito.when(messageService.getMessage(CREATE_SHIPMENT_SUCCESS, "en")).thenReturn("Create shipment success");
     mockMvc.perform(post("/api/v1/shipments")
                 .contentType("application/json")

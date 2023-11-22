@@ -15,6 +15,9 @@ import static constants.Constants.Validate.*;
 @NoArgsConstructor
 
 public class ShipmentRequest {
+  @NotBlank(message = ORDER_NOT_BLANK)
+  private String orderId;
+
   @NotBlank(message = ADDRESS_NOT_BLANK)
   private String fromAddressId;
 

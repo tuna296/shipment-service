@@ -27,6 +27,7 @@ public class ShipmentServiceTest {
 
   private ShipmentRequest mockShipmentRequest() {
     ShipmentRequest request = new ShipmentRequest(
+          "orderId",
           "fromAddressId",
           "toAddressId",
           250000.0,
@@ -53,6 +54,7 @@ public class ShipmentServiceTest {
     addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
     return addressResponse;
   }
+
   private AddressResponse mockToAddressResponse() {
     AddressResponse addressResponse = new AddressResponse();
     addressResponse.setId("toAddressId");
@@ -82,6 +84,7 @@ public class ShipmentServiceTest {
   private Shipment mockShipment() {
     Shipment shipment = new Shipment(
           "SHIP01",
+          "orderId",
           "fromAddressId",
           "toAddressId",
           20000.0,
@@ -91,6 +94,7 @@ public class ShipmentServiceTest {
     );
     return shipment;
   }
+
   private ShipmentResponse shipmentResponse() {
     ShipmentResponse response = new ShipmentResponse(
           "idShipment",
@@ -100,11 +104,12 @@ public class ShipmentServiceTest {
     );
     return response;
   }
+
   @Test
-  void testCreateShipment_WhenCreateSuccess_Successfully() throws Exception{
-    ShipmentRequest request= mockShipmentRequest();
-    Shipment shipment= mockShipment();
-    ShipmentResponse shipmentResponse =shipmentResponse();
+  void testCreateShipment_WhenCreateSuccess_Successfully() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Shipment shipment = mockShipment();
+    ShipmentResponse shipmentResponse = shipmentResponse();
 
     Mockito.when(repository.save(shipment)).thenReturn(shipment);
     Mockito.when(repository.find(shipment.getId())).thenReturn(shipmentResponse);

@@ -14,7 +14,7 @@
             <column name="code" type="varchar(255)">
                 <constraints unique="true"/>
             </column>
-
+            <column name="order_id" type="varchar(255)"/>
             <column name="from_address_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_shipment_from_address"
                              references="addresses(id)"/>
