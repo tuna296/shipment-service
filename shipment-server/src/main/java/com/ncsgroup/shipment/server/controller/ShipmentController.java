@@ -4,7 +4,6 @@ import com.ncsgroup.shipment.server.dto.ResponseGeneral;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
-import com.ncsgroup.shipment.server.service.ShipmentService;
 import dto.ShipmentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,6 @@ public class ShipmentController {
         @RequestBody @Validated ShipmentRequest request,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
-
     log.info("(create)request: {}", request);
 
     return ResponseGeneral.ofCreated(

@@ -5,16 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import static constants.Constants.Validate.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 

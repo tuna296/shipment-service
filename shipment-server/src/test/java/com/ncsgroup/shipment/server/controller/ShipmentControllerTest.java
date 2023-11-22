@@ -1,6 +1,5 @@
 package com.ncsgroup.shipment.server.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
@@ -11,7 +10,13 @@ import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
 import dto.ShipmentRequest;
 
-import java.nio.charset.StandardCharsets;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,13 +26,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_SHIPMENT_SUCCESS;
 import static com.ncsgroup.shipment.server.entity.enums.ShipmentStatus.CONFIRMING;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(ShipmentController.class)
 public class ShipmentControllerTest {
@@ -110,20 +113,11 @@ public class ShipmentControllerTest {
     return shipment;
   }
 
-  private ShipmentResponse shipmentResponse() {
-    ShipmentResponse response = new ShipmentResponse(
-          "idShipment",
-          "SHIP01",
-          20000.0,
-          CONFIRMING
-    );
-    return response;
-  }
-
-  @Test
+    @Test
   void testCreateShipment_WhenAddressNotFound_ReturnAddressNotFoundException() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
     Mockito.when(shipmentFacadeService.create(request)).thenThrow(new AddressNotFoundException());
+    Mockito.when(messageService.getMessage(CREATE_SHIPMENT_SUCCESS, "en")).thenReturn("Create shipment success");
     mockMvc.perform(post("/api/v1/shipments")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(request)))
@@ -134,11 +128,10 @@ public class ShipmentControllerTest {
           .andReturn();
   }
 
-
   @Test
   void testCreateShipment_WhenShipmentMethodNotFound_ReturnShipmentMethodNotFoundException() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
-    Mockito.when(shipmentFacadeService.create(request)).thenThrow(ShipmentMethodNotFoundException.class);
+    Mockito.when(shipmentFacadeService.create(request)).thenThrow(new ShipmentMethodNotFoundException());
     Mockito.when(messageService.getMessage(CREATE_SHIPMENT_SUCCESS, "en")).thenReturn("Create shipment success");
     mockMvc.perform(post("/api/v1/shipments")
                 .contentType("application/json")
@@ -163,7 +156,7 @@ public class ShipmentControllerTest {
           .andExpect(status().isCreated())
           .andExpect(jsonPath("$.message").value("Create shipment success"))
           .andReturn();
-    String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
           objectMapper.writeValueAsString(shipmentController.create(request, "en")));
   }
