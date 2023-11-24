@@ -111,7 +111,6 @@ public class DistrictControllerTest {
           objectMapper.writeValueAsString(districtController.list(null, 10, 0, true, "en")));
   }
 
-  //TODO
   @Test
   void testList_WhenAllFalse_Return200Body() throws Exception {
     DistrictPageResponse mockPage = new DistrictPageResponse();

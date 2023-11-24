@@ -114,6 +114,8 @@ public class WardControllerTest {
 
     MvcResult mvcResult = mockMvc.perform(
                 post("/api/v1/wards")
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsString(request))
                       .param("size", String.valueOf(10))
                       .param("page", String.valueOf(0))
                       .param("all", String.valueOf(false)))
