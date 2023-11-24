@@ -149,4 +149,18 @@ public class ShipmentFacadeTest {
     Assertions.assertThat(response.getToAddress()).isEqualTo(toAddress);
     Assertions.assertThat(response.getShipmentMethod()).isEqualTo(shipmentMethod);
   }
+  @Test
+  void testUpdateShipment_WhenAddressNotFound_ReturnAddressNotFound() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(addressService.detail(request.getToAddressId())).thenThrow(AddressNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentFacadeService.update(request, "test")).isInstanceOf(AddressNotFoundException.class);
+  }
+
+  @Test
+  void testUpdateShipment_WhenShipmentMethodNotFound_ReturnShipmentMethodNotFound() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(shipmentMethodService.detail(request.getShipmentMethodId())).thenThrow(ShipmentMethodNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentFacadeService.create(request)).isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+
 }

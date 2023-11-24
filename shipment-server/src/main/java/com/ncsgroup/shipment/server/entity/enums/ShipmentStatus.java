@@ -24,4 +24,18 @@ public enum ShipmentStatus {
     }
     return null;
   }
+
+  public static ShipmentStatus valueOf(int value) {
+    for (ShipmentStatus shipmentStatus : values()) {
+      if (shipmentStatus.getValue() == value) {
+        return shipmentStatus;
+      }
+    }
+    throw new IllegalArgumentException("Invalid ThresholdTime value: " + value);
+  }
+
+  public int getValue() {
+    return value;
+  }
+
 }

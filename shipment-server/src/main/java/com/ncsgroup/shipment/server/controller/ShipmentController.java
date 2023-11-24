@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.DEFAULT_LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_SHIPMENT_SUCCESS;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.UPDATE_SHIPMENT_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/shipments")
@@ -35,6 +36,19 @@ public class ShipmentController {
     return ResponseGeneral.ofCreated(
           messageService.getMessage(CREATE_SHIPMENT_SUCCESS, language),
           shipmentFacadeService.create(request));
+  }
+
+  @PutMapping("{id}")
+  public ResponseGeneral<ShipmentResponse> update(
+        @RequestBody @Validated ShipmentRequest request,
+        @PathVariable String id,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(update)request:{}, id: {}", request, id);
+
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(UPDATE_SHIPMENT_SUCCESS, language),
+          shipmentFacadeService.update(request, id));
   }
 
 }

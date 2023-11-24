@@ -31,5 +31,10 @@ public class ShipmentResponse {
     this.price = price;
     this.shipmentStatus = shipmentStatus;
   }
+  public ShipmentResponse(String id, Double price, ShipmentStatus shipmentStatus) {
+    this.id = id;
+    this.price = price;
+    this.shipmentStatus = shipmentStatus;
+  }
 
 }

@@ -7,4 +7,6 @@ import dto.ShipmentRequest;
 
 public interface ShipmentService extends BaseService<Shipment> {
   ShipmentResponse create(ShipmentRequest request);
+
+  ShipmentResponse update(ShipmentRequest request, String id);
 }

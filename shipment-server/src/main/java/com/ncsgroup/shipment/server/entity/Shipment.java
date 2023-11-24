@@ -11,6 +11,7 @@ import lombok.*;
 @Table(name = "shipments")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Shipment extends BaseEntityWithUpdater {
   @Column(name = "code")
   private String code;

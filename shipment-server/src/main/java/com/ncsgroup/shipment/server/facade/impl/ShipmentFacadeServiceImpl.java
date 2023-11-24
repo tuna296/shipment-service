@@ -39,16 +39,33 @@ public class ShipmentFacadeServiceImpl implements ShipmentFacadeService {
     return response;
   }
 
-  private void checkShipmentRequest(ShipmentRequest request) {
-    log.debug("checkShipmentRequest: {}", request);
-    if (Objects.nonNull(request.getToAddressId())) {
-      addressService.detail(request.getToAddressId());
+  @Override
+  public ShipmentResponse update(ShipmentRequest request, String id) {
+    log.debug("(request) update, request: {}, id: {}", request, id);
+    this.checkShipmentRequest(request);
+
+    ShipmentResponse response = shipmentService.update(request, id);
+    AddressResponse fromAddress = addressService.detail(request.getFromAddressId());
+    AddressResponse toAddress = addressService.detail(request.getToAddressId());
+    ShipmentMethodResponse shipmentMethod = shipmentMethodService.detail(request.getShipmentMethodId());
+
+    response.setFromAddress(fromAddress);
+    response.setToAddress(toAddress);
+    response.setShipmentMethod(shipmentMethod);
+
+    return response;
+  }
+
+  private void checkShipmentRequest(String fromAddressId, String toAddressId, String shipmentMethodId) {
+    log.debug("checkShipmentRequest, fromAddressId {}, toAddressId {}, shipmentMethodId {}", fromAddressId,toAddressId,shipmentMethodId);
+    if (Objects.nonNull(fromAddressId)) {
+      addressService.detail(fromAddressId);
     }
-    if (Objects.nonNull(request.getFromAddressId())) {
-      addressService.detail(request.getFromAddressId());
+    if (Objects.nonNull(toAddressId)) {
+      addressService.detail(toAddressId);
     }
-    if (Objects.nonNull(request.getShipmentMethodId())) {
-      shipmentMethodService.detail(request.getShipmentMethodId());
+    if (Objects.nonNull(shipmentMethodId)) {
+      shipmentMethodService.detail(shipmentMethodId);
     }
   }
 }

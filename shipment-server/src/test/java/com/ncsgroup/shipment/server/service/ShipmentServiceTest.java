@@ -120,4 +120,5 @@ public class ShipmentServiceTest {
     Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
     Assertions.assertThat(shipment.getShipmentStatus()).isEqualTo(response.getShipmentStatus());
   }
+
 }
