@@ -9,8 +9,6 @@ import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
 import dto.ShipmentRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import com.ncsgroup.shipment.server.entity.enums.ShipmentStatus;
-
 
 @Slf4j
 public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements ShipmentService {
@@ -58,7 +56,6 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
     log.info("(setValueForUpdate) request: {}, shipment: {}", request, shipment);
 
     shipment.setShipmentMethodId(request.getShipmentMethodId());
-    shipment.setShipmentStatus(ShipmentStatus.valueOf(request.getShipmentStatus()));
     shipment.setOrderId(request.getOrderId());
     shipment.setFromAddressId(request.getFromAddressId());
     shipment.setToAddressId(request.getToAddressId());

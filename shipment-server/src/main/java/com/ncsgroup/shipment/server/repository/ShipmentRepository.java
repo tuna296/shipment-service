@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ShipmentRepository extends BaseRepository<Shipment> {
   @Query("""
         SELECT new com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse
-        (s.id,s.code,s.price, s.shipmentStatus)
+        (s.id,s.code,s.price)
         FROM Shipment s
         WHERE s.id =:id AND s.isDeleted =false
         """)

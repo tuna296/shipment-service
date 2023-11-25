@@ -14,8 +14,6 @@ public class Constants {
     public static final String CHECK_PRICE_SHIPMENT = "com.ncsgroup.shipment.client.dto.ShipmentRequest.CheckPrice";
     public static final String PRICE_SHIPMENT_NOT_NULL = "com.ncsgroup.shipment.client.dto.ShipmentRequest.PriceShipmentNull";
     public static final String ORDER_NOT_BLANK = "com.ncsgroup.shipment.client.dto.ShipmentRequest.OrderIdShipmentNull";
-    public static final String SHIPMENT_STATUS_NOT_BLANK = "com.ncsgroup.shipment.client.dto.ShipmentRequest.ShipmentStatusNotBlank";
-
 
   }
 }

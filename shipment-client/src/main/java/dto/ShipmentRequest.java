@@ -30,14 +30,4 @@ public class ShipmentRequest {
 
   @NotBlank(message = SHIPMENT_METHOD_BLANK)
   private String shipmentMethodId;
-
-  private Integer shipmentStatus;
-
-  public ShipmentRequest(String orderId, String fromAddressId, String toAddressId, Double price, String shipmentMethodId) {
-    this.orderId = orderId;
-    this.fromAddressId = fromAddressId;
-    this.toAddressId = toAddressId;
-    this.price = price;
-    this.shipmentMethodId = shipmentMethodId;
-  }
 }

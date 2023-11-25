@@ -38,6 +38,7 @@ public class ShipmentController {
           shipmentFacadeService.create(request));
   }
 
+
   @PutMapping("{id}")
   public ResponseGeneral<ShipmentResponse> update(
         @RequestBody @Validated ShipmentRequest request,
@@ -50,5 +51,4 @@ public class ShipmentController {
           messageService.getMessage(UPDATE_SHIPMENT_SUCCESS, language),
           shipmentFacadeService.update(request, id));
   }
-
 }

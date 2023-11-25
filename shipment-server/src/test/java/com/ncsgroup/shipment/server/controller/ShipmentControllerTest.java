@@ -10,6 +10,7 @@ import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
 import dto.ShipmentRequest;
 
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.UPDATE_SHIPMENT_SUCCESS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -30,8 +31,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_SHIPMENT_SUCCESS;
-import static com.ncsgroup.shipment.server.entity.enums.ShipmentStatus.CONFIRMING;
-
 
 @WebMvcTest(ShipmentController.class)
 public class ShipmentControllerTest {
@@ -94,7 +93,6 @@ public class ShipmentControllerTest {
           "idShipment",
           "SHIP01",
           25000.0,
-          CONFIRMING,
           shipmentMethodResponse,
           fromAddress,
           toAddress
@@ -110,7 +108,6 @@ public class ShipmentControllerTest {
           "toAddressId",
           20000.0,
           "shipmentMethodId",
-          CONFIRMING,
           false
     );
     return shipment;
@@ -164,4 +161,51 @@ public class ShipmentControllerTest {
           objectMapper.writeValueAsString(shipmentController.create(request, "en")));
   }
 
+  @Test
+  void testUpdateShipment_WhenAddressNotFound_ReturnAddressNotFoundException() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(shipmentFacadeService.update(request, "idShipment")).thenThrow(new AddressNotFoundException());
+    Mockito.when(messageService.getMessage(UPDATE_SHIPMENT_SUCCESS, "en")).thenReturn("Update shipment success");
+    mockMvc.perform(put("/api/v1/shipments/{id}", "idShipment")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(request)))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.address.AddressNotFoundException"))
+          .andReturn();
+  }
+
+  @Test
+  void testUpdateShipment_WhenShipmentMethodNotFound_ReturnShipmentMethodNotFoundException() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(shipmentFacadeService.update(request, "idShipment")).thenThrow(new ShipmentMethodNotFoundException());
+    Mockito.when(messageService.getMessage(UPDATE_SHIPMENT_SUCCESS, "en")).thenReturn("Update shipment success");
+    mockMvc.perform(put("/api/v1/shipments/{id}", "idShipment")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(request)))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException"));
+  }
+
+  @Test
+  void testUpdateShipment_WhenSuccess_Return200Body() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    ShipmentResponse mockResponse = mockShipmentResponse();
+    Mockito.when(shipmentFacadeService.update(request, "idShipment")).thenReturn(mockResponse);
+    Mockito.when(messageService.getMessage(UPDATE_SHIPMENT_SUCCESS, "en")).thenReturn("Update shipment success");
+    MvcResult mvcResult = mockMvc.perform(
+                put("/api/v1/shipments/{id}", "idShipment")
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(request)))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Update shipment success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(shipmentController.update(request, "idShipment","en")));
+  }
 }

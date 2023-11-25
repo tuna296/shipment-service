@@ -1,7 +1,6 @@
 package com.ncsgroup.shipment.server.entity;
 
 import com.ncsgroup.shipment.server.entity.base.BaseEntityWithUpdater;
-import com.ncsgroup.shipment.server.entity.enums.ShipmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +24,6 @@ public class Shipment extends BaseEntityWithUpdater {
   private Double price;
   @Column(name = "shipment_method_id")
   private String shipmentMethodId;
-  @Enumerated(EnumType.ORDINAL)
-  @Column(name = "shipment_status")
-  private ShipmentStatus shipmentStatus;
   @Column(name = "is_deleted")
   private boolean isDeleted;
 
@@ -43,7 +39,6 @@ public class Shipment extends BaseEntityWithUpdater {
     this.toAddressId = toAddressId;
     this.price = price;
     this.shipmentMethodId = shipmentMethodId;
-    shipmentStatus = ShipmentStatus.CONFIRMING;
   }
 
 }
