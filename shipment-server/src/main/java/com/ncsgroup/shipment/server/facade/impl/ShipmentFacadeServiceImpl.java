@@ -43,6 +43,27 @@ public class ShipmentFacadeServiceImpl implements ShipmentFacadeService {
     return response;
   }
 
+
+  @Override
+  public ShipmentResponse update(ShipmentRequest request, String id) {
+    log.debug("(request) update, request: {}, id: {}", request, id);
+    this.checkShipmentRequest(
+          request.getFromAddressId(),
+          request.getToAddressId(),
+          request.getShipmentMethodId()
+    );
+    ShipmentResponse response = shipmentService.update(request, id);
+    AddressResponse fromAddress = addressService.detail(request.getFromAddressId());
+    AddressResponse toAddress = addressService.detail(request.getToAddressId());
+    ShipmentMethodResponse shipmentMethod = shipmentMethodService.detail(request.getShipmentMethodId());
+
+    response.setFromAddress(fromAddress);
+    response.setToAddress(toAddress);
+    response.setShipmentMethod(shipmentMethod);
+
+    return response;
+  }
+
   private void checkShipmentRequest(String fromAddressId, String toAddressId, String shipmentMethodId) {
     log.debug("checkShipmentRequest, fromAddressId {}, toAddressId {}, shipmentMethodId {}",
           fromAddressId, toAddressId, shipmentMethodId);

@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
-import static com.ncsgroup.shipment.server.entity.enums.ShipmentStatus.CONFIRMING;
+import java.util.Optional;
 
 @WebMvcTest(ShipmentService.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
@@ -30,7 +30,7 @@ public class ShipmentServiceTest {
           "orderId",
           "fromAddressId",
           "toAddressId",
-          250000.0,
+          20000.0,
           "shipmentMethodId"
     );
     return request;
@@ -72,8 +72,7 @@ public class ShipmentServiceTest {
     ShipmentResponse response = new ShipmentResponse(
           "idShipment",
           "SHIP01",
-          25000.0,
-          CONFIRMING,
+          20000.0,
           shipmentMethodResponse,
           fromAddress,
           toAddress
@@ -89,7 +88,6 @@ public class ShipmentServiceTest {
           "toAddressId",
           20000.0,
           "shipmentMethodId",
-          CONFIRMING,
           false
     );
     return shipment;
@@ -99,8 +97,7 @@ public class ShipmentServiceTest {
     ShipmentResponse response = new ShipmentResponse(
           "idShipment",
           "SHIP01",
-          20000.0,
-          CONFIRMING
+          20000.0
     );
     return response;
   }
@@ -118,6 +115,19 @@ public class ShipmentServiceTest {
 
     Assertions.assertThat(shipment.getCode()).isEqualTo(response.getCode());
     Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
-    Assertions.assertThat(shipment.getShipmentStatus()).isEqualTo(response.getShipmentStatus());
+  }
+  @Test
+  void testUpdateShipment_WhenUpdateSuccess_Successfully() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Shipment shipment = mockShipment();
+    ShipmentResponse shipmentResponse = shipmentResponse();
+    Mockito.when(repository.saveAndFlush(shipment)).thenReturn(shipment);
+    Mockito.when(repository.find(shipment.getId())).thenReturn(shipmentResponse);
+    Mockito.when(repository.findById(shipment.getId())).thenReturn(Optional.of(shipment));
+
+    ShipmentResponse response = shipmentService.update(request,shipment.getId());
+
+    Assertions.assertThat(shipment.getCode()).isEqualTo(response.getCode());
+    Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
   }
 }
