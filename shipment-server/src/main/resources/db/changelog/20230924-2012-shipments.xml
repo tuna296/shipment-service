@@ -28,7 +28,6 @@
                 <constraints foreignKeyName="FK_shipment_shipment_method"
                              references="shipment_method(id)"/>
             </column>
-            <column name="shipment_status" type="INTEGER" defaultValue="0"/>
             <column name="created_by" type="VARCHAR(255)"/>
             <column name="created_at" type="BIGINT"/>
             <column name="last_updated_by" type="VARCHAR(255)"/>

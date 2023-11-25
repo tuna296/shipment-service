@@ -5,4 +5,6 @@ import dto.ShipmentRequest;
 
 public interface ShipmentFacadeService {
   ShipmentResponse create(ShipmentRequest request);
+
+  ShipmentResponse update(ShipmentRequest request, String id);
 }

@@ -19,8 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
-import static com.ncsgroup.shipment.server.entity.enums.ShipmentStatus.CONFIRMING;
-
 @WebMvcTest(ShipmentFacadeService.class)
 @ContextConfiguration(classes = ShipmentTestConfiguration.class)
 public class ShipmentFacadeTest {
@@ -80,8 +78,7 @@ public class ShipmentFacadeTest {
     ShipmentResponse response = new ShipmentResponse(
           "idShipment",
           "SHIP01",
-          25000.0,
-          CONFIRMING,
+          20000.0,
           shipmentMethodResponse,
           fromAddress,
           toAddress
@@ -97,7 +94,6 @@ public class ShipmentFacadeTest {
           "toAddressId",
           20000.0,
           "shipmentMethodId",
-          CONFIRMING,
           false
     );
     return shipment;
@@ -107,8 +103,7 @@ public class ShipmentFacadeTest {
     ShipmentResponse response = new ShipmentResponse(
           "idShipment",
           "SHIP01",
-          20000.0,
-          CONFIRMING
+          20000.0
     );
     return response;
   }
@@ -143,7 +138,41 @@ public class ShipmentFacadeTest {
     ShipmentResponse response = shipmentFacadeService.create(request);
     Assertions.assertThat(response.getId()).isEqualTo(mockResponseService.getId());
     Assertions.assertThat(response.getCode()).isEqualTo(mockResponseService.getCode());
-    Assertions.assertThat(response.getShipmentStatus()).isEqualTo(mockResponseService.getShipmentStatus());
+    Assertions.assertThat(response.getPrice()).isEqualTo(mockResponseService.getPrice());
+    Assertions.assertThat(response.getFromAddress()).isEqualTo(fromAddress);
+    Assertions.assertThat(response.getToAddress()).isEqualTo(toAddress);
+    Assertions.assertThat(response.getShipmentMethod()).isEqualTo(shipmentMethod);
+  }
+
+  @Test
+  void testUpdateShipment_WhenAddressNotFound_ReturnAddressNotFound() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(addressService.detail(request.getToAddressId())).thenThrow(AddressNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentFacadeService.update(request, "test")).isInstanceOf(AddressNotFoundException.class);
+  }
+
+  @Test
+  void testUpdateShipment_WhenShipmentMethodNotFound_ReturnShipmentMethodNotFound() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    Mockito.when(shipmentMethodService.detail(request.getShipmentMethodId())).thenThrow(ShipmentMethodNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentFacadeService.create(request)).isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+  @Test
+  void testUpdateShipment_WhenSuccess_ReturnSuccess() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    AddressResponse fromAddress = mockFromAddressResponse();
+    AddressResponse toAddress = mockToAddressResponse();
+    ShipmentMethodResponse shipmentMethod = mockShipmentMethodResponse();
+    ShipmentResponse mockResponseService = shipmentResponse();
+
+    Mockito.when(addressService.detail(request.getToAddressId())).thenReturn(toAddress);
+    Mockito.when(addressService.detail(request.getFromAddressId())).thenReturn(fromAddress);
+    Mockito.when(shipmentMethodService.detail(request.getShipmentMethodId())).thenReturn(shipmentMethod);
+    Mockito.when(shipmentService.update(request, "idShipment")).thenReturn(mockResponseService);
+
+    ShipmentResponse response = shipmentFacadeService.update(request,"idShipment");
+    Assertions.assertThat(response.getId()).isEqualTo(mockResponseService.getId());
+    Assertions.assertThat(response.getCode()).isEqualTo(mockResponseService.getCode());
     Assertions.assertThat(response.getPrice()).isEqualTo(mockResponseService.getPrice());
     Assertions.assertThat(response.getFromAddress()).isEqualTo(fromAddress);
     Assertions.assertThat(response.getToAddress()).isEqualTo(toAddress);
