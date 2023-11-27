@@ -6,7 +6,7 @@ import com.ncsgroup.shipment.server.service.address.AddressService;
 import com.ncsgroup.shipment.server.service.address.DistrictService;
 import com.ncsgroup.shipment.server.service.address.ProvinceService;
 import com.ncsgroup.shipment.server.service.address.WardService;
-import dto.address.AddressRequest;
+import com.ncsgroup.shipment.client.dto.address.AddressRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

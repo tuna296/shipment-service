@@ -5,7 +5,7 @@ import com.ncsgroup.shipment.server.dto.address.district.DistrictInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.district.DistrictPageResponse;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.DistrictService;
-import dto.address.SearchDistrictRequest;
+import com.ncsgroup.shipment.client.dto.address.SearchDistrictRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

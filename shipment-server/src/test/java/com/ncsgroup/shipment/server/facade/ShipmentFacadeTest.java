@@ -10,7 +10,7 @@ import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFo
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import com.ncsgroup.shipment.server.service.ShipmentService;
 import com.ncsgroup.shipment.server.service.address.AddressService;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

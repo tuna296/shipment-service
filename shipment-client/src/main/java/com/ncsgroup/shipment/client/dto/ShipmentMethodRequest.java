@@ -1,10 +1,10 @@
-package dto;
+package com.ncsgroup.shipment.client.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import static constants.Constants.Validate.*;
+import static com.ncsgroup.shipment.client.constants.Constants.Validate.*;
 
 @Data
 @AllArgsConstructor

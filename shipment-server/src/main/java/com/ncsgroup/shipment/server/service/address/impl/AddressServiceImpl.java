@@ -7,7 +7,7 @@ import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.repository.address.AddressRepository;
 import com.ncsgroup.shipment.server.service.address.AddressService;
 import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
-import dto.address.AddressRequest;
+import com.ncsgroup.shipment.client.dto.address.AddressRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
