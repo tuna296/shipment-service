@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodAlrea
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
-import dto.ShipmentMethodRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentMethodRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @WebMvcTest(ShipmentMethodController.class)
 public class ShipmentMethodControllerTest {

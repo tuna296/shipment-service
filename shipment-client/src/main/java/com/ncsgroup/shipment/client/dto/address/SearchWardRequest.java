@@ -1,4 +1,4 @@
-package dto.address;
+package com.ncsgroup.shipment.client.dto.address;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

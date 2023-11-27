@@ -1,4 +1,4 @@
-package dto;
+package com.ncsgroup.shipment.client.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import static constants.Constants.Validate.*;
+import static com.ncsgroup.shipment.client.constants.Constants.Validate.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Data

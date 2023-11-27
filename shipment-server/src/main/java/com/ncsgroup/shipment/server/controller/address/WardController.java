@@ -5,7 +5,7 @@ import com.ncsgroup.shipment.server.dto.address.ward.WardInfoResponse;
 import com.ncsgroup.shipment.server.dto.address.ward.WardPageResponse;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.WardService;
-import dto.address.SearchWardRequest;
+import com.ncsgroup.shipment.client.dto.address.SearchWardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

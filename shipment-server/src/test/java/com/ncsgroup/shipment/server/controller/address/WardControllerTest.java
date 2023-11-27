@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.entity.address.Ward;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.WardService;
-import dto.address.SearchWardRequest;
+import com.ncsgroup.shipment.client.dto.address.SearchWardRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
