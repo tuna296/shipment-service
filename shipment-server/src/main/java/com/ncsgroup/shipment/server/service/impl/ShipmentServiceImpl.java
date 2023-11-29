@@ -6,7 +6,7 @@ import com.ncsgroup.shipment.server.exception.shipment.ShipmentNotFoundException
 import com.ncsgroup.shipment.server.repository.ShipmentRepository;
 import com.ncsgroup.shipment.server.service.ShipmentService;
 import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 

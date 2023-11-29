@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
-import dto.ShipmentMethodRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentMethodRequest;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.DEFAULT_LANGUAGE;
 import static com.ncsgroup.shipment.server.constanst.Constants.CommonConstants.LANGUAGE;

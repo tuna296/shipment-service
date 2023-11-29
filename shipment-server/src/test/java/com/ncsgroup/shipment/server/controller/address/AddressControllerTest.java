@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.facade.AddressFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.AddressService;
-import dto.address.AddressRequest;
+import com.ncsgroup.shipment.client.dto.address.AddressRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

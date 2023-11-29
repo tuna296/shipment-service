@@ -6,7 +6,7 @@ import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.Shipment;
 import com.ncsgroup.shipment.server.repository.ShipmentRepository;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

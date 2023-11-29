@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.entity.address.District;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.server.service.address.DistrictService;
-import dto.address.SearchDistrictRequest;
+import com.ncsgroup.shipment.client.dto.address.SearchDistrictRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

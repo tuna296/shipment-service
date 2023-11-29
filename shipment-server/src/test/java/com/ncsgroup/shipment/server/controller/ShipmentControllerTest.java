@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 
 import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.UPDATE_SHIPMENT_SUCCESS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

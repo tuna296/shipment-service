@@ -1,4 +1,4 @@
-package constants;
+package com.ncsgroup.shipment.client.constants;
 
 public class Constants {
   public static class Validate {

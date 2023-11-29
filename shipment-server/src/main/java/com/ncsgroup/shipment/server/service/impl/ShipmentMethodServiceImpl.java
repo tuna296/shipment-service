@@ -8,7 +8,7 @@ import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFo
 import com.ncsgroup.shipment.server.repository.ShipmentMethodRepository;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
-import dto.ShipmentMethodRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentMethodRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

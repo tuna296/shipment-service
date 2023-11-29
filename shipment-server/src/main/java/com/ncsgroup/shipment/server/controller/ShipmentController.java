@@ -4,7 +4,7 @@ import com.ncsgroup.shipment.server.dto.ResponseGeneral;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

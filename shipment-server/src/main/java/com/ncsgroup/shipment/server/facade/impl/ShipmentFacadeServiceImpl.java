@@ -7,7 +7,7 @@ import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import com.ncsgroup.shipment.server.service.ShipmentService;
 import com.ncsgroup.shipment.server.service.address.AddressService;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

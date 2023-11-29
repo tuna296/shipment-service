@@ -1,7 +1,7 @@
 package com.ncsgroup.shipment.server.facade;
 
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
-import dto.ShipmentRequest;
+import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 
 public interface ShipmentFacadeService {
   ShipmentResponse create(ShipmentRequest request);
