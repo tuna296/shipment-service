@@ -5,6 +5,7 @@ import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.Shipment;
+import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.repository.ShipmentRepository;
 import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import org.assertj.core.api.Assertions;
@@ -116,6 +117,7 @@ public class ShipmentServiceTest {
     Assertions.assertThat(shipment.getCode()).isEqualTo(response.getCode());
     Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
   }
+
   @Test
   void testUpdateShipment_WhenUpdateSuccess_Successfully() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
@@ -125,9 +127,17 @@ public class ShipmentServiceTest {
     Mockito.when(repository.find(shipment.getId())).thenReturn(shipmentResponse);
     Mockito.when(repository.findById(shipment.getId())).thenReturn(Optional.of(shipment));
 
-    ShipmentResponse response = shipmentService.update(request,shipment.getId());
+    ShipmentResponse response = shipmentService.update(request, shipment.getId());
 
     Assertions.assertThat(shipment.getCode()).isEqualTo(response.getCode());
     Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
   }
+
+  @Test
+  void testDeleteShipment_WhenIdNotFound_ReturnShipmentNotFound() throws Exception {
+    Mockito.when(repository.findById("test")).thenThrow(ShipmentMethodNotFoundException.class);
+
+    Assertions.assertThatThrownBy(() -> shipmentService.delete("test")).isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+
 }

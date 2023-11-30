@@ -5,12 +5,13 @@ import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import com.ncsgroup.shipment.server.entity.Shipment;
 import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
+import com.ncsgroup.shipment.server.exception.shipment.ShipmentNotFoundException;
 import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.MessageService;
 import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.UPDATE_SHIPMENT_SUCCESS;
+import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ncsgroup.shipment.server.service.ShipmentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,8 +30,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static com.ncsgroup.shipment.server.constanst.Constants.MessageCode.CREATE_SHIPMENT_SUCCESS;
 
 @WebMvcTest(ShipmentController.class)
 public class ShipmentControllerTest {
@@ -43,6 +43,8 @@ public class ShipmentControllerTest {
   private ShipmentController shipmentController;
   @Autowired
   ObjectMapper objectMapper;
+  @MockBean
+  ShipmentService shipmentService;
 
   private ShipmentRequest mockShipmentRequest() {
     ShipmentRequest request = new ShipmentRequest(
@@ -205,6 +207,30 @@ public class ShipmentControllerTest {
           .andReturn();
     String responseBody = mvcResult.getResponse().getContentAsString();
     Assertions.assertEquals(responseBody,
-          objectMapper.writeValueAsString(shipmentController.update(request, "idShipment","en")));
+          objectMapper.writeValueAsString(shipmentController.update(request, "idShipment", "en")));
   }
+
+  @Test
+  void testDeleteShipment_WhenShipmentNotFound_ReturnShipmentNotFoundException() throws Exception {
+    Mockito.doThrow(new ShipmentNotFoundException()).when(shipmentService).delete("idShipment");
+    mockMvc.perform(delete("/api/v1/shipments/{id}", "idShipment")
+                .contentType("application/json"))
+          .andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.data.code")
+                .value("com.ncsgroup.shipment.server.exception.shipment.ShipmentNotFoundException"));
+  }
+
+  @Test
+  void testDeleteShipment_WhenSuccess_ReturnResponseBody() throws Exception {
+    Mockito.doNothing().when(shipmentService).delete("idShipment");
+    Mockito.when(messageService.getMessage(DELETE_SHIPMENT_SUCCESS, "en")).thenReturn("Delete shipment successfully");
+    mockMvc.perform(delete("/api/v1/shipments/{id}", "idShipment")
+                .contentType("application/json"))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message")
+                .value("Delete shipment successfully"));
+  }
+
 }

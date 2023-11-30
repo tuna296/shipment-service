@@ -36,11 +36,18 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
 
   @Override
   public ShipmentResponse update(ShipmentRequest request, String id) {
-    log.info("(request) update id: {}", id);
+    log.info("(update) request: {} id: {}", request, id);
     Shipment shipment = this.find(id);
     this.setValueForUpdate(request, shipment);
     repository.saveAndFlush(shipment);
     return repository.find(shipment.getId());
+  }
+
+  @Override
+  public void delete(String id) {
+    log.info("(delete) id: {}", id);
+    this.find(id);
+    repository.delete(id);
   }
 
   private Shipment find(String id) {
