@@ -48,6 +48,7 @@ public class Constants {
     public static final String CREATE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.create";
     public static final String DETAIL_SHIPMENT_METHOD= "com.ncsgroup.shipment.server.controller.ShipmentMethodController.detail";
     public static final String UPDATE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.update";
+    public static final String DELETE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.delete";
 
   }
 }
