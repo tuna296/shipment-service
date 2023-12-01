@@ -24,4 +24,18 @@ public class ShipmentResponse {
     this.code = code;
     this.price = price;
   }
+
+  public ShipmentResponse(
+        String id, String code, Double price,
+        String shipmentMethodId,
+        String fromAddressId,
+        String toAddressId
+  ) {
+    this.id = id;
+    this.code = code;
+    this.price = price;
+    this.shipmentMethod = new ShipmentMethodResponse(shipmentMethodId, null, null, 0);
+    this.fromAddress = new AddressResponse(fromAddressId, null, null, null, null);
+    this.toAddress = new AddressResponse(toAddressId, null, null, null, null);
+  }
 }

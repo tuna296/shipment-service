@@ -64,4 +64,16 @@ public class ShipmentController {
           messageService.getMessage(DELETE_SHIPMENT_SUCCESS, language)
     );
   }
+
+  @GetMapping("{id}")
+  public ResponseGeneral<ShipmentResponse> detail(
+        @PathVariable String id,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(detail) id: {}", id);
+
+    return ResponseGeneral.ofSuccess(
+          messageService.getMessage(DETAIL_SHIPMENT_SUCCESS, language),
+          shipmentFacadeService.detail(id));
+  }
 }

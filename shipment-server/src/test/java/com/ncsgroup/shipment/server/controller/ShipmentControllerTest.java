@@ -233,4 +233,23 @@ public class ShipmentControllerTest {
                 .value("Delete shipment successfully"));
   }
 
+  @Test
+  void testDetailShipment_WhenSuccess_Return200Body() throws Exception {
+    ShipmentRequest request = mockShipmentRequest();
+    ShipmentResponse mockResponse = mockShipmentResponse();
+    Mockito.when(shipmentFacadeService.detail("idShipment")).thenReturn(mockResponse);
+    Mockito.when(messageService.getMessage(DETAIL_SHIPMENT_SUCCESS, "en")).thenReturn("Get detail shipment success");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/shipments/{id}", "idShipment")
+                      .contentType("application/json")
+                      .content(objectMapper.writeValueAsBytes(request)))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get detail shipment success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(shipmentController.detail("idShipment", "en")));
+  }
+
 }
