@@ -108,6 +108,18 @@ public class ShipmentFacadeTest {
     return response;
   }
 
+  private ShipmentResponse shipmentServiceResponse() {
+    ShipmentResponse response = new ShipmentResponse(
+          "idShipment",
+          "SHIP01",
+          20000.0,
+          "shipmentMethodId",
+          "fromAddressId",
+          "toAddressId"
+    );
+    return response;
+  }
+
   @Test
   void testCreateShipment_WhenAddressNotFound_ReturnAddressNotFound() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
@@ -157,6 +169,7 @@ public class ShipmentFacadeTest {
     Mockito.when(shipmentMethodService.detail(request.getShipmentMethodId())).thenThrow(ShipmentMethodNotFoundException.class);
     Assertions.assertThatThrownBy(() -> shipmentFacadeService.create(request)).isInstanceOf(ShipmentMethodNotFoundException.class);
   }
+
   @Test
   void testUpdateShipment_WhenSuccess_ReturnSuccess() throws Exception {
     ShipmentRequest request = mockShipmentRequest();
@@ -170,10 +183,33 @@ public class ShipmentFacadeTest {
     Mockito.when(shipmentMethodService.detail(request.getShipmentMethodId())).thenReturn(shipmentMethod);
     Mockito.when(shipmentService.update(request, "idShipment")).thenReturn(mockResponseService);
 
-    ShipmentResponse response = shipmentFacadeService.update(request,"idShipment");
+    ShipmentResponse response = shipmentFacadeService.update(request, "idShipment");
     Assertions.assertThat(response.getId()).isEqualTo(mockResponseService.getId());
     Assertions.assertThat(response.getCode()).isEqualTo(mockResponseService.getCode());
     Assertions.assertThat(response.getPrice()).isEqualTo(mockResponseService.getPrice());
+    Assertions.assertThat(response.getFromAddress()).isEqualTo(fromAddress);
+    Assertions.assertThat(response.getToAddress()).isEqualTo(toAddress);
+    Assertions.assertThat(response.getShipmentMethod()).isEqualTo(shipmentMethod);
+  }
+
+  @Test
+  void testDetailShipment_WhenSuccess_ReturnSuccess() throws Exception {
+    ShipmentResponse mockServiceResponse = shipmentServiceResponse();
+    AddressResponse fromAddress = mockFromAddressResponse();
+    AddressResponse toAddress = mockToAddressResponse();
+    ShipmentMethodResponse shipmentMethod = mockShipmentMethodResponse();
+
+    Mockito.when(shipmentService.detail("test")).thenReturn(mockServiceResponse);
+
+    Mockito.when(addressService.detail(mockServiceResponse.getToAddress().getId())).thenReturn(toAddress);
+    Mockito.when(addressService.detail(mockServiceResponse.getFromAddress().getId())).thenReturn(fromAddress);
+    Mockito.when(shipmentMethodService.detail(mockServiceResponse.getShipmentMethod().getId())).thenReturn(shipmentMethod);
+
+    ShipmentResponse response = shipmentFacadeService.detail("test");
+    Assertions.assertThat(response.getId()).isEqualTo(mockServiceResponse.getId());
+    Assertions.assertThat(response.getCode()).isEqualTo(mockServiceResponse.getCode());
+    Assertions.assertThat(response.getPrice()).isEqualTo(mockServiceResponse.getPrice());
+
     Assertions.assertThat(response.getFromAddress()).isEqualTo(fromAddress);
     Assertions.assertThat(response.getToAddress()).isEqualTo(toAddress);
     Assertions.assertThat(response.getShipmentMethod()).isEqualTo(shipmentMethod);

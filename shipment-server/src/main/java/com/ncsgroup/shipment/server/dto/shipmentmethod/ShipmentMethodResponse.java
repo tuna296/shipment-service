@@ -11,7 +11,6 @@ public class ShipmentMethodResponse {
   private String name;
   private String description;
   private double pricePerKilometer;
-
   public static ShipmentMethodResponse from(
         String name,
         String description,

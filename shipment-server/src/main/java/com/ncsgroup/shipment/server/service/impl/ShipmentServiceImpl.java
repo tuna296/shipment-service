@@ -50,6 +50,20 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
     repository.delete(id);
   }
 
+  @Override
+  public ShipmentResponse detail(String id) {
+    log.info("(detail) id: {}", id);
+    Shipment shipment = this.find(id);
+    return new ShipmentResponse(
+          shipment.getId(),
+          shipment.getCode(),
+          shipment.getPrice(),
+          shipment.getShipmentMethodId(),
+          shipment.getFromAddressId(),
+          shipment.getToAddressId()
+    );
+  }
+
   private Shipment find(String id) {
     log.info("(update)id: {}", id);
     Shipment shipment = repository.findById(id).orElseThrow(ShipmentNotFoundException::new);

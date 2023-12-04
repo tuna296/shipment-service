@@ -37,50 +37,6 @@ public class ShipmentServiceTest {
     return request;
   }
 
-  private ShipmentMethodResponse mockShipmentMethodResponse() {
-    ShipmentMethodResponse response = new ShipmentMethodResponse();
-    response.setId("shipmentMethodId");
-    response.setName("Giao hang nhanh");
-    response.setDescription("Van chuyen trong ngay");
-    response.setPricePerKilometer(20000.0);
-    return response;
-  }
-
-  private AddressResponse mockFromAddressResponse() {
-    AddressResponse addressResponse = new AddressResponse();
-    addressResponse.setId("fromAddressId");
-    addressResponse.setProvinces("30");
-    addressResponse.setDistricts("293");
-    addressResponse.setWards("10081");
-    addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
-    return addressResponse;
-  }
-
-  private AddressResponse mockToAddressResponse() {
-    AddressResponse addressResponse = new AddressResponse();
-    addressResponse.setId("toAddressId");
-    addressResponse.setProvinces("30");
-    addressResponse.setDistricts("293");
-    addressResponse.setWards("10081");
-    addressResponse.setDetail("Tam Ky Kim Thanh Hai Duong");
-    return addressResponse;
-  }
-
-  private ShipmentResponse mockShipmentResponse() {
-    ShipmentMethodResponse shipmentMethodResponse = mockShipmentMethodResponse();
-    AddressResponse fromAddress = mockFromAddressResponse();
-    AddressResponse toAddress = mockToAddressResponse();
-    ShipmentResponse response = new ShipmentResponse(
-          "idShipment",
-          "SHIP01",
-          20000.0,
-          shipmentMethodResponse,
-          fromAddress,
-          toAddress
-    );
-    return response;
-  }
-
   private Shipment mockShipment() {
     Shipment shipment = new Shipment(
           "SHIP01",
@@ -137,7 +93,30 @@ public class ShipmentServiceTest {
   void testDeleteShipment_WhenIdNotFound_ReturnShipmentNotFound() throws Exception {
     Mockito.when(repository.findById("test")).thenThrow(ShipmentMethodNotFoundException.class);
 
-    Assertions.assertThatThrownBy(() -> shipmentService.delete("test")).isInstanceOf(ShipmentMethodNotFoundException.class);
+    Assertions.assertThatThrownBy(() -> shipmentService.delete("test"))
+          .isInstanceOf(ShipmentMethodNotFoundException.class);
   }
 
+  @Test
+  void testDetailShipment_WhenIdNotFound_ReturnShipmentNotFound() throws Exception {
+    Mockito.when(repository.findById("test")).thenThrow(ShipmentMethodNotFoundException.class);
+
+    Assertions.assertThatThrownBy(() -> shipmentService.delete("test"))
+          .isInstanceOf(ShipmentMethodNotFoundException.class);
+  }
+
+  @Test
+  void testDetailShipment_WhenSuccess_ReturnShipmentResponse() throws Exception {
+    Shipment shipment = mockShipment();
+    Mockito.when(repository.findById(shipment.getId())).thenReturn(Optional.of(shipment));
+
+    ShipmentResponse response = shipmentService.detail(shipment.getId());
+    Assertions.assertThat(shipment.getCode()).isEqualTo(response.getCode());
+    Assertions.assertThat(shipment.getPrice()).isEqualTo(response.getPrice());
+    Assertions.assertThat(shipment.getShipmentMethodId()).isEqualTo(response.getShipmentMethod().getId());
+    Assertions.assertThat(shipment.getToAddressId()).isEqualTo(response.getToAddress().getId());
+    Assertions.assertThat(shipment.getFromAddressId()).isEqualTo(response.getFromAddress().getId());
+
+
+  }
 }

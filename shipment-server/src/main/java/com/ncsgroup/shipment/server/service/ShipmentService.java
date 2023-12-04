@@ -10,4 +10,6 @@ public interface ShipmentService extends BaseService<Shipment> {
 
   ShipmentResponse update(ShipmentRequest request, String id);
   void delete(String id);
+
+  ShipmentResponse detail(String id);
 }
