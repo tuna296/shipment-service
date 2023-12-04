@@ -7,4 +7,6 @@ public interface ShipmentFacadeService {
   ShipmentResponse create(ShipmentRequest request);
 
   ShipmentResponse update(ShipmentRequest request, String id);
+
+  ShipmentResponse detail(String id);
 }

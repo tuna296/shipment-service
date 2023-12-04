@@ -3,6 +3,8 @@ package com.ncsgroup.shipment.server.facade.impl;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
+import com.ncsgroup.shipment.server.exception.address.AddressNotFoundException;
+import com.ncsgroup.shipment.server.exception.shipmentmethod.ShipmentMethodNotFoundException;
 import com.ncsgroup.shipment.server.facade.ShipmentFacadeService;
 import com.ncsgroup.shipment.server.service.ShipmentMethodService;
 import com.ncsgroup.shipment.server.service.ShipmentService;
@@ -25,11 +27,6 @@ public class ShipmentFacadeServiceImpl implements ShipmentFacadeService {
   @Transactional
   public ShipmentResponse create(ShipmentRequest request) {
     log.info("(create) request: {}", request);
-    this.checkShipmentRequest(
-          request.getFromAddressId(),
-          request.getToAddressId(),
-          request.getShipmentMethodId()
-    );
 
     ShipmentResponse response = shipmentService.create(request);
     AddressResponse fromAddress = addressService.detail(request.getFromAddressId());
@@ -47,11 +44,7 @@ public class ShipmentFacadeServiceImpl implements ShipmentFacadeService {
   @Override
   public ShipmentResponse update(ShipmentRequest request, String id) {
     log.debug("(request) update, request: {}, id: {}", request, id);
-    this.checkShipmentRequest(
-          request.getFromAddressId(),
-          request.getToAddressId(),
-          request.getShipmentMethodId()
-    );
+
     ShipmentResponse response = shipmentService.update(request, id);
     AddressResponse fromAddress = addressService.detail(request.getFromAddressId());
     AddressResponse toAddress = addressService.detail(request.getToAddressId());
@@ -64,21 +57,36 @@ public class ShipmentFacadeServiceImpl implements ShipmentFacadeService {
     return response;
   }
 
-  private void checkShipmentRequest(String fromAddressId, String toAddressId, String shipmentMethodId) {
-    log.debug("checkShipmentRequest, fromAddressId {}, toAddressId {}, shipmentMethodId {}",
-          fromAddressId, toAddressId, shipmentMethodId);
+  @Override
+  public ShipmentResponse detail(String id) {
+    log.debug("(detail) id: {}", id);
+    ShipmentResponse response = shipmentService.detail(id);
+    try {
+      ShipmentMethodResponse shipmentMethodResponse =
+            shipmentMethodService.detail(response.getShipmentMethod().getId());
+      response.setShipmentMethod(shipmentMethodResponse);
 
-    if (Objects.nonNull(fromAddressId)) {
-      addressService.detail(fromAddressId);
+    } catch (ShipmentMethodNotFoundException e) {
+      response.setShipmentMethod(null);
+      log.error("(detail) ======> ShipmentMethodNotFoundException");
     }
 
-    if (Objects.nonNull(toAddressId)) {
-      addressService.detail(toAddressId);
+    try {
+      AddressResponse fromAddressResponse = addressService.detail(response.getFromAddress().getId());
+      response.setFromAddress(fromAddressResponse);
+    } catch (AddressNotFoundException e) {
+      response.setFromAddress(null);
+      log.error("(detail) ======> AddressNotFoundException");
     }
 
-    if (Objects.nonNull(shipmentMethodId)) {
-      shipmentMethodService.detail(shipmentMethodId);
+    try {
+      AddressResponse toAddressResponse = addressService.detail(response.getToAddress().getId());
+      response.setToAddress(toAddressResponse);
+    } catch (AddressNotFoundException e) {
+      response.setToAddress(null);
+      log.error("(detail) ======> AddressNotFoundException");
     }
+    return response;
   }
 
 }
