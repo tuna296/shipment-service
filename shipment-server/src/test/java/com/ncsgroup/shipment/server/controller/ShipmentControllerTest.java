@@ -1,5 +1,6 @@
 package com.ncsgroup.shipment.server.controller;
 
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
@@ -30,6 +31,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @WebMvcTest(ShipmentController.class)
 public class ShipmentControllerTest {
@@ -101,17 +105,13 @@ public class ShipmentControllerTest {
     return response;
   }
 
-  private Shipment mockShipment() {
-    Shipment shipment = new Shipment(
+  private ShipmentResponse shipmentResponse() {
+    ShipmentResponse response = new ShipmentResponse(
+          "idShipment",
           "SHIP01",
-          "orderId",
-          "fromAddressId",
-          "toAddressId",
-          20000.0,
-          "shipmentMethodId",
-          false
+          20000.0
     );
-    return shipment;
+    return response;
   }
 
   @Test
@@ -252,4 +252,56 @@ public class ShipmentControllerTest {
           objectMapper.writeValueAsString(shipmentController.detail("idShipment", "en")));
   }
 
+  @Test
+  void testListShipment_WhenIsAllTrue_Return200Body() throws Exception {
+    ShipmentResponse shipmentResponse = shipmentResponse();
+    List<ShipmentResponse> list = new ArrayList<>();
+    list.add(shipmentResponse);
+
+    PageResponse<ShipmentResponse> mockResponse = new PageResponse<>();
+    mockResponse.setContent(list);
+    mockResponse.setAmount(list.size());
+
+    Mockito.when(shipmentService.list("", 10, 0, true)).thenReturn(mockResponse);
+    Mockito.when(messageService.getMessage(LIST_SHIPMENT_SUCCESS, "en")).thenReturn("Get list shipment success");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/shipments")
+                      .param("keyword", "")
+                      .param("size", String.valueOf(10))
+                      .param("page", String.valueOf(0))
+                      .param("all", String.valueOf(true)))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get list shipment success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(shipmentController.list("", 10, 0, true, "en")));
+  }
+  @Test
+  void testListShipment_WhenSearchByKeyword_Return200Body() throws Exception {
+    ShipmentResponse shipmentResponse = shipmentResponse();
+    List<ShipmentResponse> list = new ArrayList<>();
+    list.add(shipmentResponse);
+
+    PageResponse<ShipmentResponse> mockResponse = new PageResponse<>();
+    mockResponse.setContent(list);
+    mockResponse.setAmount(list.size());
+
+    Mockito.when(shipmentService.list("SHIP01", 10, 0, false)).thenReturn(mockResponse);
+    Mockito.when(messageService.getMessage(LIST_SHIPMENT_SUCCESS, "en")).thenReturn("Get list shipment success");
+    MvcResult mvcResult = mockMvc.perform(
+                get("/api/v1/shipments")
+                      .param("keyword", "SHIP01")
+                      .param("size", String.valueOf(10))
+                      .param("page", String.valueOf(0))
+                      .param("all", String.valueOf(false)))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.message").value("Get list shipment success"))
+          .andReturn();
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    Assertions.assertEquals(responseBody,
+          objectMapper.writeValueAsString(shipmentController.list("SHIP01", 10, 0, false, "en")));
+  }
 }

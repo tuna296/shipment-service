@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.dto.shipmentmethod.ShipmentMethodResponse;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 
 public class ShipmentResponse {

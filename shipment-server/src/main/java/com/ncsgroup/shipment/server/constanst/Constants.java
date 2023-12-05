@@ -50,5 +50,7 @@ public class Constants {
     public static final String UPDATE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.update";
     public static final String DELETE_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.delete";
     public static final String DETAIL_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.detail";
+    public static final String LIST_SHIPMENT_SUCCESS="com.ncsgroup.shipment.server.controller.shipment.list";
+
   }
 }

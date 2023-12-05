@@ -1,5 +1,6 @@
 package com.ncsgroup.shipment.server.service.impl;
 
+import com.ncsgroup.shipment.server.dto.PageResponse;
 import com.ncsgroup.shipment.server.dto.shipment.ShipmentResponse;
 import com.ncsgroup.shipment.server.entity.Shipment;
 import com.ncsgroup.shipment.server.exception.shipment.ShipmentNotFoundException;
@@ -9,6 +10,9 @@ import com.ncsgroup.shipment.server.service.base.BaseServiceImpl;
 import com.ncsgroup.shipment.client.dto.ShipmentRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements ShipmentService {
@@ -62,6 +66,15 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
           shipment.getFromAddressId(),
           shipment.getToAddressId()
     );
+  }
+
+  @Override
+  public PageResponse<ShipmentResponse> list(String keyword, int size, int page, boolean isAll) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ShipmentResponse> list = isAll ?
+          repository.findAllShipment(pageable) : repository.searchShipment(pageable, keyword);
+    return PageResponse.of(list.getContent(), (int) list.getTotalElements());
   }
 
   private Shipment find(String id) {
