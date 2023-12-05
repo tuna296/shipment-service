@@ -16,4 +16,5 @@ public interface ShipmentService extends BaseService<Shipment> {
   ShipmentResponse detail(String id);
 
   PageResponse<ShipmentResponse> list(String keyword, int size, int page, boolean isAll);
+
 }

@@ -76,7 +76,6 @@ public class ShipmentServiceImpl extends BaseServiceImpl<Shipment> implements Sh
           repository.findAllShipment(pageable) : repository.searchShipment(pageable, keyword);
     return PageResponse.of(list.getContent(), (int) list.getTotalElements());
   }
-
   private Shipment find(String id) {
     log.info("(update)id: {}", id);
     Shipment shipment = repository.findById(id).orElseThrow(ShipmentNotFoundException::new);
