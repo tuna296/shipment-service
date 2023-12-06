@@ -1,7 +1,6 @@
 package com.ncsgroup.shipment.server.controller.address;
 
 import com.ncsgroup.shipment.server.dto.PageResponse;
-import com.ncsgroup.shipment.server.dto.PageResponseGeneral;
 import com.ncsgroup.shipment.server.dto.ResponseGeneral;
 import com.ncsgroup.shipment.server.dto.address.AddressResponse;
 import com.ncsgroup.shipment.server.facade.AddressFacadeService;
@@ -42,7 +41,7 @@ public class AddressController {
   }
 
   @GetMapping
-  public PageResponseGeneral<PageResponse<AddressResponse>> list(
+  public ResponseGeneral<PageResponse<AddressResponse>> list(
         @RequestParam(name = "keyword", required = false) String keyword,
         @RequestParam(name = "size", defaultValue = "10") int size,
         @RequestParam(name = "page", defaultValue = "0") int page,
@@ -50,7 +49,7 @@ public class AddressController {
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
     log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
-    return PageResponseGeneral.ofSuccess(messageService.getMessage(LIST_ADDRESS, language),
+    return ResponseGeneral.ofSuccess(messageService.getMessage(LIST_ADDRESS, language),
           addressService.list(keyword, size, page, isAll)
     );
   }
