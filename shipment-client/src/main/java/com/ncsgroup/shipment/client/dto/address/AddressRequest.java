@@ -18,5 +18,6 @@ public class AddressRequest {
   private String wardCode;
   @NotBlank(message = DETAIL_BLANK)
   private String detail;
+  private String userId;
 }
 

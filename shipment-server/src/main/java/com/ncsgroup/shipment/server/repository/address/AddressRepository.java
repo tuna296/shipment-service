@@ -52,6 +52,7 @@ public interface AddressRepository extends BaseRepository<Address> {
             WHERE a.id = :id AND a.isDeleted=false
         """)
   AddressResponse findAddressById(@Param("id") String id);
+
   @Modifying
   @Transactional
   @Query("UPDATE Address a SET a.isDeleted = true WHERE a.id = :id")

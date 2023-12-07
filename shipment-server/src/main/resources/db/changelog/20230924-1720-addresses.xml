@@ -21,6 +21,7 @@
                 <constraints foreignKeyName="FK_address_province_code"
                              references="provinces(code)"/>
             </column>
+            <column name="user_id" type="varchar(255)"/>
             <column name="is_deleted" type="BOOLEAN" defaultValue="false"/>
             <column name="created_at" type="bigint"/>
             <column name="created_by" type="varchar(255)"/>

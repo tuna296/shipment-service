@@ -31,7 +31,8 @@ public class AddressServiceImpl extends BaseServiceImpl<Address> implements Addr
           request.getWardCode(),
           request.getDistrictCode(),
           request.getProvinceCode(),
-          request.getDetail()
+          request.getDetail(),
+          request.getUserId()
     );
     repository.saveAndFlush(address);
 
